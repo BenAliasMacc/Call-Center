@@ -11,6 +11,7 @@ import {
   useGridSelector
 } from '@mui/x-data-grid';
 import Pagination from '@mui/material/Pagination';
+import { Link } from 'react-router-dom';
 
 function CustomPagination() {
   const apiRef = useGridApiContext();
@@ -53,8 +54,19 @@ const columns = [
   { field: 'username', headerName: 'Nom', flex: 1 },
   { field: 'company', headerName: 'Société', flex: 1 },
   { field: 'phone', headerName: 'Téléphone', flex: 1 },
-  { field: 'email', headerName: 'Email', flex: 2 },
-  { field: 'website', headerName: 'Lien', flex: 2 }
+  { 
+    field: 'email', 
+    headerName: 'Email', 
+    flex: 2,
+    renderCell: (params) => (<Link to={`mailto:${params.value}`}>{params.value}</Link>)
+  },
+  { 
+    field: 'website', 
+    headerName: 'Lien', 
+    flex: 2,
+    renderCell: (params) => (<Link to={`/mailto:/${params.value}`}>{params.value}</Link>)
+      
+  }
 ];
 
 export default function QuickFilteringCustomizedGrid({ users }) {
