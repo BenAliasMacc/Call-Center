@@ -1,11 +1,13 @@
 import Users from "../components/Users";
+import MainTable from '../components/mainTable'
 
 const Home = () => {
 
 
     return (
         <section className="home">
-            <Users />
+            {/* <Users /> */}
+            <MainTable />
         </section>
     )
 }

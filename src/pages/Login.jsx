@@ -4,7 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Login.scss'
 
 import axios from '../api/axios';
-const LOGIN_URL = '/auth';
+const LOGIN_URL = '/users/login';
 
 const Login = () => {
     const { setAuth } = useAuth();
@@ -16,8 +16,8 @@ const Login = () => {
     const userRef = useRef();
     const errRef = useRef();
 
-    const [user, setUser] = useState('');
-    const [pwd, setPwd] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
@@ -26,26 +26,27 @@ const Login = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd])
+    }, [email, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ user, pwd }),
+                JSON.stringify({ email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
+                    // withCredentials: true
                 }
             );
             console.log(JSON.stringify(response?.data));
-            //console.log(JSON.stringify(response));
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth({ user, pwd, roles, accessToken });
-            setUser('');
-            setPwd('');
+            console.log(JSON.stringify(response));
+            const accessToken = response?.data?.token;
+            const roles = [response?.data?.userId];
+            console.log(roles);
+            setAuth({ email, password, roles, accessToken });
+            setEmail('');
+            setPassword('');
             navigate(from, { replace: true });
         } catch (err) {
             if (!err?.response) {
@@ -73,8 +74,8 @@ const Login = () => {
                     id="username"
                     ref={userRef}
                     autoComplete="off"
-                    onChange={(e) => setUser(e.target.value)}
-                    value={user}
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
                     required
                 />
 
@@ -82,18 +83,13 @@ const Login = () => {
                 <input
                     type="password"
                     id="password"
-                    onChange={(e) => setPwd(e.target.value)}
-                    value={pwd}
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
                     required
                 />
                 <button>Sign In</button>
             </form>
-            <p>
-                Need an Account?<br />
-                <span className="line">
-                    <Link to="/register">Sign Up</Link>
-                </span>
-            </p>
+            
         </section>
 
     )

@@ -3,15 +3,13 @@ import '../styles/mainTable.scss'
 import Box from '@mui/material/Box';
 import {
   DataGrid,
-  GridToolbarQuickFilter,
-  GridLinkOperator,
+  GridToolbar,
   gridPageCountSelector,
   gridPageSelector,
   useGridApiContext,
   useGridSelector
 } from '@mui/x-data-grid';
 import Pagination from '@mui/material/Pagination';
-import { Link } from 'react-router-dom';
 
 function CustomPagination() {
   const apiRef = useGridApiContext();
@@ -28,26 +26,6 @@ function CustomPagination() {
   );
 }
 
-function QuickSearchToolbar() {
-  return (
-    <Box
-      sx={{
-        p: 0.5,
-        pb: 0,
-      }}
-    >
-      <GridToolbarQuickFilter
-        quickFilterParser={(searchInput) =>
-          searchInput
-            .split(',')
-            .map((value) => value.trim())
-            .filter((value) => value !== '')
-        }
-      />
-    </Box>
-  );
-}
-
 const columns = [
   { field: 'id', headerName: 'Identifiant', flex: 1 },
   { field: 'name', headerName: 'Prénom', flex: 1 },
@@ -58,43 +36,57 @@ const columns = [
     field: 'email', 
     headerName: 'Email', 
     flex: 2,
-    renderCell: (params) => (<Link to={`mailto:${params.value}`}>{params.value}</Link>)
+    renderCell: (params) => (<a href={`mailto:${params.value}`}>{params.value}</a>)
   },
   { 
     field: 'website', 
     headerName: 'Lien', 
     flex: 2,
-    renderCell: (params) => (<Link to={`/mailto:/${params.value}`}>{params.value}</Link>)
+    renderCell: (params) => (<a href={`${params.value}`}>{params.value}</a>)
       
   }
 ];
 
-export default function QuickFilteringCustomizedGrid({ users }) {
+//----------------Mocked Data-------------------------------
+const rows = [
+  { id: 176360950 , name: 'REVAH', username: 'ROMAIN', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360951 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://google.com'},
+  { id: 176360952 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://twitter.com'},
+  { id: 176360953 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://facebook.com'},
+  { id: 176360954 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://mui.com'},
+  { id: 176360955 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+];
+//-----------------------------------------------------
+
+export default function QuickFilteringCustomizedGrid() {
 
   return (
     <>
-      {users !== undefined &&
+      {/* {users !== undefined && */}
         <Box sx={{ height: 400, width: 1 }}>
           <DataGrid
             sx={{ color: 'white' }}
-            rows={users}
+            // rows={users}
+            rows={rows}
             columns={columns}
             pageSize={5}
-            initialState={{
-              filter: {
-                filterModel: {
-                  items: [],
-                  quickFilterLogicOperator: GridLinkOperator.Or,
-                },
-              },
-            }}
+            disableColumnFilter
+            disableColumnSelector
+            disableDensitySelector
             components={{ 
-              Toolbar: QuickSearchToolbar, 
+              Toolbar: GridToolbar, 
               Pagination: CustomPagination
+            }}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 500 },
+              },
             }}
           />
         </Box>
-      }
+      {/* } */}
     </>
   );
 }
