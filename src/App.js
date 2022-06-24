@@ -6,6 +6,8 @@ import Missing from './pages/Missing';
 import Unauthorized from './components/Unauthorized';
 import RequireAuth from './components/RequireAuth';
 import { Routes, Route } from 'react-router-dom';
+import NewuCustomer from './pages/NewCustomers';
+import CustomerCard from './pages/CustomerCard';
 
 const ROLES = {
   'User': '62b08ba33f8191dd23368c83',
@@ -20,11 +22,13 @@ function App() {
         {/* public routes */}
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Home />} />
+        <Route path="new-customer" element={<NewuCustomer />} />
+        <Route path="176360950" element={<CustomerCard />} />
 
         {/* we want to protect these routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>

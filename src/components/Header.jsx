@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../context/AuthProvider";
+import Burgermenu from "./BurgerMenu";
+import logoutButton from "../assets/icons/log-out.svg"
+import '../styles/Header.scss'
 
 const Header = () => {
 
@@ -15,9 +18,13 @@ const Header = () => {
     }
 
     return (
-        <div>
-            <button onClick={logout}>Log-out</button>
-        </div>
+        <header className="header">
+            <div className="header__logo">Logo</div>
+            <div className="header__nav">
+                <Burgermenu />
+                <button className="logout-button" onClick={logout}><img src={logoutButton} alt="déconnexion" /></button>
+            </div>
+        </header>
     )
 }
 

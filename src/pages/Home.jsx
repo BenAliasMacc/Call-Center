@@ -1,14 +1,23 @@
 import Users from "../components/Users";
 import MainTable from '../components/mainTable'
+import '../styles/Home.scss'
+import Header from "../components/Header";
 
 const Home = () => {
 
 
     return (
-        <section className="home">
-            {/* <Users /> */}
-            <MainTable />
-        </section>
+        <>
+            <Header />
+
+            <section className="home">
+                {/* <Users /> */}
+                <div className="home--container">
+                    <MainTable />
+                </div>
+                
+            </section>      
+        </>
     )
 }
 

@@ -1,6 +1,12 @@
-.login {
-    max-width: 420px;
-    min-height: 400px;
-    background-color: rgba(0,0,0,0.4);
-    padding: 1rem;
+.login {   
+    &--container {
+        max-width: 420px;
+        min-height: 400px;
+        background-color: rgba(0,0,0,0.4);
+        padding: 1rem;
+    }
+    &__form {
+        display: flex;
+        flex-direction: column;
+    }
 }
