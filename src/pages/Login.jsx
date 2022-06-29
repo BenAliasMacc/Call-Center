@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
-import '../styles/Login.scss'
+import logo from "../assets/images/logoCallDirect.png";
 
 import axios from '../api/axios';
 const LOGIN_URL = '/users/login';
@@ -68,28 +68,38 @@ const Login = () => {
 
             <div className="login--container">
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                <h1>Sign In</h1>
+                <h1><img src={logo} alt="retour à l'acceuil" />  </h1>
                 <form className='login__form' onSubmit={handleSubmit}>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        ref={userRef}
-                        autoComplete="off"
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
-                        required
-                    />
+                    
+                    <div className="group">                            
+                        <input
+                            type="text"
+                            id="username"
+                            ref={userRef}
+                            autoComplete="off"
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            required
+                        />
+                        <span className="highlight"></span>
+                        <span className="bar"></span>
+                        <label htmlFor="username">Email:</label>
+                    </div>
 
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                        required
-                    />
-                    <button className='button-submit'>Sign In</button>
+                    <div className="group"> 
+                        <input
+                            type="password"
+                            id="password"
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            required
+                        />
+                        <span className="highlight"></span>
+                        <span className="bar"></span>
+                        <label htmlFor="password">Mot de passe</label>
+                    </div>
+
+                    <button className='button-submit'>Connexion</button>
                 </form>
             </div>
 

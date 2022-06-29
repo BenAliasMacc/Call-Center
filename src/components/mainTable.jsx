@@ -1,16 +1,52 @@
 import React from 'react';
-import '../styles/mainTable.scss'
 import Box from '@mui/material/Box';
 import {
   DataGrid,
+  gridClasses,
   GridToolbar,
   gridPageCountSelector,
   gridPageSelector,
   useGridApiContext,
   useGridSelector
 } from '@mui/x-data-grid';
+import { alpha, styled } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import { Link } from 'react-router-dom';
+
+const ODD_OPACITY = 0.2;
+
+const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
+  [`& .${gridClasses.row}.even`]: {
+    backgroundColor: theme.palette.grey[200],
+    '&:hover, &.Mui-hovered': {
+      backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
+      '@media (hover: none)': {
+        backgroundColor: 'transparent',
+      },
+    },
+    '&.Mui-selected': {
+      backgroundColor: alpha(
+        theme.palette.primary.main,
+        ODD_OPACITY + theme.palette.action.selectedOpacity,
+      ),
+      '&:hover, &.Mui-hovered': {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          ODD_OPACITY +
+            theme.palette.action.selectedOpacity +
+            theme.palette.action.hoverOpacity,
+        ),
+        // Reset on touch devices, it doesn't add specificity
+        '@media (hover: none)': {
+          backgroundColor: alpha(
+            theme.palette.primary.main,
+            ODD_OPACITY + theme.palette.action.selectedOpacity,
+          ),
+        },
+      },
+    },
+  },
+}));
 
 function CustomPagination() {
   const apiRef = useGridApiContext();
@@ -62,19 +98,30 @@ const rows = [
   { id: 176360954 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://mui.com'},
   { id: 176360955 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
   { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
+  { id: 176360956 , name: 'REVAH', username: 'MICKAEL', company: 'CARS DE FRANCE', phone: '054 444 3212' , email: 'michael@cars-de-france.com', website: 'https://client.cars-de-france.com/admin#'},
 ];
 //-----------------------------------------------------
 
-export default function QuickFilteringCustomizedGrid() {
+export default function QuickFilteringCustomizedGrid({ users }) {
 
   return (
     <>
-      {/* {users !== undefined && */}
-        <Box sx={{ height: 400, width: 1 }}>
-          <DataGrid
-            sx={{ color: 'white' }}
-            // rows={users}
-            rows={rows}
+      {users !== undefined &&
+        <Box sx={{ height: "100%", width: "100%" }}>
+          <StripedDataGrid
+            getRowClassName={(params) =>
+              params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+            }
+            sx={{ color: 'black', borderColor: '#ccc' }}
+            rows={users}
+            // rows={rows}
             columns={columns}
             pageSize={10}
             disableColumnFilter
@@ -92,7 +139,7 @@ export default function QuickFilteringCustomizedGrid() {
             }}
           />
         </Box>
-      {/* } */}
+      }
     </>
   );
 }

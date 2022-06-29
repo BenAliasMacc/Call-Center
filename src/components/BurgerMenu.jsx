@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import '../styles/BurgerMenu.scss'
 
 const BurgerMenu = () => {
 

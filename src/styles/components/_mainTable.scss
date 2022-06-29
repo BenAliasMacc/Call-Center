@@ -1,0 +1,30 @@
+//Mui Class Elements
+
+.css-jj6133 { // Container body
+
+}
+.MuiButton-text { // Logo & Text export
+    color: $quaternaryColor!important;
+}
+.MuiSvgIcon-fontSizeSmall { //Logo search
+    color: $quaternaryColor;
+}
+.css-1ptx2yq-MuiInputBase-root-MuiInput-root { // Placeholder SearchInput
+    color: $quaternaryColor!important;
+}
+.MuiPaginationItem-icon { // Paginations arrows
+    color: $quaternaryColor;
+}
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root { // Paginations numbers
+    color: $quaternaryColor!important;
+}
+
+// Cellules
+.MuiDataGrid-columnHeaders, 
+.MuiDataGrid-cell {
+    border-bottom: 1px solid $secondaryColor!important;
+    border-radius: 0;
+}
+.css-17jjc08-MuiDataGrid-footerContainer {
+    border-top: 1px solid $secondaryColor!important;
+}

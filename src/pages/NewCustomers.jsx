@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import Header from "../components/Header";
-import '../styles/NewCustomer.scss'
 
 const NewUser = () => {
 

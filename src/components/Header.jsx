@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 import Burgermenu from "./BurgerMenu";
-import logoutButton from "../assets/icons/log-out.svg"
-import '../styles/Header.scss'
+import logoutButton from "../assets/icons/log-out.svg";
+import logo from "../assets/images/logoCallDirect.png";
 
 const Header = () => {
 
@@ -19,7 +19,7 @@ const Header = () => {
 
     return (
         <header className="header">
-            <div className="header__logo">Logo</div>
+            <div className="header__logo"><Link to="/"><img src={logo} alt="retour à l'acceuil" /></Link></div>
             <div className="header__nav">
                 <Burgermenu />
                 <button className="logout-button" onClick={logout}><img src={logoutButton} alt="déconnexion" /></button>
