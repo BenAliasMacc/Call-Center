@@ -23,13 +23,8 @@
     }
 }
 
-.newUserFieldset__adress {
-    display: grid;
-    grid-template-columns: 4rem 3rem 1fr;
-    grid-gap: 1rem;
-}
-
-.error-message {
+.error-message, .mandatory {
+    margin-top: 0.3rem;
     color: red;
 }
 

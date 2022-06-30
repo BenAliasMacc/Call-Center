@@ -39,11 +39,12 @@ const Login = () => {
                     // withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
-            console.log(JSON.stringify(response));
+        
+            console.log(JSON.stringify(response.data.token));
+            // console.log(JSON.stringify(response));
+            localStorage.setItem('token', response.data.token)
             const accessToken = response?.data?.token;
             const roles = [response?.data?.userId];
-            console.log(roles);
             setAuth({ email, password, roles, accessToken });
             setEmail('');
             setPassword('');

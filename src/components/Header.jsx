@@ -21,8 +21,7 @@ const Header = () => {
         <header className="header">
             <div className="header__logo"><Link to="/"><img src={logo} alt="retour à l'acceuil" /></Link></div>
             <div className="header__nav">
-                <Burgermenu />
-                <button className="logout-button" onClick={logout}><img src={logoutButton} alt="déconnexion" /></button>
+                <Burgermenu logout={logout}/>
             </div>
         </header>
     )

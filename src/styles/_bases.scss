@@ -41,11 +41,16 @@ a, a:visited {
     color: $quaternaryColor;
 }
 
+li {
+    list-style-type: none;
+}
+
 input, textarea {
-  width: 100%;
-  font-size: 22px;
-  padding: 0.25rem;
-  border: 1px solid 
+    font-family: 'Nunito', sans-serif;
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: 1px solid 
 }
 
 label {
@@ -53,7 +58,6 @@ label {
 }
 
 button {
-    width: 100%;
     font-size: 22px;
     padding: 0.25rem;
     border-radius: 6px;

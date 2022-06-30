@@ -13,13 +13,13 @@ const Users = () => {
     useEffect(() => {
         const getUsers = async () => {
             try {
-                const response = await axios.get('/clients',
+                const response = await axios.get('/clients', 
                     {
                         headers: { 'Authorization': `Bearer ${auth?.accessToken}` },
                         // withCredentials: true
                     }
                 )
-                console.log(response.data);
+                // console.log(response.data);
                 setUsers(response.data)
             } catch (err) {
                 console.log(err);
@@ -28,6 +28,25 @@ const Users = () => {
 
         getUsers();
     }, [])
+
+    // useEffect(() => {
+    //     const getUsers = () => {
+    //         fetch('https://calldirect.herokuapp.com/api/clients', { 
+    //             method: "GET",
+    //             params: {
+    //                 "userId": "62b08ba33f8191dd23368c83"
+    //             },
+    //             headers: {
+    //                 'Content-type': 'application/json',
+    //                 Authorization: `Bearer ${auth.accessToken}`
+    //             }
+    //         })
+    //         .then(response => response.json())
+    //         .then(data => console.log(data) );
+    //     }
+
+    //     getUsers()
+    // }, [])
 
     return (
         <>

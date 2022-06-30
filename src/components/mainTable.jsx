@@ -68,20 +68,20 @@ const columns = [
     field: 'id', 
     headerName: 'Identifiant', 
     flex: 1,
-    renderCell: (params) => (<Link to={`${params.value}`}>{params.value}</Link>)
+    renderCell: (params) => (<Link to={`${params.row._id}`}>{params.value}</Link>)
   },
-  { field: 'name', headerName: 'Prénom', flex: 1 },
-  { field: 'username', headerName: 'Nom', flex: 1 },
-  { field: 'company', headerName: 'Société', flex: 1 },
-  { field: 'phone', headerName: 'Téléphone', flex: 1 },
+  { field: 'nom', headerName: 'Prénom', flex: 1 },
+  { field: 'prenom', headerName: 'Nom', flex: 1 },
+  { field: 'societe', headerName: 'Société', flex: 1 },
+  { field: 'telephone', headerName: 'Téléphone', flex: 1 },
   { 
-    field: 'email', 
+    field: 'mail', 
     headerName: 'Email', 
     flex: 2,
     renderCell: (params) => (<a href={`mailto:${params.value}`}>{params.value}</a>)
   },
   { 
-    field: 'website', 
+    field: 'site', 
     headerName: 'Lien', 
     flex: 2,
     renderCell: (params) => (<a href={`${params.value}`}>{params.value}</a>)
@@ -110,7 +110,7 @@ const rows = [
 //-----------------------------------------------------
 
 export default function QuickFilteringCustomizedGrid({ users }) {
-
+  console.log(users);
   return (
     <>
       {users !== undefined &&
@@ -123,7 +123,7 @@ export default function QuickFilteringCustomizedGrid({ users }) {
             rows={users}
             // rows={rows}
             columns={columns}
-            pageSize={10}
+            pageSize={20}
             disableColumnFilter
             disableColumnSelector
             disableDensitySelector

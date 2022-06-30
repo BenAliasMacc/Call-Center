@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import logoutButton from "../assets/icons/log-out.svg";
 
-const BurgerMenu = () => {
+const BurgerMenu = ({ logout }) => {
 
     const [showNav, setShowNav] = useState(false)
 
@@ -12,9 +14,21 @@ const BurgerMenu = () => {
 
     return (
 
-        <button className={`burger-menu ${diplayNav}`} onClick={handleBurgerMenu}>
-            <span className="burger-menu__bar"></span>
-        </button>
+        <nav className={`burger-menu ${diplayNav}`}>
+
+            <ul className='header__navbar__list'>
+                <li className='header__navbar__list__link'><Link to="/"><p>Accueil</p></Link></li>
+                <li className='header__navbar__list__link'><Link to="new-customer"><p>Créer nouveau client</p></Link></li>
+                <li className='header__navbar__list__link'>
+                    <button className="logout-button" onClick={logout}><img src={logoutButton} alt="déconnexion" />Déconnexion</button>
+                </li>
+            </ul>
+
+            <button className="burger-menu__burger-button" onClick={handleBurgerMenu}>
+                <span className="burger-menu__burger-button__bar"></span>
+            </button>
+
+        </nav>
     )
 }
 
