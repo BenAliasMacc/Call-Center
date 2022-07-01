@@ -1,0 +1,44 @@
+.newUser {
+    &--container {
+        min-height: 400px;
+        background-color: rgba(0,0,0,0.4);
+        padding: 1rem;
+    }
+    &__form--container {
+        display: flex;
+        justify-content: space-evenly;
+        column-gap: 1rem;
+    }
+}
+
+
+
+.newUserFieldset__adress {
+    display: grid;
+    grid-template-columns: 4rem 3rem 1fr;
+    grid-gap: 1rem
+}
+
+.error-message {
+    color: red;
+}
+
+.street-number {
+    grid-column: 1;
+    grid-row: 1;
+}
+.adress {
+    grid-column: 2 / 4;
+    grid-row: 1;
+}
+.postcode {
+    grid-column: 1 / 3;
+    grid-row: 2;
+}
+.city {
+    grid-row: 2;
+}
+.country {
+    grid-column: 1 / 3;
+    grid-row: 3;
+}
