@@ -10,7 +10,6 @@ import NewClients from './pages/NewClients';
 import GestionUsers from './pages/GestionUsers';
 import CustomerCard from './pages/ClientsCard';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import "./styles/loader.css";
 
 const ROLES = {
   'User': '62b08ba33f8191dd23368c83',

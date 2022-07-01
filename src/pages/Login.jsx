@@ -2,9 +2,9 @@ import { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from "../assets/images/logoCallDirect.png";
-import { Audio } from  'react-loader-spinner';
 
 import axios from '../api/axios';
+import Loader from '../components/Loader';
 const LOGIN_URL = '/users/login';
 
 const Login = () => {
@@ -109,12 +109,7 @@ const Login = () => {
             </div>
             { isLoading && 
                 <div className='containerLoader'>
-                    <Audio
-                        height="100"
-                        width="100"
-                        color='orangered'
-                        ariaLabel='loading'
-                    />
+                    <Loader />
                 </div>
             }
 
