@@ -10,21 +10,6 @@ const NewClients = () => {
   const onSubmit = data => {
     
     const createNewClients = async() => {
-          console.log(token)
-          // fetch('https://calldirect.herokuapp.com/api/clients/createClient', { 
-          //       method: 'POST', 
-          //       headers: {
-          //         'Content-Type': 'application/json',
-          //           'Authorization': `Bearer ${token}`,
-          //           'Accept': 'application/json, text/plain,'
-          //       },
-          //       body: JSON.stringify(data)
-          //       })
-          //       .then(res => res.json())
-          //       .then(data => console.log(data))
-          //       .catch(err => {
-                    
-          //       })
 
           try {
               const response = await axios.post(`/clients/createClient`,

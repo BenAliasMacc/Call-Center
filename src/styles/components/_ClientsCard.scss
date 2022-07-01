@@ -38,6 +38,18 @@
         font-weight: bold;
         border-bottom: 1px solid #e6eaed;
         border-right: 1px solid #e6eaed;
+        padding-right: 1rem;
+    }
+    & input, & textarea {
+        border-radius: 6px;
+        border-color: $quaternaryColor;
+        &:focus, &:active {
+            outline: 0;
+            box-shadow: 0 0 6px rgb(176, 226, 188);
+        }
+    }
+    & form {
+        justify-content: normal;
     }
 }
 

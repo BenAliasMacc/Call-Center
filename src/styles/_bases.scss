@@ -75,6 +75,10 @@ fieldset {
     padding: 1rem;
     border-color: $secondaryColor;
 }
+.error-message, .mandatory {
+    margin-top: 0.3rem;
+    color: red;
+}
 .instructions {
     font-size: 0.75rem;
     border-radius: 0.5rem;
