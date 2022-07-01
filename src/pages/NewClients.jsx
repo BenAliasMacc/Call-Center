@@ -1,17 +1,15 @@
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 import axios from "../api/axios";
 import Header from "../components/Header";
 
-const NewUser = () => {
+const NewClients = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const token = localStorage.getItem('token');
   
   const onSubmit = data => {
     
-    const createNewCustomer = async() => {
+    const createNewClients = async() => {
           console.log(token)
           // fetch('https://calldirect.herokuapp.com/api/clients/createClient', { 
           //       method: 'POST', 
@@ -47,7 +45,7 @@ const NewUser = () => {
           }
     } ;
   
-    createNewCustomer()
+    createNewClients()
   };
 
   
@@ -57,13 +55,13 @@ const NewUser = () => {
     <>
       <Header />
 
-      <section className="newUser">
+      <section className="new-clients">
 
-        <div className="newUser--container">
+        <div className="new-clients--container">
 
-          <form className="newUser__form" onSubmit={handleSubmit(onSubmit)}>
+          <form className="new-clients__form" onSubmit={handleSubmit(onSubmit)}>
 
-            <div className="newUser__form--container">
+            <div className="new-clients__form--container">
               <fieldset>
                 <legend>Données clients</legend>
 
@@ -197,4 +195,4 @@ const NewUser = () => {
   )
 }
 
-export default NewUser
+export default NewClients

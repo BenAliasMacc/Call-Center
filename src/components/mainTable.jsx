@@ -78,13 +78,13 @@ const columns = [
     field: 'mail', 
     headerName: 'Email', 
     flex: 2,
-    renderCell: (params) => (<a href={`mailto:${params.value}`}>{params.value}</a>)
+    renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`mailto:${params.value}`}>{params.value}</a>)
   },
   { 
     field: 'site', 
     headerName: 'Lien', 
     flex: 2,
-    renderCell: (params) => (<a href={`${params.value}`}>{params.value}</a>)
+    renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
       
   }
 ];
