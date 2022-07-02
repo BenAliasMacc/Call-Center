@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
-import MainTable from "./mainTable"
+import MainTable from "./clientsDataGrid"
 
 
 const Users = () => {

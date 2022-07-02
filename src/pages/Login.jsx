@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import logo from "../assets/images/logoCallDirect.png";
 
 import axios from '../api/axios';
+import Loader from '../components/Loader';
 const LOGIN_URL = '/users/login';
 
 const Login = () => {
@@ -19,6 +20,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errMsg, setErrMsg] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         userRef.current.focus();
@@ -30,6 +32,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         try {
             const response = await axios.post(LOGIN_URL,
@@ -48,6 +51,7 @@ const Login = () => {
             setAuth({ email, password, roles, accessToken });
             setEmail('');
             setPassword('');
+            setIsLoading(false);
             navigate(from, { replace: true });
         } catch (err) {
             if (!err?.response) {
@@ -103,6 +107,11 @@ const Login = () => {
                     <button className='button-submit'>Connexion</button>
                 </form>
             </div>
+            { isLoading && 
+                <div className='containerLoader'>
+                    <Loader />
+                </div>
+            }
 
         </section>
     )

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../api/axios";
-import { useForm } from "react-hook-form";
 import ContainerHeader from "../components/ContainerHeader";
 import EditButton from "../components/EditButton";
 import Header from "../components/Header"

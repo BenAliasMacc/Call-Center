@@ -7,7 +7,9 @@ import Unauthorized from './components/Unauthorized';
 import RequireAuth from './components/RequireAuth';
 import { Routes, Route, useParams } from 'react-router-dom';
 import NewClients from './pages/NewClients';
+import GestionUsers from './pages/GestionUsers';
 import CustomerCard from './pages/ClientsCard';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 const ROLES = {
   'User': '62b08ba33f8191dd23368c83',
@@ -24,6 +26,7 @@ function App() {
         <Route path="unauthorized" element={<Unauthorized />} />
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="new-clients" element={<NewClients />} />
+        <Route path="gestion-users" element={<GestionUsers />} />
         <Route path=":id" element={<CustomerCard />} />
 
         {/* we want to protect these routes */}
