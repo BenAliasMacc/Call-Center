@@ -114,8 +114,14 @@ const columns = [
     flex: 2,
     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
       
-  }
-];
+  },
+//   { 
+//     field: '', 
+//     headerName: '', 
+//     flex: 2,
+//     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
+//   }
+// ];
 //-----------------------------------------------------
 
 export default function QuickFilteringCustomizedGrid({ users }) {

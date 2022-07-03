@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import axios from "../api/axios";
+import BackHomeLink from "../components/BackHomeLink";
 import Header from "../components/Header";
 
 const NewClients = () => {
@@ -43,14 +44,14 @@ const NewClients = () => {
       <section className="new-clients">
 
         <div className="new-clients--container">
-
+          <BackHomeLink />
           <form className="new-clients__form" onSubmit={handleSubmit(onSubmit)}>
 
             <div className="new-clients__form--container">
               <fieldset>
                 <legend>Données clients</legend>
 
-                <label htmlFor="id">Identifiant</label>
+                <label htmlFor="id">Identifiant <span className="mandatory">*</span></label>
                 <input type="number" id="id"
                   {...register("id", {
                     required: true,
@@ -62,7 +63,7 @@ const NewClients = () => {
                   <p className="error-message">Le nombre de caractéres autorisé est de maximum 20</p>
                 )}
 
-                <label htmlFor="prenom">Prénom</label>
+                <label htmlFor="prenom">Prénom <span className="mandatory">*</span></label>
                 <input type="text" id="prenom"
                   {...register("prenom", {
                     required: true,
@@ -74,7 +75,7 @@ const NewClients = () => {
                   <p className="error-message">Le nombre de caractéres autorisé est de maximum 20</p>
                 )}
 
-                <label htmlFor="nom">Nom</label>
+                <label htmlFor="nom">Nom <span className="mandatory">*</span></label>
                 <input type="text" id="nom"
                   {...register("nom", {
                     required: true,
@@ -152,7 +153,7 @@ const NewClients = () => {
                     />
                   
 
-                <label htmlFor="mail">mail</label>
+                <label htmlFor="mail">mail <span className="mandatory">*</span></label>
                 <input type='email' id="mail"
                   {...register("mail", {
                     required: true
@@ -160,7 +161,7 @@ const NewClients = () => {
                 />
                 {errors?.mail?.type === "required" && <p className="error-message">Ce champ doit être complété</p>}
 
-                <label htmlFor="telephone">Téléphone</label>
+                <label htmlFor="telephone">Téléphone <span className="mandatory">*</span></label>
                 <input type='number' id="telephone"
                   {...register("telephone", {
                     required: true
