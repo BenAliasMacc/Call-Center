@@ -12,7 +12,15 @@ import {
 import { alpha, styled } from '@mui/material/styles';
 import Pagination from '@mui/material/Pagination';
 import { Link } from 'react-router-dom';
-import addButton from '../assets/icons/add-button.svg'
+import addButton from '../assets/icons/add-button.svg';
+
+/* icons */
+import { MdDeleteForever } from 'react-icons/md'; 
+import { MdPublishedWithChanges } from 'react-icons/md';
+
+function handleClickDelete(datas) {
+    console.log(datas)
+}
 
 
 //-----------------------------STRIPED DATA-GRUD-----------------------------//
@@ -113,8 +121,22 @@ const columns = [
     headerName: 'Lien', 
     flex: 2,
     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
-      
   },
+  {
+    /* field: 'icons',
+    headerName: 'icons', */
+    flex: 1,
+    renderCell: (params) => (
+        <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%"}}>
+            <div >
+                <MdPublishedWithChanges onClick={() => handleClickDelete(params)} style={{color: "green", width: "30px", height: '30px', cursor: "pointer"}}/>
+            </div>
+            <div>
+                <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/> 
+            </div>
+        </div>
+    )
+  }
 //   { 
 //     field: '', 
 //     headerName: '', 
