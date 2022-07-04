@@ -13,7 +13,13 @@
         border-inline: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
         box-shadow: 0 0 8px #ccc;
-        border-radius: 0 0 5px 5px;
+        border-radius: 0 0 5px 5px;        
+    }
+    &__buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+        gap: 2rem;
     }
     & table {
         margin: 0 auto;

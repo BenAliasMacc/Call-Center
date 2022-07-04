@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import logo from "../assets/images/logoCallDirect.png";
 
 import axios from '../api/axios';
@@ -107,6 +107,9 @@ const Login = () => {
                     <button className='button-submit'>Connexion</button>
                 </form>
             </div>
+
+            <Link to="*">Mot de passe oublié ?</Link>
+
             { isLoading && 
                 <div className='containerLoader'>
                     <Loader />
