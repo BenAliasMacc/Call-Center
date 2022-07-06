@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import {
   DataGrid,
@@ -97,57 +97,58 @@ function CustomPagination() {
   );
 }
 
-//-----------------------------COLUMN SETTINGS-----------------------------//
-//------------------------------------------------------------------------//
-const columns = [
-  { 
-    field: 'id', 
-    headerName: 'Identifiant', 
-    flex: 1,
-    renderCell: (params) => (<Link to={`${params.row._id}`}>{params.value}</Link>)
-  },
-  { field: 'nom', headerName: 'Prénom', flex: 1 },
-  { field: 'prenom', headerName: 'Nom', flex: 1 },
-  { field: 'societe', headerName: 'Société', flex: 1 },
-  { field: 'telephone', headerName: 'Téléphone', flex: 1 },
-  { 
-    field: 'mail', 
-    headerName: 'Email', 
-    flex: 2,
-    renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`mailto:${params.value}`}>{params.value}</a>)
-  },
-  { 
-    field: 'site', 
-    headerName: 'Lien', 
-    flex: 2,
-    renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
-  },
-  {
-    /* field: 'icons',
-    headerName: 'icons', */
-    flex: 1,
-    renderCell: (params) => (
-        <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%"}}>
-            <div >
-                <MdPublishedWithChanges onClick={() => handleClickDelete(params)} style={{color: "green", width: "30px", height: '30px', cursor: "pointer"}}/>
-            </div>
-            <div>
-                <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/> 
-            </div>
-        </div>
-    )
-  }
-//   { 
-//     field: '', 
-//     headerName: '', 
-//     flex: 2,
-//     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
-//   }
-];
-//-----------------------------------------------------
 
 export default function QuickFilteringCustomizedGrid({ users }) {
   const [pageSize, setPageSize] = React.useState(10);
+
+  //-----------------------------COLUMN SETTINGS-----------------------------//
+//------------------------------------------------------------------------//
+const columns = [
+    { 
+      field: 'id', 
+      headerName: 'Identifiant', 
+      flex: 1,
+      renderCell: (params) => (<Link to={`${params.row._id}`}>{params.value}</Link>)
+    },
+    { field: 'nom', headerName: 'Prénom', flex: 1 },
+    { field: 'prenom', headerName: 'Nom', flex: 1 },
+    { field: 'societe', headerName: 'Société', flex: 1 },
+    { field: 'telephone', headerName: 'Téléphone', flex: 1 },
+    { 
+      field: 'mail', 
+      headerName: 'Email', 
+      flex: 2,
+      renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`mailto:${params.value}`}>{params.value}</a>)
+    },
+    { 
+      field: 'site', 
+      headerName: 'Lien', 
+      flex: 2,
+      renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
+    },
+    {
+      /* field: 'icons',
+      headerName: 'icons', */
+      flex: 1,
+      renderCell: (params) => (
+          <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%"}}>
+              <div>
+                  <MdPublishedWithChanges /* onClick={() => handleClickDelete(params)} */ style={{color: "green", width: "30px", height: '30px', cursor: "pointer"}}/>
+              </div>
+              <div>
+                  <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/> 
+              </div>
+          </div>
+      )
+    }
+  //   { 
+  //     field: '', 
+  //     headerName: '', 
+  //     flex: 2,
+  //     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
+  //   }
+  ];
+  //-----------------------------------------------------
 
   return (
     <>
