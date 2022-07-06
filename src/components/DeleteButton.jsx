@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-import bin from '../assets/icons/bin.svg'
+import { MdDeleteForever } from 'react-icons/md'; 
 
 const DeleteButton = ({ clientId }) => {
+  console.log(clientId);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const userId = "62b08ba33f8191dd23368c83";
@@ -16,7 +17,7 @@ const DeleteButton = ({ clientId }) => {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
-              Accept: "application/json, text/plain,"
+              Accept: "application/json, text/plain"
             },
             data: {
               userId: userId
@@ -26,6 +27,7 @@ const DeleteButton = ({ clientId }) => {
         );
         console.log(response.data);
         navigate("/");
+        window.location.reload();
       } catch (err) {
         console.log();
       }
@@ -36,7 +38,7 @@ const DeleteButton = ({ clientId }) => {
 
   return (
     <button className="delete-button" onClick={handleDeleteButton}>
-      <img src={bin} alt="supprimer" />
+      <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/>
     </button>
   );
 };

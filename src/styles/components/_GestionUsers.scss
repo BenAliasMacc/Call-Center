@@ -1,0 +1,39 @@
+.gestion-users {   
+    &--container {
+        display: flex;
+        flex-direction: column;
+        width: 420px;
+        height: 450px;
+        background-color: white;
+        padding: 1rem;
+        gap: 2.5rem;
+        box-shadow: 0 0 8px #ccc;
+        border-radius: 6px;
+        & h1 {
+            text-align: center;
+        }
+    }
+    &__form {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.gestion-users {
+    .group { 
+        position:relative; 
+        margin-bottom:45px; 
+    }
+    input,
+    textarea {
+        display:block;
+        width: 100%;
+        font-size: 22px;
+        padding:10px 10px 10px 5px;
+        border:none;
+        border-bottom:1px solid #757575;
+        &:focus {
+            outline:none;
+        }
+    }   
+}

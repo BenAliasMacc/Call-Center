@@ -1,9 +1,11 @@
 @import "./styles/variables"; 
+@import "./styles/mixins"; 
 @import "./styles/bases";
 
 @import "./styles/components/Home";
 @import "./styles/components/Login";
 @import "./styles/components/NewClients";
+@import "./styles/components/GestionUsers";
 @import "./styles/components/ClientsCard";
 @import "./styles/components/Loader.scss";
 @import "./styles/components/Header";
@@ -11,9 +13,4 @@
 @import "./styles/components/ContainerHeader";
 @import "./styles/components/BackHomeLink";
 @import "./styles/components/clientsDataGrid";
-
-
-
-
-
-
+@import "./styles/components/ClientsModal";

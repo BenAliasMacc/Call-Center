@@ -3,25 +3,13 @@ import Box from '@mui/material/Box';
 import {
   DataGrid,
   gridClasses,
-  GridToolbarQuickFilter,
-  gridPageCountSelector,
-  gridPageSelector,
-  useGridApiContext,
-  useGridSelector
+  GridToolbarQuickFilter
 } from '@mui/x-data-grid';
 import { alpha, styled } from '@mui/material/styles';
-import Pagination from '@mui/material/Pagination';
 import { Link } from 'react-router-dom';
 import addButton from '../assets/icons/add-button.svg';
-
-/* icons */
-import { MdDeleteForever } from 'react-icons/md'; 
-import { MdPublishedWithChanges } from 'react-icons/md';
-
-function handleClickDelete(datas) {
-    console.log(datas)
-}
-
+import DeleteButton from './DeleteButton';
+import OpenModal from './OpenModal';
 
 //-----------------------------STRIPED DATA-GRUD-----------------------------//
 //--------------------------------------------------------------------------//
@@ -79,24 +67,6 @@ function QuickSearchToolbar() {
   );
 }
 
-//-----------------------------FOOTER PAGINATION-----------------------------//
-//--------------------------------------------------------------------------//
-
-function CustomPagination() {
-  const apiRef = useGridApiContext();
-  const page = useGridSelector(apiRef, gridPageSelector);
-  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-
-  return (
-    <Pagination
-      color="primary"
-      count={pageCount}
-      page={page + 1}
-      onChange={(event, value) => apiRef.current.setPage(value - 1)}
-    />
-  );
-}
-
 //-----------------------------COLUMN SETTINGS-----------------------------//
 //------------------------------------------------------------------------//
 const columns = [
@@ -123,31 +93,27 @@ const columns = [
     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
   },
   {
-    /* field: 'icons',
-    headerName: 'icons', */
+    // field: 'id',
+    headerName: 'icons',
     flex: 1,
     renderCell: (params) => (
         <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%"}}>
-            <div >
-                <MdPublishedWithChanges onClick={() => handleClickDelete(params)} style={{color: "green", width: "30px", height: '30px', cursor: "pointer"}}/>
+            <div>
+              <OpenModal clientId={params.row._id} />              
             </div>
             <div>
-                <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/> 
+              <DeleteButton clientId={params.row._id} />
             </div>
         </div>
     )
   }
-//   { 
-//     field: '', 
-//     headerName: '', 
-//     flex: 2,
-//     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
-//   }
 ];
 //-----------------------------------------------------
 
-export default function QuickFilteringCustomizedGrid({ users }) {
+export default function QuickFilteringCustomizedGrid({ users, setClientId }) {
   const [pageSize, setPageSize] = React.useState(10);
+
+  
 
   return (
     <>
@@ -159,7 +125,6 @@ export default function QuickFilteringCustomizedGrid({ users }) {
             }
             sx={{ color: 'black', borderColor: '#ccc' }}
             rows={users}
-            // rows={rows}
             columns={columns}
             disableColumnFilter
             disableColumnSelector
@@ -167,10 +132,7 @@ export default function QuickFilteringCustomizedGrid({ users }) {
             pageSize={pageSize}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             rowsPerPageOptions={[10, 20, 50, 100]}
-            components={{ 
-              Toolbar: QuickSearchToolbar, 
-              // Pagination: CustomPagination
-            }}
+            components={{ Toolbar: QuickSearchToolbar}} 
           />
         </Box>
       }
