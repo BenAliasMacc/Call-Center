@@ -2,14 +2,18 @@ import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import DataGrid from "../components/clientsDataGrid"
+import ClientsModal from "../components/ClientsModal";
+import useAuth from '../hooks/useAuth';
 
 const Home = () => {
 
-    const [users, setUsers] = useState();
-    const token = localStorage.getItem("token");    
+    const { auth } = useAuth();
+    const clientId = auth?.clientId;
+    const [clients, setClients] = useState();
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
-        const getUsers = async () => {
+        const getClients = async () => {
             try {
                 const response = await axios.get('/clients', 
                     {
@@ -17,13 +21,13 @@ const Home = () => {
                         // withCredentials: true
                     }
                 )
-                setUsers(response.data)
+                setClients(response.data)
             } catch (err) {
                 console.log(err);
             }
         }
 
-        getUsers();
+        getClients();
     }, [])
 
 
@@ -33,9 +37,14 @@ const Home = () => {
 
             <section className="home">
                 <div className="home--container">
-                    <DataGrid users={users} />
+                    <DataGrid clients={clients} />
                 </div>
             </section>
+
+            {clientId !== undefined && (
+                // <ClientsModal client={client} setClient={setClient} clientId={clientId} token={token} />
+                <ClientsModal clientId={clientId} />
+            )}
         </>
     )
 }

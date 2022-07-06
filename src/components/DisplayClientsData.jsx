@@ -2,9 +2,10 @@ import { useState } from "react";
 import axios from "../api/axios";
 import ContainerHeader from "../components/ContainerHeader";
 
-const DisplayClientsData = ({ client, setClient, clientId, token }) => {
+const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => {
   
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(booleen);
+  const [isModal] = useState(booleen)
   const [changeToSave, setChangeToSave] = useState(false);
 
   const {
@@ -174,6 +175,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token }) => {
             clientId={clientId}
             editMode={editMode}
             setEditMode={setEditMode}
+            isModal={booleen}
           />
           <form
             onSubmit={(e) => handleSubmit(e)}
@@ -259,9 +261,11 @@ const DisplayClientsData = ({ client, setClient, clientId, token }) => {
 
             {changeToSave && (
               <div className="clients-card__buttons">
-                <button className="clients-card__buttons__cancel">
-                  Annuler
-                </button>
+                {!isModal && 
+                  <button className="clients-card__buttons__cancel">
+                    Annuler
+                  </button>                
+                }
                 <button className="clients-card__buttons__submit">
                   Valider
                 </button>

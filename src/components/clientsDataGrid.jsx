@@ -93,7 +93,7 @@ const columns = [
     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
   },
   {
-    // field: 'id',
+    field: 'activite',
     headerName: 'icons',
     flex: 1,
     renderCell: (params) => (
@@ -110,21 +110,21 @@ const columns = [
 ];
 //-----------------------------------------------------
 
-export default function QuickFilteringCustomizedGrid({ users, setClientId }) {
+export default function QuickFilteringCustomizedGrid({ clients, setClientId }) {
   const [pageSize, setPageSize] = React.useState(10);
 
   
 
   return (
     <>
-      {users !== undefined &&
+      {clients !== undefined &&
         <Box sx={{ height: "100%", width: "100%" }}>
           <StripedDataGrid
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
             }
             sx={{ color: 'black', borderColor: '#ccc' }}
-            rows={users}
+            rows={clients}
             columns={columns}
             disableColumnFilter
             disableColumnSelector

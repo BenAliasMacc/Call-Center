@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "../api/axios";
 import BackHomeLink from "../components/BackHomeLink";
@@ -12,12 +12,14 @@ const GestionUsers = () => {
   } = useForm();
 
   const token = localStorage.getItem("token");
+  const [users, setUsers] = useState()
 
-  const onSubmit = (data) => {
-    const createNewClients = async () => {
+  const onSubmit = data => {
+
+    const createNewUsers = async () => {
       try {
         const response = await axios.post(
-          `/clients/createClient`,
+          `/users/signup`,
           JSON.stringify(data),
           {
             headers: {
@@ -34,8 +36,27 @@ const GestionUsers = () => {
       }
     };
 
-    createNewClients();
+    createNewUsers();
   };
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await axios.get(`/users`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json, text/plain"
+          }
+          // withCredentials: true
+        });
+        setUsers(response.data);
+        console.log(response);
+      } catch (err) {}
+    };
+
+    getUsers();
+  }, []);
 
   return (
     <>
@@ -47,7 +68,7 @@ const GestionUsers = () => {
             className="gestion-users__form"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <label htmlFor="prenom">
+            {/* <label htmlFor="prenom">
               Prénom <span className="mandatory">*</span>
             </label>
             <input
@@ -65,15 +86,29 @@ const GestionUsers = () => {
               <p className="error-message">
                 Le nombre de caractéres autorisé est de maximum 20
               </p>
-            )}
+            )} */}
 
-            <label htmlFor="nom">
-              Nom <span className="mandatory">*</span>
+            <label htmlFor="email">
+              mail <span className="mandatory">*</span>
             </label>
             <input
-              type="text"
-              id="nom"
-              {...register("nom", {
+              type="email"
+              id="mail"
+              {...register("email", {
+                required: true
+              })}
+            />
+            {errors?.mail?.type === "required" && (
+              <p className="error-message">Ce champ doit être complété</p>
+            )}
+            
+            <label htmlFor="password">
+              Mot de passe <span className="mandatory">*</span>
+            </label>
+            <input
+              type="password"
+              id="password"
+              {...register("password", {
                 required: true,
                 maxLength: 20
               })}
@@ -85,30 +120,15 @@ const GestionUsers = () => {
               <p className="error-message">
                 Le nombre de caractéres autorisé est de maximum 20
               </p>
-            )}
+            )}        
 
-            <label htmlFor="mail">
-              mail <span className="mandatory">*</span>
-            </label>
-            <input
-              type="email"
-              id="mail"
-              {...register("mail", {
-                required: true
-              })}
-            />
-            {errors?.mail?.type === "required" && (
-              <p className="error-message">Ce champ doit être complété</p>
-            )}
-
-            <label htmlFor="role">
+            <label htmlFor="groupe">
               Rôle <span className="mandatory">*</span>
             </label>
             <select
               type="radio"
-              id="role"
-              options={["female", "male", "other"]}
-              {...register("role", {
+              id="groupe"
+              {...register("groupe", {
                 required: true
               })}
             >

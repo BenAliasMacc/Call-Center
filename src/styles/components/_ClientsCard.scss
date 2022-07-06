@@ -20,6 +20,12 @@
         justify-content: center;
         margin-top: 2rem;
         gap: 2rem;
+        &__submit {
+            background-color: $tertiaryColor;
+        }
+        &__cancel {
+            color: $tertiaryColor;
+        }
     }
     & table {
         margin: 0 auto;

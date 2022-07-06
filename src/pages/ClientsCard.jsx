@@ -34,7 +34,7 @@ const ClientsCard = () => {
 
       {client !== undefined && (
         <section className="clients-card">
-          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} />
+          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={false} />
         </section>
       )}
     </>
