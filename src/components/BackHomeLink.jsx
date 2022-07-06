@@ -5,7 +5,7 @@ const BackHomeLink = () => {
   return (
     <Link to="/" className="back-home-link">
       <img src={back} alt="retour à l'accueil" />
-      <p>Acceuil</p>
+      <p>Accueil</p>
     </Link>
   );
 };

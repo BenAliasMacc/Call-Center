@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import axios from "../api/axios";
+import BackHomeLink from "../components/BackHomeLink";
 import Header from "../components/Header";
+import Inscription from "../components/Inscription";
+import ListUsers from '../components/ListUsers';
 
-const gestionUsers = () => {
+const GestionUsers = () => {
+
+    const [isCreated, setIsCreated] = useState(false);
+
     return (
         <>
             <Header />
-            <div>gestionUsers</div>
+            <div style={{display: "flex", justifyContent: "center",width: "100%", height: "100%"}}>
+                <ListUsers />
+                <div onClick={() => setIsCreated(true)} style={{width: "50px", height: "50px", borderRadius: "50%", backgroundColor: "#F2A965", fontSize: "4rem", display: "flex", justifyContent: "center", alignItems: 'center', color: 'white', cursor: 'pointer'}}>+</div>     
+                {
+                    isCreated && <Inscription />
+                }
+            </div>
         </>
-    )
-}
+    );
+};
 
-export default gestionUsers;
+export default GestionUsers;

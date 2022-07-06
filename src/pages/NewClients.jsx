@@ -40,7 +40,7 @@ const NewClients = () => {
 
     <>
       <Header />
-
+      
       <section className="new-clients">
 
         <div className="new-clients--container">

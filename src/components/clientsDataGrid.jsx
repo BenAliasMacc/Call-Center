@@ -3,25 +3,13 @@ import Box from '@mui/material/Box';
 import {
   DataGrid,
   gridClasses,
-  GridToolbarQuickFilter,
-  gridPageCountSelector,
-  gridPageSelector,
-  useGridApiContext,
-  useGridSelector
+  GridToolbarQuickFilter
 } from '@mui/x-data-grid';
 import { alpha, styled } from '@mui/material/styles';
-import Pagination from '@mui/material/Pagination';
 import { Link } from 'react-router-dom';
 import addButton from '../assets/icons/add-button.svg';
-
-/* icons */
-import { MdDeleteForever } from 'react-icons/md'; 
-import { MdPublishedWithChanges } from 'react-icons/md';
-
-function handleClickDelete(datas) {
-    console.log(datas)
-}
-
+import DeleteButton from './DeleteButton';
+import OpenModal from './OpenModal';
 
 //-----------------------------STRIPED DATA-GRUD-----------------------------//
 //--------------------------------------------------------------------------//
@@ -79,88 +67,62 @@ function QuickSearchToolbar() {
   );
 }
 
-//-----------------------------FOOTER PAGINATION-----------------------------//
-//--------------------------------------------------------------------------//
-
-function CustomPagination() {
-  const apiRef = useGridApiContext();
-  const page = useGridSelector(apiRef, gridPageSelector);
-  const pageCount = useGridSelector(apiRef, gridPageCountSelector);
-
-  return (
-    <Pagination
-      color="primary"
-      count={pageCount}
-      page={page + 1}
-      onChange={(event, value) => apiRef.current.setPage(value - 1)}
-    />
-  );
-}
-
-
-export default function QuickFilteringCustomizedGrid({ users }) {
-  const [pageSize, setPageSize] = React.useState(10);
-
-  //-----------------------------COLUMN SETTINGS-----------------------------//
+//-----------------------------COLUMN SETTINGS-----------------------------//
 //------------------------------------------------------------------------//
 const columns = [
-    { 
-      field: 'id', 
-      headerName: 'Identifiant', 
-      flex: 1,
-      renderCell: (params) => (<Link to={`${params.row._id}`}>{params.value}</Link>)
-    },
-    { field: 'nom', headerName: 'Prénom', flex: 1 },
-    { field: 'prenom', headerName: 'Nom', flex: 1 },
-    { field: 'societe', headerName: 'Société', flex: 1 },
-    { field: 'telephone', headerName: 'Téléphone', flex: 1 },
-    { 
-      field: 'mail', 
-      headerName: 'Email', 
-      flex: 2,
-      renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`mailto:${params.value}`}>{params.value}</a>)
-    },
-    { 
-      field: 'site', 
-      headerName: 'Lien', 
-      flex: 2,
-      renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
-    },
-    {
-      /* field: 'icons',
-      headerName: 'icons', */
-      flex: 1,
-      renderCell: (params) => (
-          <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%"}}>
-              <div>
-                  <MdPublishedWithChanges /* onClick={() => handleClickDelete(params)} */ style={{color: "green", width: "30px", height: '30px', cursor: "pointer"}}/>
-              </div>
-              <div>
-                  <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/> 
-              </div>
-          </div>
-      )
-    }
-  //   { 
-  //     field: '', 
-  //     headerName: '', 
-  //     flex: 2,
-  //     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
-  //   }
-  ];
-  //-----------------------------------------------------
+  { 
+    field: 'id', 
+    headerName: 'Identifiant', 
+    flex: 1,
+    renderCell: (params) => (<Link to={`${params.row._id}`}>{params.value}</Link>)
+  },
+  { field: 'nom', headerName: 'Prénom', flex: 1 },
+  { field: 'prenom', headerName: 'Nom', flex: 1 },
+  { field: 'societe', headerName: 'Société', flex: 1 },
+  { field: 'telephone', headerName: 'Téléphone', flex: 1 },
+  { 
+    field: 'mail', 
+    headerName: 'Email', 
+    flex: 2,
+    renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`mailto:${params.value}`}>{params.value}</a>)
+  },
+  { 
+    field: 'site', 
+    headerName: 'Lien', 
+    flex: 2,
+    renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
+  },
+  {
+    field: 'activite',
+    headerName: 'icons',
+    flex: 1,
+    renderCell: (params) => (
+        <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%"}}>
+            <div>
+              <OpenModal clientId={params.row._id} />              
+            </div>
+            <div>
+              <DeleteButton clientId={params.row._id} />
+            </div>
+        </div>
+    )
+  }
+];
+//-----------------------------------------------------
+
+export default function QuickFilteringCustomizedGrid({ clients, setClientId }) {
+  const [pageSize, setPageSize] = React.useState(10);
 
   return (
     <>
-      {users !== undefined &&
+      {clients !== undefined &&
         <Box sx={{ height: "100%", width: "100%" }}>
           <StripedDataGrid
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
             }
             sx={{ color: 'black', borderColor: '#ccc' }}
-            rows={users}
-            // rows={rows}
+            rows={clients}
             columns={columns}
             disableColumnFilter
             disableColumnSelector
@@ -168,10 +130,7 @@ const columns = [
             pageSize={pageSize}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             rowsPerPageOptions={[10, 20, 50, 100]}
-            components={{ 
-              Toolbar: QuickSearchToolbar, 
-              // Pagination: CustomPagination
-            }}
+            components={{ Toolbar: QuickSearchToolbar}} 
           />
         </Box>
       }

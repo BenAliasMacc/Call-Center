@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logo from "../assets/images/logoCallDirect.png";
 
 import axios from '../api/axios';
@@ -43,7 +43,6 @@ const Login = () => {
                 }
             );
         
-            console.log(JSON.stringify(response.data.token));
             // console.log(JSON.stringify(response));
             localStorage.setItem('token', response.data.token)
             const accessToken = response?.data?.token;
@@ -107,8 +106,6 @@ const Login = () => {
                     <button className='button-submit'>Connexion</button>
                 </form>
             </div>
-
-            <Link to="*">Mot de passe oublié ?</Link>
 
             { isLoading && 
                 <div className='containerLoader'>
