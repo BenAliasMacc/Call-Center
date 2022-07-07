@@ -1,13 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from "react-hook-form";
-import BackHomeLink from "../components/BackHomeLink";
 import axios from "../api/axios";
 import Loader from '../components/Loader';
+import '../styles/modalAnimation.css';
 
-function Inscription() {
+function Inscription(props) {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const token = localStorage.getItem("token");
     const [isLoading, setIsLoading] = useState(false);
+    const animation = useRef();
+
+    function closeModale() {
+
+        animation.current.style.animation = "slideBack .5s ease-in-out";
+        setTimeout(() => {
+            props.setIsCreated(!props.isCreated);
+        }, 500);
+    }
 
     const onSubmit = data => {
 
@@ -38,10 +47,10 @@ function Inscription() {
 
 
     return (
-        <section className="gestion-users" style={{width: "50%", padding: "20px"}}>
-            <div className="gestion-users--container">
-                <BackHomeLink />
-                <form className="gestion-users__form" onSubmit={handleSubmit(onSubmit)} >
+        <section className="gestion-users" style={{width: "50%", padding: "20px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div className="gestion-users--container modal" ref={animation} style={{position: "relative"}}>
+                <div onClick={closeModale} style={{position: "absolute", top: "20px", right: "10px", width: "30px", height: "30px", color: "#F2A965", fontWeight: "bold", fontSize: "1.5rem", cursor: 'pointer'}}>X</div>
+                <form className="gestion-users__form" onSubmit={handleSubmit(onSubmit)} style={{border: "1px solid #0dbad8", padding: '10px'}}>
                     <label htmlFor="email">mail <span className="mandatory">*</span></label>
                     <input type="email" id="mail" {...register("email", { required: true })}/>
                     {
@@ -60,7 +69,14 @@ function Inscription() {
                         <p className="error-message">
                             Le nombre de caractéres autorisé est de maximum 20
                         </p>
-                    )}        
+                    )}      
+
+                    <label htmlFor="nom">Nom <span className="mandatory">*</span></label>
+                    <input type="text" id="nom" {...register("nom", { required: true })}/>
+                    {
+                        errors?.nom?.type === "required" && (
+                        <p className="error-message">Ce champ doit être complété</p>)
+                    }  
 
                     <label htmlFor="groupe">Rôle <span className="mandatory">*</span></label>
                     <select type="radio" id="groupe" {...register("groupe", {required: true})}>
