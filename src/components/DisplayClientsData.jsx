@@ -1,12 +1,19 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import axios from "../api/axios";
 import ContainerHeader from "../components/ContainerHeader";
+import Loader from '../components/Loader';
+import useAuth from "../hooks/useAuth";
 
-const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => {
+const DisplayClientsData = ({ client, clientId, token, booleen }) => {
+  
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    mode: 'onChange'
+  });
   
   const [editMode, setEditMode] = useState(booleen);
-  const [isModal] = useState(booleen)
-  const [changeToSave, setChangeToSave] = useState(false);
+  const [isModal] = useState(booleen);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     nom,
@@ -24,12 +31,6 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
     langue
   } = client !== undefined && client;
 
-  const changeValues = (e) => {
-    console.log(client);
-    setChangeToSave(true);
-    setClient({ ...client, [e.target.id]: e.target.value });
-  };
-
   const displayId = !editMode ? (
     id
   ) : (
@@ -38,7 +39,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
         type="number"
         id="id"
         defaultValue={id}
-        onChange={(e) => changeValues(e)}
+        {...register("id")}
       />
     </>
   );
@@ -50,7 +51,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
         type="text"
         id="societe"
         defaultValue={societe}
-        onChange={(e) => changeValues(e)}
+        {...register("societe")}
       />
     </>
   );
@@ -62,7 +63,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
         type="text"
         id="langue"
         defaultValue={langue}
-        onChange={(e) => changeValues(e)}
+        {...register("langue")}
       />
     </>
   );
@@ -74,7 +75,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
         type="text"
         id="activite"
         defaultValue={activite}
-        onChange={(e) => changeValues(e)}
+        {...register("activite")}
       />
     </>
   );
@@ -86,7 +87,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
         type="text"
         id="telephone"
         defaultValue={telephone}
-        onChange={(e) => changeValues(e)}
+        {...register("telephone")}
       />
     </>
   );
@@ -98,7 +99,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
         type="text"
         id="site"
         defaultValue={site}
-        onChange={(e) => changeValues(e)}
+        {...register("site")}
       />
     </>
   );
@@ -110,7 +111,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
         type="text"
         id="mail"
         defaultValue={mail}
-        onChange={(e) => changeValues(e)}
+        {...register("mail")}
       />
     </>
   );
@@ -122,7 +123,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
         type="text"
         id="crm"
         defaultValue={crm}
-        onChange={(e) => changeValues(e)}
+        {...register("crm")}
       />
     </>
   );
@@ -134,19 +135,26 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
         type="text"
         id="adresse"
         defaultValue={adresse}
-        onChange={(e) => changeValues(e)}
+        {...register("adresse")}
       />
     </>
   );
 
-  const handleSubmit = (clients, e) => {
-    e.preventDefault();
-    const editClientData = async (e) => {
-      e.preventDefault();
+  const handleCancelButton = (e) => {
+    e.preventDefault();    
+    setEditMode(!editMode);    
+  };
+
+  const onSubmit = data => {
+
+    setIsLoading(true);
+
+    const editClientData = async () => {
+
       try {
         const response = await axios.put(
           `/clients/modifyClient/${clientId}`,
-          JSON.stringify(clients),
+          JSON.stringify(data),
           {
             headers: {
               "Content-Type": "application/json",
@@ -155,8 +163,9 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
             }
             // withCredentials: true
           }
-        );
-        console.log(response.data);
+        );        
+        window.location.reload();
+        setIsLoading(false);
       } catch (err) {
         console.log();
       }
@@ -178,7 +187,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
             isModal={booleen}
           />
           <form
-            onSubmit={(e) => handleSubmit(e)}
+            onSubmit={handleSubmit(onSubmit)}
             className="clients-card--container"
           >
             <table>
@@ -259,19 +268,27 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen }) => 
               </tbody>
             </table>
 
-            {changeToSave && (
+            {editMode && (
               <div className="clients-card__buttons">
-                {!isModal && 
-                  <button className="clients-card__buttons__cancel">
-                    Annuler
-                  </button>                
+                {!isModal &&
+                    <button onClick={handleCancelButton} className="clients-card__buttons__cancel">
+                      Annuler
+                    </button>             
                 }
+                
                 <button className="clients-card__buttons__submit">
                   Valider
                 </button>
               </div>
             )}
           </form>
+
+          { isLoading && 
+            <div className='containerLoader'>
+              <Loader />
+            </div>
+          }
+
         </section>
       )}
     </>

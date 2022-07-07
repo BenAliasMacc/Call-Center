@@ -1,31 +1,42 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import BackHomeLink from "../components/BackHomeLink";
 import Header from "../components/Header";
+import Loader from '../components/Loader';
 
 const NewClients = () => {
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/"
+
   const { register, handleSubmit, formState: { errors } } = useForm();
   const token = localStorage.getItem('token');
+  const [isLoading, setIsLoading] = useState(false);
   
   const onSubmit = data => {
+
+    setIsLoading(true);
     
     const createNewClients = async() => {
 
           try {
               const response = await axios.post(`/clients/createClient`,
-              JSON.stringify(data),
-              {
-                headers: 
-                  {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/json, text/plain,'
-                  },
-                  // withCredentials: true
-              }
+                JSON.stringify(data),
+                {
+                  headers: 
+                    {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`,
+                      'Accept': 'application/json, text/plain,'
+                    },
+                    // withCredentials: true
+                }
               );
-              console.log(response.data);
+              setIsLoading(false);
+              navigate(from, { replace: true });
           } catch (err) {
             console.log();
           }
@@ -40,7 +51,7 @@ const NewClients = () => {
 
     <>
       <Header />
-
+      
       <section className="new-clients">
 
         <div className="new-clients--container">
@@ -175,6 +186,13 @@ const NewClients = () => {
             <button className='button-submit'>Valider</button>
           </form>
         </div>
+
+        { isLoading && 
+          <div className='containerLoader'>
+            <Loader />
+          </div>
+        }
+
       </section>   
     </>
 

@@ -1,0 +1,7 @@
+.edit-clients-modal {
+    @include modalBackground;
+    & > .clients-card {
+        width: 90%;
+        height: auto;
+    }
+}

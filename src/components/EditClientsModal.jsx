@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import axios from '../api/axios';
-import DisplayClientsData from './DisplayClientsData'
+import DisplayClientsData from './DisplayClientsData';
+import Loader from './Loader';
 
-const ClientsModal = ({ clientId }) => {
+const EditClientsModal = ({ clientId }) => {
 
     const token = localStorage.getItem("token");
     const [client, setClient] = useState();
-
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+
+        setIsLoading(true);
+
         const getClients = async () => {
           try {
             const response = await axios.get(`/clients/getClient/${clientId}`, {
@@ -18,8 +22,9 @@ const ClientsModal = ({ clientId }) => {
                 Accept: "application/json, text/plain,"
               }
               // withCredentials: true
-            });
+            });            
             setClient(response.data);
+            setIsLoading(false);
           } catch (err) {}
         };
     
@@ -27,10 +32,17 @@ const ClientsModal = ({ clientId }) => {
       }, []);
 
     return (
-        <div className='clients-modal'>
-            <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={true} />
+        <div className='edit-clients-modal'>
+          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={true} />
+
+          { isLoading && 
+            <div className='containerLoader'>
+              <Loader />
+            </div>
+          }
+          
         </div>
     )
 }
 
-export default ClientsModal
+export default EditClientsModal

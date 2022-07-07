@@ -3,10 +3,10 @@ import useAuth from '../hooks/useAuth';
 
 const OpenModal = ({ clientId }) => {
 
-  const { auth, setAuth } = useAuth();
+  const { setEditClientsModal, auth, setAuth } = useAuth();
 
   const handleModal = () => {
-    console.log(clientId);
+    setEditClientsModal(true)
     setAuth({...auth, clientId})
   }
     

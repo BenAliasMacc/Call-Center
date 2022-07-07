@@ -9,15 +9,11 @@ const EditButton = ({ editMode, setEditMode }) => {
   
     return (
       <>
-        {editMode ? (
-          <button onClick={(e) => handleEditButton(e)}>
-            Fermer
-          </button>
-        ) : (
+        {!editMode &&
           <button onClick={(e) => handleEditButton(e)}>
             <MdPublishedWithChanges style={{color: "green", width: "30px", height: '30px', cursor: "pointer"}}/>
           </button>
-        )}
+        }
       </>
     );
   };

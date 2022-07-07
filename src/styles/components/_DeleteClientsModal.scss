@@ -1,0 +1,16 @@
+.delete-clients-modal {
+    @include modalBackground;
+    &--container {
+        width: 400px;
+        height: 200px;
+        background-color: white;
+        padding: 1rem;
+        border-inline: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        box-shadow: 0 0 8px #ccc;
+        border-radius: 5px; 
+        & button {
+            background-color: red;
+        }
+    }
+}

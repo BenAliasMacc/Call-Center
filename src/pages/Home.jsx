@@ -2,15 +2,18 @@ import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import axios from "../api/axios";
 import DataGrid from "../components/clientsDataGrid"
-import ClientsModal from "../components/ClientsModal";
+import EditClientsModal from "../components/EditClientsModal";
 import useAuth from '../hooks/useAuth';
+import DeleteClientsModal from "../components/DeleteClientsModal";
 
 const Home = () => {
 
-    const { auth } = useAuth();
+    const { auth, editClientsModal, deleteClientsModal } = useAuth();
+    console.log(editClientsModal);
     const clientId = auth?.clientId;
-    const [clients, setClients] = useState();
     const token = localStorage.getItem("token");
+    const [clients, setClients] = useState();   
+      
 
     useEffect(() => {
         const getClients = async () => {
@@ -41,9 +44,12 @@ const Home = () => {
                 </div>
             </section>
 
-            {clientId !== undefined && (
-                // <ClientsModal client={client} setClient={setClient} clientId={clientId} token={token} />
-                <ClientsModal clientId={clientId} />
+            {deleteClientsModal === true && 
+                <DeleteClientsModal clientId={clientId} />
+            }
+
+            {editClientsModal === true && (
+                <EditClientsModal clientId={clientId} />
             )}
         </>
     )

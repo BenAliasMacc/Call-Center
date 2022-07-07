@@ -43,7 +43,6 @@ const Login = () => {
                 }
             );
         
-            // console.log(JSON.stringify(response));
             localStorage.setItem('token', response.data.token)
             const accessToken = response?.data?.token;
             const roles = [response?.data?.userId];
