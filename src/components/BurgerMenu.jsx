@@ -14,7 +14,7 @@ const BurgerMenu = ({ logout }) => {
 
     return (
 
-        <nav className={`burger-menu ${diplayNav}`}>
+        <nav className={`burger-menu ${diplayNav}`} style={{zIndex: "100"}}>
 
             <ul className='header__navbar__list'>
                 <li className='header__navbar__list__link'><Link to="/"><p>Accueil</p></Link></li>

@@ -18,7 +18,7 @@ const Header = () => {
     }
 
     return (
-        <header className="header">
+        <header className="header" style={{position: "fixed", marginBottom: "40px", zIndex: "100"}}>
             <div className="header__logo"><Link to="/"><img src={logo} alt="retour à l'acceuil" /></Link></div>
             <div className="header__nav">
                 <Burgermenu logout={logout}/>
