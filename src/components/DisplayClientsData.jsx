@@ -6,6 +6,7 @@ import { FaInternetExplorer } from 'react-icons/fa';
 import ContainerHeader from "../components/ContainerHeader";
 import Loader from '../components/Loader';
 import useAuth from "../hooks/useAuth";
+import '../styles/styles.css';
 
 const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   
@@ -178,52 +179,52 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
 
   return (
     <>
-        <div style={{width: "100vw", padding: "20px 60px", marginBottom: "40px", overflowY: "scroll"}}>
-            <div style={{display: 'flex', justifyContent: "center", alignItems: "center", gap: "20px", width: "100%", height: "140px"}}>
-                <div style={{display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "50%", width: "100px", height: "100px", border: "4px solid #F2A965", color: "rgb(13, 186, 216)", cursor: "pointer"}}>
-                    <AiOutlineMessage style={{width: "80px", height: "80px",}}/>
+        <div className="globalContainer width100">
+            <div className="flex containerIcons width100" >
+                <div className="flex containerIcon" >
+                    <AiOutlineMessage className="icon" />
                 </div>
-                <div style={{display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "50%", width: "100px", height: "100px", border: "4px solid #F2A965", color: "rgb(13, 186, 216)", cursor: "pointer"}}>
-                    <FaInternetExplorer style={{width: "80px", height: "80px",}}/>
+                <div className="flex containerIcon" >
+                    <FaInternetExplorer className="icon" />
                 </div>
             </div>
-            <header style={{display: "flex", width: "100%", height: "120px", backgroundColor: "rgba(13, 186, 216, 0.2)", boxShadow: "0 0 8px #ccc", borderRadius: "10px 10px 0 0"/* , border: "2px solid #F2A965" */}}>
-                <div style={{display: 'flex', justifyContent: "center", alignItems: 'center', width: "50%", padding: "15px", }}>
-                <ul style={{width: "50%"}}>
+            <header className='headerClient'>
+                <div className="flex headerSide" >
+                    <ul className="width50">
                         <li><b>Id :</b> {id}</li>
-                        <li style={{marginTop: "5px"}}><b>Nom complet :</b> {nom}{prenom}</li>
-                        <li style={{marginTop: "5px"}}><b>Adresse : </b>{adresse}</li>
+                        <li className="mt5"><b>Nom complet :</b> {nom}{prenom}</li>
+                        <li className="mt5"><b>Adresse : </b>{adresse}</li>
                     </ul>
                     <ul>
                         <li><b>Téléphone:</b> {telephone}</li>
-                        <li style={{marginTop: "5px"}}><b>@ : </b>{mail}</li>
+                        <li className="mt5"><b>@ : </b>{mail}</li>
                     </ul>
                 </div>
-                <div style={{display: 'flex', justifyContent: "center", alignItems: 'center', width: "50%", padding: "15px"}}>
-                    <ul style={{width: "50%"}}>
+                <div className="flex headerSide">
+                    <ul className="width50">
                         <li><b>Société :</b> {societe}</li>
-                        <li style={{marginTop: "5px"}}><b>Site : </b>{site}</li>
+                        <li className="mt5"><b>Site : </b>{site}</li>
                     </ul>
                     <ul>
                         <li><b>Activité :</b> {activite}</li>
-                        <li style={{marginTop: "5px"}}><b>Langue : </b>{langue}</li>
+                        <li className="mt5"><b>Langue : </b>{langue}</li>
                     </ul>
                 </div>
             </header>
-            <div style={{display: 'flex', width: "100%", minHeight: "450px", overFlow: "scroll"}}>
-                <div style={{position: "relative", width: "50%", borderRadius: "0 0 0 10px", backgroundColor: "rgba(242, 169, 101, 0.2)", boxShadow: "0 0 8px #ccc", padding: "20px 40px", textAlign: 'center',  overflowY: "scroll"}}> 
+            <div className="containerNotesConsignes ">
+                <div className="containerColonne width50"> 
                     <u>NOTES :</u> 
-                    <div style={{width: "100%", padding: "10px", marginTop: "10px", height: "80%", border: "1px solid black"}}>
+                    <div className="textZone width100">
                         TEXT
                     </div>
-                    <div style={{position: "absolute", bottom: "20px", display: 'flex', width: "90%"}}>
+                    <div className="containerInput">
                         <input type="text" />
-                        <button style={{borderRadius: "5px", backgroundColor: "rgb(13, 186, 216)", textDecoration: "none"}}>Envoyer</button> 
+                        <button className='btn'>Envoyer</button> 
                     </div>
                 </div>
-                <div style={{width: "50%", borderRadius: "0 0 0 10px", backgroundColor: "rgba(242, 169, 101, 0.2)", boxShadow: "0 0 8px #ccc", padding: "20px 40px", textAlign: 'center', textDecoration: "underline",  overflowY: "scroll"}}> 
+                <div className="containerColonne width50"> 
                     <u>CONSIGNES :</u> 
-                    <div style={{width: "100%", padding: "10px", marginTop: "10px", height: "80%", border: "1px solid black"}}>
+                    <div className="textZone width100">
                         TEXT
                     </div>
                 </div>
