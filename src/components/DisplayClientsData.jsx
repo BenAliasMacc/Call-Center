@@ -211,9 +211,10 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
             }
             // withCredentials: true
           }
-        );        
-        window.location.reload();
-        setEditMode(false)        
+        );
+        setEditClientsModal(false);        
+        setRefresh(!refresh);
+        setEditMode(false);      
         setIsLoading(false);
       } catch (err) {
         console.log();
@@ -225,7 +226,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
 
   return (
     <section className="display-clients-data">        
-        <div className="globalContainer width100" onSubmit={handleSubmit(onSubmit)}>           
+        {client !== undefined && <div className="globalContainer width100" onSubmit={handleSubmit(onSubmit)}>           
           
             <div className="flex containerIcons width100" >
                 <div className="flex containerIcon" >
@@ -242,14 +243,14 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
 
             <header className='headerClient'>
               <form>
-                {/* {isModal ? 
+                {isModal ? 
                   <button className="headerClient__close-button" onClick={handleCloseModal} style={{fontSize: "1.5rem"}}>X</button> 
-                  : */}
+                  :
                   <div className="display-clients-data__buttons-top">
                     <EditButton editMode={editMode} setEditMode={setEditMode} />
                     <DeleteButton clientId={clientId} />
                   </div>    
-                {/* } */}
+                }
                 <div className="headerClient__input-container" style={{}}>
                   <div className="flex headerSide" >
                       <ul className="width50">
@@ -290,8 +291,9 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
               </form>
             </header>
 
-            <NotesEtConsignes clientId={clientId} token={token} client={client} />        
-        </div>
+            {!isModal && <NotesEtConsignes clientId={clientId} token={token} client={client} />}    
+
+        </div>}
 
         {deleteClientsModal === true && 
           <DeleteClientsModal clientId={clientId} />

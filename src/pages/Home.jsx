@@ -12,6 +12,7 @@ const Home = () => {
     const clientId = auth?.clientId;
     const token = localStorage.getItem("token");
     const [clients, setClients] = useState();   
+    const [refresh, setRefresh] = useState(false)
       
 
     useEffect(() => {
@@ -30,7 +31,7 @@ const Home = () => {
         }
 
         getClients();
-    }, [deleteClientsModal])
+    }, [refresh])
 
 
     return (
@@ -44,11 +45,11 @@ const Home = () => {
             </section>
 
             {deleteClientsModal === true && 
-                <DeleteClientsModal clientId={clientId} />
+                <DeleteClientsModal clientId={clientId} refresh={refresh} setRefresh={setRefresh} />
             }
 
             {editClientsModal === true && (
-                <EditClientsModal clientId={clientId} />
+                <EditClientsModal clientId={clientId} refresh={refresh} setRefresh={setRefresh} />
             )}
         </>
     )

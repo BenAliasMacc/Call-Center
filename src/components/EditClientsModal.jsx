@@ -3,7 +3,7 @@ import axios from '../api/axios';
 import DisplayClientsData from './DisplayClientsData';
 import Loader from './Loader';
 
-const EditClientsModal = ({ clientId }) => {
+const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
 
     const token = localStorage.getItem("token");
     const [client, setClient] = useState();
@@ -22,7 +22,7 @@ const EditClientsModal = ({ clientId }) => {
                 Accept: "application/json, text/plain,"
               }
               // withCredentials: true
-            });            
+            });           
             setClient(response.data);
             setIsLoading(false);
           } catch (err) {}
@@ -33,7 +33,7 @@ const EditClientsModal = ({ clientId }) => {
 
     return (
         <div className='edit-clients-modal'>
-          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={false} />
+          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={true} refresh={refresh} setRefresh={setRefresh} />
 
           { isLoading && 
             <div className='containerLoader'>

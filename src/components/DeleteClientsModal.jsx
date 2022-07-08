@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
 
-const DeleteClientsModal = ({ clientId }) => {
+const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,6 +34,7 @@ const DeleteClientsModal = ({ clientId }) => {
                 // withCredentials: true
             }
             );
+            setRefresh(!refresh)
             setIsLoading(false);
             setDeleteClientsModal(false);            
             navigate(from, { replace: true })

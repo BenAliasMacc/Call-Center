@@ -76,8 +76,8 @@ const columns = [
     flex: 1,
     renderCell: (params) => (<Link to={`${params.row._id}`}>{params.value}</Link>)
   },
-  { field: 'nom', headerName: 'Prénom', flex: 1 },
-  { field: 'prenom', headerName: 'Nom', flex: 1 },
+  { field: 'nom', headerName: 'Nom', flex: 1 },
+  { field: 'prenom', headerName: 'Prénom', flex: 1 },
   { field: 'societe', headerName: 'Société', flex: 1 },
   { field: 'telephone', headerName: 'Téléphone', flex: 1 },
   { 
