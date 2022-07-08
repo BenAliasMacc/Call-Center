@@ -9,7 +9,6 @@ import DeleteClientsModal from "../components/DeleteClientsModal";
 const Home = () => {
 
     const { auth, editClientsModal, deleteClientsModal } = useAuth();
-    console.log(editClientsModal);
     const clientId = auth?.clientId;
     const token = localStorage.getItem("token");
     const [clients, setClients] = useState();   
@@ -31,7 +30,7 @@ const Home = () => {
         }
 
         getClients();
-    }, [])
+    }, [deleteClientsModal])
 
 
     return (

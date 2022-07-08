@@ -8,6 +8,7 @@ import Loader from '../components/Loader';
 const ClientsCard = () => {
 
   const clientId = useParams().id;
+  const [refresh, setRefresh] = useState(false)
   const token = localStorage.getItem("token");
   const [client, setClient] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +33,7 @@ const ClientsCard = () => {
     };
 
     getClients();
-  }, []);
+  }, [refresh]);
 
   return (
     <>
@@ -40,7 +41,7 @@ const ClientsCard = () => {
 
       {client !== undefined && (
         <section className="clients-card" style={{marginTop: "40px"}}>
-          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={false} />
+          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={false} setRefresh={setRefresh} refresh={refresh} />
 
           { isLoading && 
             <div className='containerLoader'>

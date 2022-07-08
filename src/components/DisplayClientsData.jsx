@@ -3,16 +3,18 @@ import { useForm } from "react-hook-form";
 import axios from "../api/axios";
 import { AiOutlineMessage } from "react-icons/ai";
 import { FaInternetExplorer } from 'react-icons/fa';
-import ContainerHeader from "../components/ContainerHeader";
 import Loader from '../components/Loader';
 import useAuth from "../hooks/useAuth";
 import '../styles/styles.css';
+import DeleteButton from "./DeleteButton";
+import EditButton from "./EditButton";
+import DeleteClientsModal from "./DeleteClientsModal";
+import NotesEtConsignes from "./NotesEtConsignes";
 
-const DisplayClientsData = ({ client, clientId, token, booleen }) => {
+const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refresh }) => {
   
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    mode: 'onChange'
-  });
+  const { deleteClientsModal, setEditClientsModal, auth, setAuth } = useAuth();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   
   const [editMode, setEditMode] = useState(booleen);
   const [isModal] = useState(booleen);
@@ -34,11 +36,39 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
     langue
   } = client !== undefined && client;
 
-  /* const displayId = !editMode ? (
+  const displayPrenom = !editMode ? (
+    prenom
+  ) : (
+    <>
+      <input
+        className="headerClient__input"
+        style={{marginBottom: "5px"}}
+        type="text"
+        id="prenom"
+        defaultValue={prenom}
+        {...register("prenom")}
+      />
+    </>
+  );
+  const displayNom = !editMode ? (
+    nom
+  ) : (
+    <>
+      <input
+        className="headerClient__input"
+        type="text"
+        id="nom"
+        defaultValue={nom}
+        {...register("nom")}
+      />
+    </>
+  );  
+  const displayId = !editMode ? (
     id
   ) : (
     <>
       <input
+        className="headerClient__input"
         type="number"
         id="id"
         defaultValue={id}
@@ -51,6 +81,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   ) : (
     <>
       <input
+        className="headerClient__input"
         type="text"
         id="societe"
         defaultValue={societe}
@@ -63,6 +94,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   ) : (
     <>
       <input
+        className="headerClient__input"
         type="text"
         id="langue"
         defaultValue={langue}
@@ -75,6 +107,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   ) : (
     <>
       <input
+        className="headerClient__input"
         type="text"
         id="activite"
         defaultValue={activite}
@@ -87,6 +120,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   ) : (
     <>
       <input
+        className="headerClient__input"
         type="text"
         id="telephone"
         defaultValue={telephone}
@@ -99,6 +133,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   ) : (
     <>
       <input
+        className="headerClient__input"
         type="text"
         id="site"
         defaultValue={site}
@@ -111,6 +146,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   ) : (
     <>
       <input
+        className="headerClient__input"
         type="text"
         id="mail"
         defaultValue={mail}
@@ -123,6 +159,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   ) : (
     <>
       <input
+        className="headerClient__input"
         type="text"
         id="crm"
         defaultValue={crm}
@@ -135,24 +172,32 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   ) : (
     <>
       <input
+        className="headerClient__input"
         type="text"
         id="adresse"
         defaultValue={adresse}
         {...register("adresse")}
       />
     </>
-  ); */
+  );
 
   const handleCancelButton = (e) => {
     e.preventDefault();    
     setEditMode(!editMode);    
   };
 
+  const handleCloseModal = () => {
+    setEditClientsModal(false);
+    setAuth({...auth, clientId: undefined})
+  }
+
   const onSubmit = data => {
 
     setIsLoading(true);
 
     const editClientData = async () => {
+
+      console.log(data);
 
       try {
         const response = await axios.put(
@@ -168,6 +213,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
           }
         );        
         window.location.reload();
+        setEditMode(false)        
         setIsLoading(false);
       } catch (err) {
         console.log();
@@ -178,174 +224,85 @@ const DisplayClientsData = ({ client, clientId, token, booleen }) => {
   };
 
   return (
-    <>
-        <div className="globalContainer width100">
+    <section className="display-clients-data">        
+        <div className="globalContainer width100" onSubmit={handleSubmit(onSubmit)}>           
+          
             <div className="flex containerIcons width100" >
                 <div className="flex containerIcon" >
+                  <a href={crm} rel="noreferrer" target="_blank">
                     <AiOutlineMessage className="icon" />
+                  </a>
                 </div>
                 <div className="flex containerIcon" >
+                  <a href={site} rel="noreferrer" target="_blank">
                     <FaInternetExplorer className="icon" />
+                  </a>
                 </div>
             </div>
+
             <header className='headerClient'>
-                <div className="flex headerSide" >
-                    <ul className="width50">
-                        <li><b>Id :</b> {id}</li>
-                        <li className="mt5"><b>Nom complet :</b> {nom}{prenom}</li>
-                        <li className="mt5"><b>Adresse : </b>{adresse}</li>
-                    </ul>
-                    <ul>
-                        <li><b>Téléphone:</b> {telephone}</li>
-                        <li className="mt5"><b>@ : </b>{mail}</li>
-                    </ul>
+              <form>
+                {/* {isModal ? 
+                  <button className="headerClient__close-button" onClick={handleCloseModal} style={{fontSize: "1.5rem"}}>X</button> 
+                  : */}
+                  <div className="display-clients-data__buttons-top">
+                    <EditButton editMode={editMode} setEditMode={setEditMode} />
+                    <DeleteButton clientId={clientId} />
+                  </div>    
+                {/* } */}
+                <div className="headerClient__input-container" style={{}}>
+                  <div className="flex headerSide" >
+                      <ul className="width50">
+                          <li><b>Id :</b> {displayId}</li>
+                          <li className="mt5"><b>Nom complet :</b> {displayPrenom} {displayNom}</li>
+                          <li className="mt5"><b>Adresse : </b>{displayAdresse}</li>
+                      </ul>                  
+                      <ul>
+                          <li><b>Téléphone:</b> {displayTelephone}</li>
+                          <li className="mt5"><b>@ : </b>{displayMail}</li>
+                      </ul>
+                  </div>
+                  <div className="flex headerSide">
+                      <ul className="width50">
+                          <li><b>Société :</b> {displaySociete}</li>
+                          <li className="mt5"><b>Site : </b>{displaySite}</li>
+                      </ul>
+                      <ul>
+                          <li><b>Activité :</b> {displayActivite}</li>
+                          <li className="mt5"><b>Langue : </b>{displayLangue}</li>
+                      </ul>
+                  </div>
                 </div>
-                <div className="flex headerSide">
-                    <ul className="width50">
-                        <li><b>Société :</b> {societe}</li>
-                        <li className="mt5"><b>Site : </b>{site}</li>
-                    </ul>
-                    <ul>
-                        <li><b>Activité :</b> {activite}</li>
-                        <li className="mt5"><b>Langue : </b>{langue}</li>
-                    </ul>
-                </div>
+
+                {editMode && (
+                  <div className="clients-card__buttons">
+                    {!isModal &&
+                      <button onClick={handleCancelButton} className="clients-card__buttons__cancel">
+                        Annuler
+                      </button>             
+                    }
+                    
+                    <button className="clients-card__buttons__submit">
+                      Valider
+                    </button>
+                  </div>
+                )}
+              </form>
             </header>
-            <div className="containerNotesConsignes ">
-                <div className="containerColonne width50"> 
-                    <u>NOTES :</u> 
-                    <div className="textZone width100">
-                        TEXT
-                    </div>
-                    <div className="containerInput">
-                        <input type="text" />
-                        <button className='btn'>Envoyer</button> 
-                    </div>
-                </div>
-                <div className="containerColonne width50"> 
-                    <u>CONSIGNES :</u> 
-                    <div className="textZone width100">
-                        TEXT
-                    </div>
-                </div>
-            </div>
+
+            <NotesEtConsignes clientId={clientId} token={token} client={client} />        
         </div>
-      {/* {client !== undefined && (
-        <section className="clients-card">
-          <ContainerHeader
-            name={nom}
-            firstname={prenom}
-            clientId={clientId}
-            editMode={editMode}
-            setEditMode={setEditMode}
-            isModal={booleen}
-          />
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="clients-card--container"
-          >
-            <table>
-              <tbody>
-                <tr className="odd">
-                  <td className="first">Identifiant:</td>
-                  <td>{displayId}</td>
 
-                  <td className="first">Société:</td>
-                  <td>{displaySociete}</td>
-                </tr>
-                <tr className="even">
-                  <td className="first">Language:</td>
-                  <td>{displayLangue}</td>
-                  <td className="first">Activité</td>
-                  <td>{displayActivite}</td>
-                </tr>
-                <tr className="odd">
-                  <td className="first">Téléphone:</td>
-                  <td>{displayTelephone}</td>
-                  <td className="first">Site web:</td>
-                  <td>
-                    {!editMode ? (
-                      <a href={site} rel="noreferrer" target="_blank">
-                        {displaySite}
-                      </a>
-                    ) : (
-                      <>{displaySite}</>
-                    )}
-                  </td>
-                </tr>
-                <tr className="even">
-                  <td className="first">Adresse mail:</td>
-                  <td>
-                    {!editMode ? (
-                      <a href={mail} rel="noreferrer" target="_blank">
-                        {displayMail}
-                      </a>
-                    ) : (
-                      <>{displayMail}</>
-                    )}
-                  </td>
-                  <td className="first">CRM:</td>
-                  <td>
-                    {!editMode ? (
-                      <a href={crm} rel="noreferrer" target="_blank">
-                        {displayCrm}
-                      </a>
-                    ) : (
-                      <>{displayCrm}</>
-                    )}
-                  </td>
-                </tr>
-                <tr className="odd">
-                  <td className="first">Adresse postale:</td>
-                  <td>{displayAdresse}</td>
-                  <td className="first">Consignes:</td>
-                  <td>
-                    <ul>
-                      {consignes !== undefined &&
-                        consignes.map((consigne, index) => (
-                          <li key={index}>{consigne}</li>
-                        ))}
-                    </ul>
-                  </td>
-                </tr>
-                <tr className="even">
-                  <td className="first">Notes:</td>
-                  <td>
-                    <ul>
-                      {notes !== undefined &&
-                        notes.map((note, index) => <li key={index}>{note}</li>)}
-                    </ul>
-                  </td>
-                  <td className="first"></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
+        {deleteClientsModal === true && 
+          <DeleteClientsModal clientId={clientId} />
+        }
 
-            {editMode && (
-              <div className="clients-card__buttons">
-                {!isModal &&
-                    <button onClick={handleCancelButton} className="clients-card__buttons__cancel">
-                      Annuler
-                    </button>             
-                }
-                
-                <button className="clients-card__buttons__submit">
-                  Valider
-                </button>
-              </div>
-            )}
-          </form>
-
-          { isLoading && 
-            <div className='containerLoader'>
-              <Loader />
-            </div>
-          }
-
-        </section>
-      )} */}
-    </>
+        { isLoading && 
+          <div className='containerLoader'>
+            <Loader />
+          </div>
+        }
+    </section>
   );
 };
 

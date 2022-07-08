@@ -33,7 +33,7 @@ const EditClientsModal = ({ clientId }) => {
 
     return (
         <div className='edit-clients-modal'>
-          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={true} />
+          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={false} />
 
           { isLoading && 
             <div className='containerLoader'>

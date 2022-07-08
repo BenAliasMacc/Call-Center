@@ -1,15 +1,20 @@
 import React, { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
 
 const DeleteClientsModal = ({ clientId }) => {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     const { setDeleteClientsModal } = useAuth();
     const token = localStorage.getItem("token");
     const userId = "62b08ba33f8191dd23368c83";
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleDeleteClient = () => {
+    const handleDeleteClient = () => { 
 
         setIsLoading(true);
 
@@ -30,8 +35,9 @@ const DeleteClientsModal = ({ clientId }) => {
             }
             );
             setIsLoading(false);
-            setDeleteClientsModal(false);
-            window.location.reload();
+            setDeleteClientsModal(false);            
+            navigate(from, { replace: true })
+            // window.location.reload();
         } catch (err) {
             console.log();
         }

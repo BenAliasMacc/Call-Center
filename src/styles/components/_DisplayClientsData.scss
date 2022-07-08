@@ -1,0 +1,38 @@
+.display-clients-data {
+    width: 100%;
+    & .headerClient {
+        position: relative;
+        padding-block: 1rem ;
+        height: auto;
+        &__close-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        &__input-container {
+            display: flex;
+        }
+        & form {
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            padding: 0;
+
+        }
+        &__input {
+            width: 175px;
+            padding: 0.1rem 0.5rem;
+        }
+    }
+    & .headerSide {
+        padding: 0;
+    }
+    &__buttons-top {
+        position: absolute;
+        top: -50px;
+        right: 0;
+    }
+    & .clients-card__buttons {
+        margin-top: 1rem;
+    }
+}

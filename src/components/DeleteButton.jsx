@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "../api/axios";
 import { MdDeleteForever } from 'react-icons/md';
 import Loader from '../components/Loader';
 import useAuth from "../hooks/useAuth";
@@ -10,9 +8,10 @@ const DeleteButton = ({ clientId }) => {
   const { setDeleteClientsModal, auth, setAuth } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (e) => {
+    e.preventDefault();
     setDeleteClientsModal(true)
-    setAuth({...auth, clientId})
+    setAuth({...auth, clientId})    
   }
 
   return (
