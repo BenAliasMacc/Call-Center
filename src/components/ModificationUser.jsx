@@ -20,10 +20,12 @@ function ModificationUser(props) {
 
     const onSubmit = data => {
 
+        console.log(data)
+
         setIsLoading(true);
 
         fetch(`https://calldirect.herokuapp.com/api/users/modify/${props.user._id}`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain, */*', 
                 'Content-Type': 'application/json',
