@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
+import bin from '../assets/icons/bin-modal.svg'
 
 const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
 
@@ -56,9 +57,14 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
 
         <div className='delete-clients-modal'>
             <div className='delete-clients-modal--container'>
-                <p>Souhaitez-vous confirmer la suppression</p>
-                <button onClick={handleCloseModal}>X</button>
-                <button onClick={handleDeleteClient}>Confirmer</button>
+                <div className='delete-clients-modal__text'>
+                    <h2><img src={bin} alt="suppression" /> Confirmer la suppression ?</h2>
+                    <p>Attention si vous cliquez sur confirmer la suppression de la fiche client sera définitive</p>
+                </div>
+                <div className='delete-clients-modal__buttons'>
+                    <button className='delete-clients-modal__buttons__cancel' onClick={handleCloseModal}>Annuler</button>
+                    <button className='delete-clients-modal__buttons__confirm' onClick={handleDeleteClient}>Confirmer</button>
+                </div>
             </div>
         </div>
     )
