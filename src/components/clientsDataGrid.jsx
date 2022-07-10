@@ -113,8 +113,6 @@ const columns = [
 export default function QuickFilteringCustomizedGrid({ clients, setClientId }) {
   const [pageSize, setPageSize] = React.useState(10);
 
-  
-
   return (
     <>
       {clients !== undefined &&
