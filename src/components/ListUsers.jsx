@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import axios from "../api/axios";
 import DeleteButton from './DeleteButton';
+import { MdDeleteForever } from 'react-icons/md';
 import Loader from '../components/Loader';
 import Inscription from "../components/Inscription";
 import BackHomeLink from "../components/BackHomeLink";
+import DeleteUserModal from "./DeleteUserModal";
+import ModificationUSer from './ModificationUser';
 
 function ListUsers() {
 
@@ -11,6 +14,11 @@ function ListUsers() {
     const token = localStorage.getItem("token");
     const [isLoading, setIsLoading] = useState(false);
     const [isCreated, setIsCreated] = useState(false);
+    const [refreshList, setRefreshList] = useState(false);
+    const [isDeleteUsersModal, setIsDeleteUserModal] = useState(false);
+    const [openModification, setOpenModification] = useState(false);
+    const [userId, setUserId] = useState('');
+    const [user, setUser] = useState();
 
     useEffect(() => {
 
@@ -33,7 +41,20 @@ function ListUsers() {
         };
     
         getUsers();
-      }, []);
+    }, [refreshList]);
+
+    function handleDeleteUser(userId) {
+
+        setIsDeleteUserModal(true);
+        setUserId(userId);
+    };
+
+    function handleModifyUser(user) {
+        console.log(user)
+        setUser(user);
+        setOpenModification(true);
+       
+    }
 
     return (
 
@@ -46,19 +67,26 @@ function ListUsers() {
                     <span style={{color: "#0dbad8"}}>Ajouter un nouvel utilisateur </span>
                     <div onClick={() => setIsCreated(true)} style={{width: "50px", height: "50px", borderRadius: "50%", backgroundColor: "#F2A965", fontSize: "4rem", display: "flex", justifyContent: "center", alignItems: 'center', color: 'white', cursor: 'pointer'}}>+</div>     
                 </div>
-                {
-                    users && users.map((user, index) => {
-                        return (
-                            <>
-                           
-                                <div key={index} style={{display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: 'rgb(240, 240, 240)', borderRadius: "10px", width: "90%", height: "40px", padding: '0 10px', color: "#0dbad8", fontWeight: "bold", marginBottom: "15px", boxShadow: "0 0 8px #ccc"}}>
-                                    <span>{user.email}</span>
-                                        <DeleteButton clientId={user._id}/>
-                                </div>
-                            </>
-                        )
-                    })
-                }
+                <div style={{width: "100%", overflowY : 'scroll'}}>
+                    {
+                        users && users.map((user, index) => {
+
+                            return (
+                                <>
+                                    <div key={index} style={{display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: 'rgb(240, 240, 240)', borderRadius: "10px", width: "90%", height: "40px", padding: '0 20px', color: "#0dbad8", fontWeight: "bold", marginBottom: "15px", boxShadow: "0 0 8px #ccc", cursor: "pointer"}}>
+                                        <div onClick={() => handleModifyUser(user)} style={{width: "80%", display: "flex", justifyContent: "flex-start", gap: "20px"}}>
+                                            <span >{user.nom}</span>
+                                            <span >{user.email}</span>
+                                        </div>
+                                            <button className="delete-button" onClick={() => handleDeleteUser(user._id)} >
+                                                <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/>
+                                            </button>
+                                    </div>
+                                </>
+                            )
+                        })
+                    }
+                </div>
 
             { 
                 isLoading && 
@@ -68,9 +96,21 @@ function ListUsers() {
             }
 
             {
+                isDeleteUsersModal && 
+                <DeleteUserModal userId={userId} refreshList={refreshList} setRefreshList={setRefreshList} isDeleteUsersModal={isDeleteUsersModal} setIsDeleteUserModal={setIsDeleteUserModal} />
+            }
+
+            {
                 isCreated && 
                 <div style={{position: "fixed", top:"0", left:"0", width: "100%", height: "100%", zIndex: "1000", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.4)"}}>
-                    <Inscription setIsCreated={setIsCreated} isCreated={isCreated} />
+                    <Inscription setIsCreated={setIsCreated} isCreated={isCreated} refreshList={refreshList} setRefreshList={setRefreshList} />
+                </div>
+            }
+
+            {
+                user && openModification && 
+                <div style={{position: "fixed", top:"0", left:"0", width: "100%", height: "100%", zIndex: "1000", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.4)"}}>
+                    <ModificationUSer user={user} openModification={openModification} setOpenModification={setOpenModification} refreshList={refreshList} setRefreshList={setRefreshList} />
                 </div>
             }
                    

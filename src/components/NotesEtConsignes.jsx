@@ -1,4 +1,4 @@
-import { useState } from "react";
+ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "../api/axios";
 
@@ -42,6 +42,8 @@ const NotesEtConsignes = ({ clientId, token, client }) => {
     
         editClientData();
       };
+
+      console.log(notes)
 
     return (
         <>        
