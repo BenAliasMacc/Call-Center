@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "../api/axios";
 import Loader from '../components/Loader';
 import '../styles/modalAnimation.css';
+import '../styles/styles.css';
 
 function Inscription(props) {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -22,28 +23,26 @@ function Inscription(props) {
 
         setIsLoading(true);
 
-        const createNewUsers = async () => {
-          try {
-            const response = await axios.post(
-              `/users/signup`,
-              JSON.stringify(data),
-              {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                    Accept: "application/json, text/plain,"
-                }
-                // withCredentials: true
-              }
-            );
+        fetch("https://calldirect.herokuapp.com/api/users/signup", {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*', 
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            props.setIsCreated(false);
+            props.setRefreshList(!props.refreshList);
             setIsLoading(false);
-          } catch (err) {
-             console.log();
-          }
-        };
-    
-        createNewUsers();
-      };
+        })
+        .catch(error =>console.log(error))
+
+    }
+  
 
 
     return (
@@ -88,7 +87,7 @@ function Inscription(props) {
                         <p className="error-message">Ce champ doit être complété</p>
                     )}
 
-                    <button type="submit">Valider</button>
+                    <button className="btnSubmitInscription" type="submit">Valider</button>
                 </form>
             </div>
 

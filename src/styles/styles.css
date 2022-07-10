@@ -85,3 +85,12 @@
     gap: 20px;
     height: 140px;
 }
+
+.btnSubmitInscription {
+    background-color: rgb(13, 186, 216);
+    color: white;
+    margin: 10px auto;
+    width: 30%;
+    border-radius: 10px;
+    text-align: center;
+}

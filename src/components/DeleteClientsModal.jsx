@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
-import bin from '../assets/icons/bin-modal.svg'
+import bin from '../assets/icons/bin-modal.svg';
+import Loader from '../components/Loader';
 
 const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
 
@@ -66,6 +67,12 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
                     <button className='delete-clients-modal__buttons__confirm' onClick={handleDeleteClient}>Confirmer</button>
                 </div>
             </div>
+            { 
+                isLoading && 
+                <div className='containerLoader'>
+                    <Loader />
+                </div>
+            }
         </div>
     )
 }

@@ -4,6 +4,7 @@ import DeleteButton from './DeleteButton';
 import Loader from '../components/Loader';
 import Inscription from "../components/Inscription";
 import BackHomeLink from "../components/BackHomeLink";
+import DeleteUserModal from "./DeleteUserModal";
 
 function ListUsers() {
 
@@ -11,6 +12,9 @@ function ListUsers() {
     const token = localStorage.getItem("token");
     const [isLoading, setIsLoading] = useState(false);
     const [isCreated, setIsCreated] = useState(false);
+    const [refreshList, setRefreshList] = useState(false);
+    const [isDeleteUsersModal, setIsDeleteUserModal] = useState(false);
+    const [userId, setUserId] = useState('');
 
     useEffect(() => {
 
@@ -33,7 +37,13 @@ function ListUsers() {
         };
     
         getUsers();
-      }, []);
+    }, [refreshList]);
+
+        function handleDeleteUser(userId) {
+            
+            setIsDeleteUserModal(true);
+            setUserId(userId);
+        }
 
     return (
 
@@ -50,10 +60,9 @@ function ListUsers() {
                     users && users.map((user, index) => {
                         return (
                             <>
-                           
-                                <div key={index} style={{display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: 'rgb(240, 240, 240)', borderRadius: "10px", width: "90%", height: "40px", padding: '0 10px', color: "#0dbad8", fontWeight: "bold", marginBottom: "15px", boxShadow: "0 0 8px #ccc"}}>
+                                <div key={index} onClick={() => handleDeleteUser(user._id)} style={{display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: 'rgb(240, 240, 240)', borderRadius: "10px", width: "90%", height: "40px", padding: '0 10px', color: "#0dbad8", fontWeight: "bold", marginBottom: "15px", boxShadow: "0 0 8px #ccc"}}>
                                     <span>{user.email}</span>
-                                        <DeleteButton clientId={user._id}/>
+                                        <DeleteButton />
                                 </div>
                             </>
                         )
@@ -68,9 +77,14 @@ function ListUsers() {
             }
 
             {
+                isDeleteUsersModal && 
+                <DeleteUserModal userId={userId} refreshList={refreshList} setRefreshList={setRefreshList} isDeleteUsersModal={isDeleteUsersModal} setIsDeleteUserModal={setIsDeleteUserModal} />
+            }
+
+            {
                 isCreated && 
                 <div style={{position: "fixed", top:"0", left:"0", width: "100%", height: "100%", zIndex: "1000", display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.4)"}}>
-                    <Inscription setIsCreated={setIsCreated} isCreated={isCreated} />
+                    <Inscription setIsCreated={setIsCreated} isCreated={isCreated} refreshList={refreshList} setRefreshList={setRefreshList} />
                 </div>
             }
                    
