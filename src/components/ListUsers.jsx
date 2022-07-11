@@ -20,6 +20,8 @@ function ListUsers() {
     const [userId, setUserId] = useState('');
     const [user, setUser] = useState();
 
+    console.log(userId)
+
     useEffect(() => {
 
         setIsLoading(true);
@@ -58,7 +60,7 @@ function ListUsers() {
 
     return (
 
-        <div style={{width: "50%", display: "flex", justifyContent: "center", alignItems: "center", padding: "20px"}}>
+        <div style={{width: "50%", display: "flex", justifyContent: "center", alignItems: "center", padding: "20px", marginTop: "60px"}}>
             <section style={{width: "90%", borderRadius: "5px", padding: "20px", backgroundColor: "white", boxShadow: "0 0 8px #ccc", display: 'flex', flexDirection: "column", justifyContent: 'flex-start', alignItems: 'center'}}>
                 <div style={{position: "relative", display: "flex", justifyContent: 'center', alignItems: "center", gap: "30px", borderBottom: "1px solid #F2A965", width: "100%", height: "80px", marginBottom: "30px"}}>
                     <div style={{position: "absolute", top: "0", left: "0"}}>
