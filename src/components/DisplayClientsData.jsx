@@ -227,21 +227,22 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
   return (
     <section className="display-clients-data">        
         {client !== undefined && <div className="globalContainer width100" onSubmit={handleSubmit(onSubmit)}>           
-          
-            <div className="flex containerIcons width100" >
-                <div className="flex containerIcon" >
-                  <a href={crm} rel="noreferrer" target="_blank">
-                    <AiOutlineMessage className="icon" />
-                  </a>
-                </div>
-                <div className="flex containerIcon" >
-                  <a href={site} rel="noreferrer" target="_blank">
-                    <FaInternetExplorer className="icon" />
-                  </a>
-                </div>
-            </div>
 
             <header className='headerClient'>
+
+                <div className="flex containerIcons width30" >
+                    <div className="flex containerIcon" >
+                        <a href={crm} rel="noreferrer" target="_blank">
+                            <AiOutlineMessage className="icon" />
+                        </a>
+                    </div>
+                    <div className="flex containerIcon" >
+                        <a href={site} rel="noreferrer" target="_blank">
+                            <FaInternetExplorer className="icon" />
+                        </a>
+                    </div>
+                </div>
+
               <form>
                 {isModal ? 
                   <button className="headerClient__close-button" onClick={handleCloseModal} style={{fontSize: "1.5rem"}}>X</button> 
