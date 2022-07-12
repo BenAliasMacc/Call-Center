@@ -8,6 +8,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
     const { notes, consignes } = client !== undefined && client;
     const [note, setNote] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [modifyNote, setModifyNote] = useState(false);
     
     function handleSubmit(e) {
         e.stopPropagation();
@@ -71,11 +72,19 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
                         {
                             notes.map((note, id) => 
                             <div key={id} className="notes">
+                                {
+                                    modifyNote ?
+                                    <div>
+                                        <span className="pastille">🟢</span><input value={note} type='text'/>
+                                    </div>
+                                    :
+                                    <div style={{display: 'flex', width: "50%"}}>
+                                        <span className="pastille">🟢</span><span>{note}</span>
+                                    </div>
+
+                                }
                                 <div>
-                                    <span className="pastille">🟢</span><span>{note}</span>
-                                </div>
-                                <div>
-                                    <MdPublishedWithChanges className='iconNotes colorGreen' style={{marginRight: "10px"}} />
+                                    <MdPublishedWithChanges onClick={() => setModifyNote(!modifyNote)} className='iconNotes colorGreen' style={{marginRight: "10px"}} />
                                     <MdDeleteForever className='iconNotes colorRed' onClick={() => deleteNote(id)}/>
                                 </div>
                             </div>)
