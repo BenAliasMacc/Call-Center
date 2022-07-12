@@ -1,18 +1,20 @@
  import { useState } from "react";
- import moment from 'moment/min/moment-with-locales';
+ import '../styles/styles.css';
+ import { MdDeleteForever } from 'react-icons/md';
+ import { MdPublishedWithChanges } from 'react-icons/md';
 
-const NotesEtConsignes = ({ clientId, token, client }) => {
+const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
 
     const { notes, consignes } = client !== undefined && client;
     const [note, setNote] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     
-    function handleSubmit() {
-        setIsLoading(true);
-        let tableau = [...notes, note]
+    function handleSubmit(e) {
+        e.stopPropagation();
+        e.preventDefault();
+/*         setIsLoading(true);*/
+
         if (notes) {
-            setNote(tableau);
-    
             fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
                 method: "PUT",
                 headers: {
@@ -21,18 +23,42 @@ const NotesEtConsignes = ({ clientId, token, client }) => {
                     "Accept": "application/json, text/plain,"
                 },
                 body: JSON.stringify({
-                    note: note,
-                    date: moment().locale('fr').format('llll')
+                    notes: [...notes, note]
                 })
             })
             .then(response => response.json())
             .then(data => {
                 setIsLoading(false); 
                 setNote('');
+                setRefresh(!refresh);
             })
             .catch(error => console.log(error));
         } 
     };
+
+    function deleteNote(index) {
+        let newArray = notes;
+        newArray.splice(index, 1);
+
+        fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                    "Accept": "application/json, text/plain,"
+                },
+                body: JSON.stringify({
+                    notes: newArray
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                setIsLoading(false); 
+                setNote('');
+                setRefresh(!refresh);
+            })
+            .catch(error => console.log(error));
+    }
 
     return (
         <>        
@@ -43,7 +69,16 @@ const NotesEtConsignes = ({ clientId, token, client }) => {
                     <u>NOTES :</u> 
                     <div className="textZone width100" style={{overflowY: "scroll", maxHeight: "40vh"}}>
                         {
-                            notes.map((note, id) => <div key={id} style={{marginTop: "5px", fontSize: "0.8rem"}} className="notes">{note}</div>)
+                            notes.map((note, id) => 
+                            <div key={id} className="notes">
+                                <div>
+                                    <span className="pastille">🟢</span><span>{note}</span>
+                                </div>
+                                <div>
+                                    <MdPublishedWithChanges className='iconNotes colorGreen' style={{marginRight: "10px"}} />
+                                    <MdDeleteForever className='iconNotes colorRed' onClick={() => deleteNote(id)}/>
+                                </div>
+                            </div>)
                         }
                     </div>
                     <div className="containerInput">

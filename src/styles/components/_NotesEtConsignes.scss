@@ -19,9 +19,30 @@
 }
 
 .notes {
+    display: flex;
+    justify-content: space-between;
     background-color: white;
     padding: 0.5rem;
-    border: $quaternaryColor 2px solid;
     border-radius: 25px;
     text-align: justify;
+    margin-top: 5px;
+    font-size: 0.8rem;
+
+    .pastille {
+        margin-right: 5px;
+    }
+
+    .iconNotes {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+    }
+
+    .colorRed {
+        color: red;
+    }
+
+    .colorGreen {
+        color: green;
+    }
 }

@@ -292,7 +292,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
               </form>
             </header>
 
-            {!isModal && <NotesEtConsignes clientId={clientId} token={token} client={client} />}    
+            {!isModal && <NotesEtConsignes clientId={clientId} token={token} client={client} refresh={refresh} setRefresh={setRefresh}/>}    
 
         </div>}
 

@@ -52,10 +52,8 @@ function ListUsers() {
     };
 
     function handleModifyUser(user) {
-        console.log(user)
         setUser(user);
         setOpenModification(true);
-       
     }
 
     return (
