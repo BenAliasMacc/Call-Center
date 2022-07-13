@@ -13,9 +13,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
     const [arrayOfIndex, setArrayOfIndex] = useState([]);
 
     useEffect(() => {
-
-        setNotesArray([...notes]);
-
+        setNotesArray([...notes]); 
     }, []);
     
     function handleSubmitNotes(e) {
@@ -43,13 +41,10 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
         } 
     };
 
-    function handleChangeNote(e, input, index) {
-
-        let newArray = notesArray;
-        newArray[index] = e.target.value;
+    function handleChangeNote(e, index) {
+        let newArray = [...notesArray]; 
+        newArray[index] = e.target.value; 
         setNotesArray(newArray);
-
-        console.log(notesArray)
     }
 
     function deleteNote(index) {
@@ -75,13 +70,19 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
             .catch(error => console.log(error));
     }
 
-    function handleModifyNote(index) {
+    function handleModifyNote(index, note) {
 
         if (arrayOfIndex.includes(index)) {
             let copyOfArray = [...arrayOfIndex];
             let indexOfNote = copyOfArray.indexOf(index);
             copyOfArray.splice(indexOfNote, 1);
             setArrayOfIndex(copyOfArray);
+
+            if (note != notesArray[index]) {
+
+                /* INSERER ici modification des notes */ 
+            }
+
         } else {
             let copyOfArray = [...arrayOfIndex];
             copyOfArray.push(index);
@@ -111,7 +112,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
                                     </div>
                                 }
                                 <div>
-                                    <MdPublishedWithChanges onClick={() => handleModifyNote(index)} className='iconNotes colorGreen' style={{marginRight: "10px"}} />
+                                    <MdPublishedWithChanges onClick={() => handleModifyNote(index, note)} className='iconNotes colorGreen' style={{marginRight: "10px"}} />
                                     <MdDeleteForever className='iconNotes colorRed' onClick={() => deleteNote(index)}/>
                                 </div>
                             </div>)
