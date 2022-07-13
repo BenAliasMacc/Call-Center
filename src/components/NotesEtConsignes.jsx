@@ -82,7 +82,25 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
             let indexOfNote = copyOfArray.indexOf(index);
             copyOfArray.splice(indexOfNote, 1);
             setArrayOfIndex(copyOfArray);
-        } else {
+
+            fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                    "Accept": "application/json, text/plain,"
+                },
+                body: JSON.stringify({
+                    notes: [...notes, inputNote]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                setInputNote('');
+                setRefresh(!refresh);
+            })
+            .catch(error => console.log(error));
+        }else {
             let copyOfArray = [...arrayOfIndex];
             copyOfArray.push(index);
             setArrayOfIndex(copyOfArray);
@@ -103,7 +121,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
                                 {
                                     arrayOfIndex.includes(index) ?
                                     <div>
-                                        <span style={{fontSize: "0.5rem"}} className="pastille">🟢</span><input onChange={(e) => handleChangeNote(e, index)} value={notesArray[index]} type='text'/>
+                                        <span style={{fontSize: "0.5rem"}} className="pastille">🟢</span><input onChange={(e) => handleChangeNote(e, index)} defaultValue={notesArray[index]} type='text'/>
                                     </div>
                                     :
                                     <div style={{display: "flex", flex: 1, width: "50%", paddingRight: "0.5rem"}}>
@@ -111,7 +129,12 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
                                     </div>
                                 }
                                 <div>
-                                    <MdPublishedWithChanges onClick={() => handleModifyNote(index)} className='iconNotes colorGreen' style={{marginRight: "10px"}} />
+                                    {
+                                        arrayOfIndex.includes(index) ? 
+                                        <MdPublishedWithChanges onClick={() => handleModifyNote(index)} className='iconNotes colorGreen' style={{marginRight: "10px"}} />
+                                        :
+                                        <MdPublishedWithChanges onClick={() => handleModifyNote(index)} className='iconNotes colorGreen' style={{marginRight: "10px"}} />
+                                    }
                                     <MdDeleteForever className='iconNotes colorRed' onClick={() => deleteNote(index)}/>
                                 </div>
                             </div>)

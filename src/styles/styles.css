@@ -41,7 +41,7 @@
 .containerNotesConsignes {
     display: flex;
     flex-direction: row;
-    min-height: 450px;
+    height: 500px;
     overflow-y: scroll;
     width: 100%;
 }
@@ -63,6 +63,7 @@
 }
 
 .containerColonne {        
+    height: 500px;
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -70,6 +71,7 @@
     padding: 20px 20px;
     text-align: center;
     overflow-y: scroll;
+    z-index: 1;
 }
 
 .textZone {
