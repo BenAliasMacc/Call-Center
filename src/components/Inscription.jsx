@@ -11,6 +11,7 @@ function Inscription(props) {
     const [isLoading, setIsLoading] = useState(false);
     const animation = useRef();
 
+    console.log(props.user);
     function closeModale() {
 
         animation.current.style.animation = "slideBack .5s ease-in-out";
@@ -49,15 +50,15 @@ function Inscription(props) {
             <div className="gestion-users--container modal" ref={animation} style={{position: "relative"}}>
                 <div onClick={closeModale} style={{position: "absolute", top: "20px", right: "10px", width: "30px", height: "30px", color: "#F2A965", fontWeight: "bold", fontSize: "1.5rem", cursor: 'pointer'}}>X</div>
                 <form className="gestion-users__form" onSubmit={handleSubmit(onSubmit)} style={{border: "1px solid #0dbad8", padding: '10px'}}>
-                    <label htmlFor="email">mail <span className="mandatory">*</span></label>
-                    <input type="email" id="mail" {...register("email", { required: true })}/>
+                    <label htmlFor="email">Mail <span className="mandatory">*</span></label>
+                    <input type="email" id="mail" defaultValue="" {...register("email", { required: true })}/>
                     {
                         errors?.mail?.type === "required" && (
                         <p className="error-message">Ce champ doit être complété</p>)
                     }
                     
                     <label htmlFor="password">Mot de passe <span className="mandatory">*</span></label>
-                    <input type="password" id="password"{...register("password", {required: true, maxLength: 20})}/>
+                    <input type="password" id="password" {...register("password", {required: true, maxLength: 20})}/>
                     {
                         errors?.nom?.type === "required" && (
                         <p className="error-message">Ce champ doit être complété</p>
@@ -70,14 +71,14 @@ function Inscription(props) {
                     )}      
 
                     <label htmlFor="nom">Nom <span className="mandatory">*</span></label>
-                    <input type="text" id="nom" {...register("nom", { required: true })}/>
+                    <input type="text" id="nom" defaultValue="" {...register("nom", { required: true })}/>
                     {
                         errors?.nom?.type === "required" && (
                         <p className="error-message">Ce champ doit être complété</p>)
                     }  
 
                     <label htmlFor="groupe">Rôle <span className="mandatory">*</span></label>
-                    <select type="radio" id="groupe" {...register("groupe", {required: true})}>
+                    <select type="radio" id="groupe" defaultValue="user" {...register("groupe", {required: true})}>
                         <option value="user">user</option>
                         <option value="admin">admin</option>
                     </select>
