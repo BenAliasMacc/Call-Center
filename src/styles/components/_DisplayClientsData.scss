@@ -1,4 +1,5 @@
 .display-clients-data {
+    position: relative;
     width: 100%;
     & .headerClient {
         position: relative;
@@ -35,4 +36,17 @@
     & .clients-card__buttons {
         margin-top: 1rem;
     }
+}
+
+.colonne-consignes {    
+    position: absolute;
+    width: 70%;
+    bottom: -500.08px;
+    right: 0;
+    min-height: 500.08px;    
+}
+
+.textZone-consignes {
+    flex: 1;
+    text-align: start;
 }

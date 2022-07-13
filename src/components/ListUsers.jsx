@@ -20,6 +20,8 @@ function ListUsers() {
     const [userId, setUserId] = useState('');
     const [user, setUser] = useState();
 
+    console.log(user);
+
     console.log(userId)
 
     useEffect(() => {
@@ -52,10 +54,8 @@ function ListUsers() {
     };
 
     function handleModifyUser(user) {
-        console.log(user)
         setUser(user);
         setOpenModification(true);
-       
     }
     
     function handleCreateUser() {

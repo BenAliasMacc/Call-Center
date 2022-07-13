@@ -180,6 +180,20 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
       />
     </>
   );
+  const displayConsignes = !editMode ? (
+    <div className="textZone textZone-consignes width100">
+        {consignes}
+    </div>        
+  ) : (
+    <textarea
+      className="textZone textZone-consignes width100"
+      id="consignes"
+      defaultValue={consignes}
+      rows="20"
+      {...register("consignes")}
+    >
+    </textarea>
+  );
 
   const handleCancelButton = (e) => {
     e.preventDefault();    
@@ -226,23 +240,24 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
 
   return (
     <section className="display-clients-data">        
-        {client !== undefined && <div className="globalContainer width100" onSubmit={handleSubmit(onSubmit)}>           
-          
-            <div className="flex containerIcons width100" >
-                <div className="flex containerIcon" >
-                  <a href={crm} rel="noreferrer" target="_blank">
-                    <AiOutlineMessage className="icon" />
-                  </a>
-                </div>
-                <div className="flex containerIcon" >
-                  <a href={site} rel="noreferrer" target="_blank">
-                    <FaInternetExplorer className="icon" />
-                  </a>
-                </div>
-            </div>
+        {client !== undefined && <div className="globalContainer width100">           
 
             <header className='headerClient'>
-              <form>
+
+                <div className="flex containerIcons width30" >
+                    <div className="flex containerIcon" >
+                        <a href={crm} rel="noreferrer" target="_blank">
+                            <AiOutlineMessage className="icon" />
+                        </a>
+                    </div>
+                    <div className="flex containerIcon" >
+                        <a href={site} rel="noreferrer" target="_blank">
+                            <FaInternetExplorer className="icon" />
+                        </a>
+                    </div>
+                </div>
+
+              <form onSubmit={handleSubmit(onSubmit)}>
                 {isModal ? 
                   <button className="headerClient__close-button" onClick={handleCloseModal} style={{fontSize: "1.5rem"}}>X</button> 
                   :
@@ -288,10 +303,17 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
                     </button>
                   </div>
                 )}
+
+              <div className="containerColonne colonne-consignes"> 
+                    <u>CONSIGNES :</u> 
+                    {displayConsignes}
+              </div>
+
+                
               </form>
             </header>
 
-            {!isModal && <NotesEtConsignes clientId={clientId} token={token} client={client} />}    
+            {!isModal && <NotesEtConsignes editMode={editMode} clientId={clientId} token={token} client={client} refresh={refresh} setRefresh={setRefresh}/>}    
 
         </div>}
 
