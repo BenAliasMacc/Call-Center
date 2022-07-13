@@ -62,12 +62,12 @@
     margin: 10px;
 }
 
-.containerColonne {
-    position: relative;
-    border-radius: 0 0 0 10px;
+.containerColonne {        
+    display: flex;
+    flex-direction: column;
     background-color: white;
     box-shadow: 0 0 8px #ccc;
-    padding: 20px 40px;
+    padding: 20px 20px;
     text-align: center;
     overflow-y: scroll;
 }
@@ -87,7 +87,6 @@
 .globalContainer {
     padding: 20px 60px;
     margin-bottom: 40px;
-    overflow-y: scroll;
 }
 
 .containerIcons {

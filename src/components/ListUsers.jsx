@@ -20,6 +20,8 @@ function ListUsers() {
     const [userId, setUserId] = useState('');
     const [user, setUser] = useState();
 
+    console.log(user);
+
     console.log(userId)
 
     useEffect(() => {
@@ -72,17 +74,16 @@ function ListUsers() {
                         users && users.map((user, index) => {
 
                             return (
-                                <>
-                                    <div key={index} style={{display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: 'rgb(240, 240, 240)', borderRadius: "10px", width: "90%", height: "40px", padding: '0 20px', color: "#0dbad8", fontWeight: "bold", marginBottom: "15px", boxShadow: "0 0 8px #ccc", cursor: "pointer"}}>
-                                        <div onClick={() => handleModifyUser(user)} style={{width: "80%", display: "flex", justifyContent: "flex-start", gap: "20px"}}>
+
+                                <div key={index} style={{display: "flex", justifyContent: "space-between", alignItems: "center", backgroundColor: 'rgb(240, 240, 240)', borderRadius: "10px", width: "90%", height: "40px", padding: '0 20px', color: "#0dbad8", fontWeight: "bold", marginBottom: "15px", boxShadow: "0 0 8px #ccc", cursor: "pointer"}}>
+                                    <div onClick={() => handleModifyUser(user)} style={{width: "80%", display: "flex", justifyContent: "flex-start", gap: "20px"}}>
                                             <span >{user.nom}</span>
                                             <span >{user.email}</span>
-                                        </div>
-                                            <button className="delete-button" onClick={() => handleDeleteUser(user._id)} >
-                                                <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/>
-                                            </button>
                                     </div>
-                                </>
+                                        <button className="delete-button" onClick={() => handleDeleteUser(user._id)} >
+                                            <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/>
+                                        </button>
+                                </div>
                             )
                         })
                     }

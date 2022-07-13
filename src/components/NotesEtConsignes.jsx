@@ -2,15 +2,17 @@
  import '../styles/styles.css';
  import { MdDeleteForever } from 'react-icons/md';
  import { MdPublishedWithChanges } from 'react-icons/md';
+import { useForm } from "react-hook-form";
 
-const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
+const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMode }) => {
 
     const { notes, consignes } = client !== undefined && client;
     const [note, setNote] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [modifyNote, setModifyNote] = useState(false);
+    const { register } = useForm();
     
-    function handleSubmit(e) {
+    function handleSubmitNotes(e) {
         e.stopPropagation();
         e.preventDefault();
 /*         setIsLoading(true);*/
@@ -65,8 +67,8 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
         <>        
         {
             client &&
-            <form className="notesEtConsignes" onSubmit={handleSubmit} >
-                <div className="containerColonne width30"> 
+            <form className="notesEtConsignes" onSubmit={handleSubmitNotes} >
+                <div className="containerColonne colonne-notes width30"> 
                     <u>NOTES :</u> 
                     <div className="textZone width100" style={{overflowY: "scroll", maxHeight: "40vh"}}>
                         {
@@ -75,11 +77,11 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
                                 {
                                     modifyNote ?
                                     <div>
-                                        <span className="pastille">🟢</span><input value={note} type='text'/>
+                                        <span style={{fontSize: "0.5rem"}} className="pastille">🟢</span><input value={note} type='text'/>
                                     </div>
                                     :
-                                    <div style={{display: 'flex', width: "50%"}}>
-                                        <span className="pastille">🟢</span><span>{note}</span>
+                                    <div style={{display: "flex", flex: 1, width: "50%", paddingRight: "0.5rem"}}>
+                                        <span style={{fontSize: "0.5rem"}} className="pastille">🟢</span><span>{note}</span>
                                     </div>
 
                                 }
@@ -94,13 +96,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
                         <input onChange={(e) => setNote(e.target.value)} value={note} className="notesEtConsignes__input" type="text" id="notes" defaultValue="" />
                         <button className='btn'>Envoyer</button> 
                     </div>
-                </div>
-                <div className="containerColonne width70"> 
-                    <u>CONSIGNES :</u> 
-                    <div className="textZone width100">
-                        
-                    </div>
-                </div>
+                </div>                
             </form>
         }
         </>

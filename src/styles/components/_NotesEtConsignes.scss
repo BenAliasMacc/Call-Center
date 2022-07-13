@@ -22,7 +22,7 @@
     display: flex;
     justify-content: space-between;
     background-color: white;
-    padding: 0.5rem;
+    padding-block: 0.2rem;
     border-radius: 25px;
     text-align: justify;
     margin-top: 5px;
@@ -45,4 +45,8 @@
     .colorGreen {
         color: green;
     }
+}
+
+.colonne-notes {
+    border-radius: 0 0 0 10px;
 }

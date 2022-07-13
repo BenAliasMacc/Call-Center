@@ -180,6 +180,20 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
       />
     </>
   );
+  const displayConsignes = !editMode ? (
+    <div className="textZone textZone-consignes width100">
+        {consignes}
+    </div>        
+  ) : (
+    <textarea
+      className="textZone textZone-consignes width100"
+      id="consignes"
+      defaultValue={consignes}
+      rows="20"
+      {...register("consignes")}
+    >
+    </textarea>
+  );
 
   const handleCancelButton = (e) => {
     e.preventDefault();    
@@ -226,7 +240,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
 
   return (
     <section className="display-clients-data">        
-        {client !== undefined && <div className="globalContainer width100" onSubmit={handleSubmit(onSubmit)}>           
+        {client !== undefined && <div className="globalContainer width100">           
 
             <header className='headerClient'>
 
@@ -243,7 +257,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
                     </div>
                 </div>
 
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 {isModal ? 
                   <button className="headerClient__close-button" onClick={handleCloseModal} style={{fontSize: "1.5rem"}}>X</button> 
                   :
@@ -289,10 +303,17 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
                     </button>
                   </div>
                 )}
+
+              <div className="containerColonne colonne-consignes"> 
+                    <u>CONSIGNES :</u> 
+                    {displayConsignes}
+              </div>
+
+                
               </form>
             </header>
 
-            {!isModal && <NotesEtConsignes clientId={clientId} token={token} client={client} refresh={refresh} setRefresh={setRefresh}/>}    
+            {!isModal && <NotesEtConsignes editMode={editMode} clientId={clientId} token={token} client={client} refresh={refresh} setRefresh={setRefresh}/>}    
 
         </div>}
 
