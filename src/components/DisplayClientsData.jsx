@@ -13,6 +13,7 @@ import NotesEtConsignes from "./NotesEtConsignes";
 
 const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refresh }) => {
   
+  const userRole = localStorage.getItem("userRole");
   const { deleteClientsModal, setEditClientsModal, auth, setAuth } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
   
@@ -266,7 +267,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
                   <button className="headerClient__close-button" onClick={handleCloseModal} style={{fontSize: "1.5rem"}}>X</button> 
                   :
                   <>
-                    { auth.roles[0] === ROLES.Admin &&
+                    { userRole &&
                       <div className="display-clients-data__buttons-top">
                         <EditButton editMode={editMode} setEditMode={setEditMode} />
                         <DeleteButton clientId={clientId} />

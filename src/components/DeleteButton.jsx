@@ -25,9 +25,7 @@ const DeleteButton = ({ clientId }) => {
             { userRole === ROLES.Admin &&
                 <button className="delete-button" onClick={handleOpenModal}>
                     <MdDeleteForever style={{color: "red", width: "30px", height: '30px', cursor: "pointer"}}/>
-                </button>
-                
-                
+                </button>               
             }
 
             { isLoading && 

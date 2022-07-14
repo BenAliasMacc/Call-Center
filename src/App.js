@@ -23,14 +23,14 @@ function App() {
         {/* public routes */}
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
-        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Home />} /> */}
         {/* <Route path="new-clients" element={<NewClients />} /> */}
         {/* <Route path="gestion-users" element={<GestionUsers />} /> */}
         {/* <Route path=":id" element={<ClientsCard />} /> */}
 
         {/* we want to protect these routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="new-clients" element={<NewClients />} />
           <Route path=":id" element={<ClientsCard />} />
         </Route>
