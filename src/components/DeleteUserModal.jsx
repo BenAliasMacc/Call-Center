@@ -24,7 +24,7 @@ const DeleteUserModal = (props) => {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success == "1") {
+            if (data.success === "1") {
 
                 setIsLoading(false);
                 props.setRefreshList(!props.refreshList);
