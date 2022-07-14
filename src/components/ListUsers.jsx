@@ -7,9 +7,12 @@ import Inscription from "../components/Inscription";
 import BackHomeLink from "../components/BackHomeLink";
 import DeleteUserModal from "./DeleteUserModal";
 import ModificationUSer from './ModificationUser';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function ListUsers() {
 
+    const location = useLocation();
+    const navigate = useNavigate();
     const [users, setUsers] = useState();
     const token = localStorage.getItem("token");
     const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +40,11 @@ function ListUsers() {
                     Accept: "application/json, text/plain"
               }
             });
-            setUsers(response.data);
+            response.data.success === -1 ? 
+                navigate('/login', {state: { from: location }, replace: true })
+            : (
+                setUsers(response.data)
+            )            
             setIsLoading(false);
           } catch (err) {
                 console.log(err)

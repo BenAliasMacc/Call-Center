@@ -23,20 +23,24 @@ const NewClients = () => {
     const createNewClients = async() => {
 
           try {
-              const response = await axios.post(`/clients/createClient`,
-                JSON.stringify(data),
-                {
-                  headers: 
+                const response = await axios.post(`/clients/createClient`,
+                    JSON.stringify(data),
                     {
-                      'Content-Type': 'application/json',
-                      'Authorization': `Bearer ${token}`,
-                      'Accept': 'application/json, text/plain,'
-                    },
-                    // withCredentials: true
-                }
-              );
-              setIsLoading(false);
-              navigate(from, { replace: true });
+                    headers: 
+                        {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                        Accept: 'application/json, text/plain,'
+                        },
+                        // withCredentials: true
+                    }
+                );
+                response.data.success === -1 ? 
+                    navigate('/login', {state: { from: location }, replace: true })
+                : (
+                    navigate(from, { replace: true })
+                )
+                setIsLoading(false);
           } catch (err) {
             console.log();
           }

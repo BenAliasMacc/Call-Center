@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 import '../styles/modalAnimation.css';
 import '../styles/styles.css';
 
 function ModificationUser(props) {
+
+    const location = useLocation();
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const token = localStorage.getItem("token");
     const [isLoading, setIsLoading] = useState(false);
@@ -35,8 +39,12 @@ function ModificationUser(props) {
         })
         .then(response => response.json())
         .then(data => {
-            props.setOpenModification(false);
-            props.setRefreshList(!props.refreshList);
+            if (data.success === -1)  {
+                navigate('/login', {state: { from: location }, replace: true })
+            } else {
+                props.setOpenModification(false)
+                props.setRefreshList(!props.refreshList)
+            }
             setIsLoading(false); 
         })
         .catch(error =>console.log(error))

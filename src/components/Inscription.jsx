@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "../api/axios";
 import Loader from '../components/Loader';
 import '../styles/modalAnimation.css';
 import '../styles/styles.css';
 
 function Inscription(props) {
+
+    const navigate = useNavigate();
+    const location = useLocation();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const token = localStorage.getItem("token");
     const [isLoading, setIsLoading] = useState(false);
@@ -35,10 +39,13 @@ function Inscription(props) {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
-            props.setIsCreated(false);
-            props.setRefreshList(!props.refreshList);
-            setIsLoading(false);
+            if (data.success === -1)  {
+                navigate('/login', {state: { from: location }, replace: true })
+            } else {
+                props.setIsCreated(false)
+                props.setRefreshList(!props.refreshList)
+            } 
+            setIsLoading(false)
         })
         .catch(error =>console.log(error))
 

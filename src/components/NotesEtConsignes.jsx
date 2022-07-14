@@ -2,14 +2,12 @@
  import '../styles/styles.css';
  import { MdDeleteForever } from 'react-icons/md';
  import { MdPublishedWithChanges } from 'react-icons/md';
-import { useForm } from "react-hook-form";
 
-const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMode }) => {
+const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
 
-    const { notes, consignes } = client !== undefined && client;
+    const { notes } = client !== undefined && client;
     const [inputNote, setInputNote] = useState('');
     const [notesArray, setNotesArray] = useState([]);
-    const { register } = useForm();
     const [arrayOfIndex, setArrayOfIndex] = useState([]);
 
     useEffect(() => {
@@ -43,7 +41,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
         } 
     };
 
-    function handleChangeNote(e, input, index) {
+    function handleChangeNote(e, index) {
 
         let newArray = notesArray;
         newArray[index] = e.target.value;
@@ -141,7 +139,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
                         }
                     </div>
                     <div className="containerInput">
-                        <input onChange={(e) => setInputNote(e.target.value)} value={inputNote} className="notesEtConsignes__input" type="text" id="notes" defaultValue="" />
+                        <input onChange={(e) => setInputNote(e.target.value)} value={inputNote} className="notesEtConsignes__input" type="text" id="notes" />
                         <button className='btn'>Envoyer</button> 
                     </div>
                 </div>                
