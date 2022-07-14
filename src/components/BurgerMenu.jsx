@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import logoutButton from "../assets/icons/log-out.svg";
+import useAuth from '../hooks/useAuth';
 
 const BurgerMenu = ({ logout }) => {
 
+    const userRole = localStorage.getItem("userRole");
     const [showNav, setShowNav] = useState(false)
+
+    const ROLES = {
+        'User': "62cf5893bb421ce8fa8529ae",
+        'Admin': "62ceb80a29ad61b74e971ae3" || "62cea7cb29ad61b74e971aa6"
+    }
 
     const handleBurgerMenu = () => {
         setShowNav(!showNav)
@@ -19,7 +26,9 @@ const BurgerMenu = ({ logout }) => {
             <ul className='header__navbar__list'>
                 <li className='header__navbar__list__link'><Link to="/"><p>Accueil</p></Link></li>
                 <li className='header__navbar__list__link'><Link to="/new-clients"><p>Ajouter un client</p></Link></li>
-                <li className='header__navbar__list__link'><Link to="/gestion-users"><p>Gestion des users</p></Link></li>
+                { (userRole === ROLES.Admin) &&
+                    <li className='header__navbar__list__link'><Link to="/gestion-users"><p>Gestion des users</p></Link></li>
+                }
                 <li className='header__navbar__list__link'>
                     <button className="logout-button" onClick={logout}><img src={logoutButton} alt="déconnexion" />Déconnexion</button>
                 </li>

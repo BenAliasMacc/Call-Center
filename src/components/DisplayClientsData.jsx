@@ -32,9 +32,13 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     site,
     crm,
     consignes,
-    notes,
     langue
   } = client !== undefined && client;
+
+  const ROLES = {
+    'User': "62cf5893bb421ce8fa8529ae",
+    'Admin': "62ceb80a29ad61b74e971ae3" ||  "62cea7cb29ad61b74e971aa6"
+  } 
 
   const displayPrenom = !editMode ? (
     prenom
@@ -261,10 +265,15 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
                 {isModal ? 
                   <button className="headerClient__close-button" onClick={handleCloseModal} style={{fontSize: "1.5rem"}}>X</button> 
                   :
-                  <div className="display-clients-data__buttons-top">
-                    <EditButton editMode={editMode} setEditMode={setEditMode} />
-                    <DeleteButton clientId={clientId} />
-                  </div>    
+                  <>
+                    { auth.roles[0] === ROLES.Admin &&
+                      <div className="display-clients-data__buttons-top">
+                        <EditButton editMode={editMode} setEditMode={setEditMode} />
+                        <DeleteButton clientId={clientId} />
+                      </div>
+                    }                   
+                  </>
+
                 }
                 <div className="headerClient__input-container" style={{}}>
                   <div className="flex headerSide" >
@@ -303,11 +312,12 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
                     </button>
                   </div>
                 )}
-
-              <div className="containerColonne colonne-consignes"> 
-                    <u>CONSIGNES :</u> 
-                    {displayConsignes}
-              </div>
+              {!isModal && 
+                <div className="containerColonne colonne-consignes"> 
+                      <u>CONSIGNES :</u> 
+                      {displayConsignes}
+                </div>
+              }
 
                 
               </form>

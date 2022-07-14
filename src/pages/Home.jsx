@@ -14,6 +14,7 @@ const Home = () => {
     const [clients, setClients] = useState();   
     const [refresh, setRefresh] = useState(false)
       
+    console.log(auth);
 
     useEffect(() => {
         const getClients = async () => {

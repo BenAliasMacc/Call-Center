@@ -73,31 +73,31 @@ const columns = [
   { 
     field: 'id', 
     headerName: 'Identifiant', 
-    flex: 1,
+    flex: 2,
     renderCell: (params) => (<Link to={`${params.row._id}`}>{params.value}</Link>)
   },
-  { field: 'nom', headerName: 'Nom', flex: 1 },
-  { field: 'prenom', headerName: 'Prénom', flex: 1 },
-  { field: 'societe', headerName: 'Société', flex: 1 },
-  { field: 'telephone', headerName: 'Téléphone', flex: 1 },
+  { field: 'nom', headerName: 'Nom', flex: 2 },
+  { field: 'prenom', headerName: 'Prénom', flex: 2 },
+  { field: 'societe', headerName: 'Société', flex: 2 },
+  { field: 'telephone', headerName: 'Téléphone', flex: 2 },
   { 
     field: 'mail', 
     headerName: 'Email', 
-    flex: 2,
+    flex: 3,
     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`mailto:${params.value}`}>{params.value}</a>)
   },
   { 
     field: 'site', 
     headerName: 'Lien', 
-    flex: 2,
+    flex: 3,
     renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
   },
   {
     field: 'activite',
-    headerName: 'icons',
+    renderHeader: () => (<div style={{width: "100%!important"}}></div>),
     flex: 1,
     renderCell: (params) => (
-        <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%"}}>
+        <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%" }}>
             <div>
               <OpenModal clientId={params.row._id} />              
             </div>

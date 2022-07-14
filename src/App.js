@@ -1,19 +1,18 @@
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Layout from './components/Layout';
-import Admin from './components/Admin';
 import Missing from './pages/Missing';
 import Unauthorized from './components/Unauthorized';
 import RequireAuth from './components/RequireAuth';
-import { Routes, Route, useParams } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import NewClients from './pages/NewClients';
 import GestionUsers from './pages/GestionUsers';
-import CustomerCard from './pages/ClientsCard';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import ClientsCard from './pages/ClientsCard';
 
 const ROLES = {
-  'User': '62b08ba33f8191dd23368c83',
-  'Admin': 5150
+  'User': "62cf5893bb421ce8fa8529ae",
+  'Admin': "62ceb80a29ad61b74e971ae3" || "62cea7cb29ad61b74e971aa6"
 }
 
 function App() {
@@ -25,17 +24,19 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
         <Route path="/" element={<Home />} />
-        <Route path="new-clients" element={<NewClients />} />
-        <Route path="gestion-users" element={<GestionUsers />} />
-        <Route path=":id" element={<CustomerCard />} />
+        {/* <Route path="new-clients" element={<NewClients />} /> */}
+        {/* <Route path="gestion-users" element={<GestionUsers />} /> */}
+        {/* <Route path=":id" element={<ClientsCard />} /> */}
 
         {/* we want to protect these routes */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+        <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}>
           {/* <Route path="/" element={<Home />} /> */}
+          <Route path="new-clients" element={<NewClients />} />
+          <Route path=":id" element={<ClientsCard />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="admin" element={<Admin />} />
+          <Route path="gestion-users" element={<GestionUsers />} />
         </Route>
 
         {/* catch all */}
