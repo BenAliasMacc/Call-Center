@@ -53,7 +53,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
                    "Accept": "application/json, text/plain,"
                },
                body: JSON.stringify({
-                   notes: [...notes, inputNote]
+                   notes: [...notesArray, inputNote]
                })
            })
            .then(response => response.json())
