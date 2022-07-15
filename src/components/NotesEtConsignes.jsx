@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import '../styles/styles.css';
 import { MdDeleteForever } from 'react-icons/md';
 import { MdPublishedWithChanges } from 'react-icons/md';
+import { BsCheck } from 'react-icons/bs';
 import { useForm } from "react-hook-form";
 import Loader from '../components/Loader';
 
@@ -14,6 +15,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
    const [arrayOfIndex, setArrayOfIndex] = useState([]);
    const [newRefresh, setNewRefresh] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
+   const [isChangeIcon, setIsChangeIcon] = useState(false);
 
    useEffect(() => {
        setNotesArray([...notes]); 
@@ -68,9 +70,9 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
        let newArray = [...notesArray]; 
        newArray[index] = e.target.value; 
        setNotesArray(newArray);
+       setIsChangeIcon(true);
    }
 
-   /*test */ 
    function deleteNote(index) {
         setIsLoading(true);
        let newArray = notes;
@@ -99,33 +101,40 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
    function handleModifyNote(index, note) {
 
     if (arrayOfIndex.includes(index)) {
-        setIsLoading(true);
+
         let copyOfArray = [...arrayOfIndex];
         let indexOfNote = copyOfArray.indexOf(index);
         copyOfArray.splice(indexOfNote, 1);
         setArrayOfIndex(copyOfArray);
 
-        fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json, text/plain, */*', 
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                notes: notesArray
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            setIsLoading(false);
-            if (data.success === -1)  {
-/*                     navigate('/login', {state: { from: location }, replace: true })
-*/                } else {
+        if (notes[index] != notesArray[index]) { 
+        
+            setIsLoading(true);
+    
+            fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*', 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    notes: notesArray
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                setIsLoading(false);
+                if (data.success === -1)  {
+                        /* navigate('/login', {state: { from: location }, replace: true }) */
+                   } else {
+                }
+            })
+            .catch(error =>console.log(error))
             }
-        })
-        .catch(error =>console.log(error))
-           
+
+            setIsChangeIcon(false);
+
         } else {
             let copyOfArray = [...arrayOfIndex];
             copyOfArray.push(index);
@@ -145,7 +154,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
                            notesArray.map((note, index) => 
                            <div key={index} className="notes">
                                {
-                                   arrayOfIndex.includes(index) ?
+                                   arrayOfIndex.includes(index) ? 
                                    <div>
                                        <span style={{fontSize: "0.5rem"}} className="pastille">🟢</span><input onChange={(e) => handleChangeNote(e, index)} value={notesArray[index]} type='text'/>
                                    </div>
@@ -155,7 +164,13 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
                                    </div>
                                }
                                <div>
-                                   <MdPublishedWithChanges onClick={() => handleModifyNote(index, note)} className='iconNotes colorGreen' style={{marginRight: "10px"}} />
+                                {
+                                    isChangeIcon && arrayOfIndex.includes(index) ?
+                                    <BsCheck onClick={() => handleModifyNote(index, note)} className='iconNotes colorGreen' style={{marginRight: "10px"}} />
+                                    : 
+                                    <MdPublishedWithChanges onClick={() => handleModifyNote(index, note)} className='iconNotes colorGreen' style={{marginRight: "10px"}} />
+
+                                }
                                    <MdDeleteForever className='iconNotes colorRed' onClick={() => deleteNote(index)}/>
                                </div>
                            </div>)
