@@ -24,8 +24,6 @@ function ModificationUser(props) {
 
     const onSubmit = data => {
 
-        console.log(data)
-
         setIsLoading(true);
 
         fetch(`https://calldirect.herokuapp.com/api/users/modify/${props.user._id}`, {
@@ -40,10 +38,11 @@ function ModificationUser(props) {
         .then(response => response.json())
         .then(data => {
             if (data.success === -1)  {
-                navigate('/login', {state: { from: location }, replace: true })
+                localStorage.clear();
+                navigate('/login', {state: { from: location }, replace: true });
             } else {
-                props.setOpenModification(false)
-                props.setRefreshList(!props.refreshList)
+                props.setOpenModification(false);
+                props.setRefreshList(!props.refreshList);
             }
             setIsLoading(false); 
         })
@@ -64,11 +63,17 @@ function ModificationUser(props) {
                     }
                     
                     <label htmlFor="password">Mot de passe <span className="mandatory">*</span></label>
-                    <input type="password" placeholder='******' id="password"{...register("password", {required: true})}/>
+                    <input type="password" placeholder="******" id="password"{...register("password", {required: true, maxLength: 20})}/>
                     {
-                        errors?.password?.type === "required" && (
+                        errors?.nom?.type === "required" && (
                         <p className="error-message">Ce champ doit être complété</p>
-                    )}   
+                    )}
+                    {
+                        errors?.nom?.type === "maxLength" && (
+                        <p className="error-message">
+                            Le nombre de caractéres autorisé est de maximum 20
+                        </p>
+                    )}      
 
                     <label htmlFor="nom">Nom <span className="mandatory">*</span></label>
                     <input type="text" id="nom" defaultValue={props.user.nom} {...register("nom", { required: true })}/>
@@ -80,13 +85,13 @@ function ModificationUser(props) {
                     <label htmlFor="groupe">Rôle <span className="mandatory">*</span></label>
                         {
                             props.user.groupe === "admin" ?
-                            <select type="radio" id="groupe" defaultValue="admin" {...register("groupe", {required: true})}>
+                            <select type="radio" id="groupe" {...register("groupe", {required: true})}>
                                 <option value="user">user</option>
-                                <option value="admin">admin</option>
+                                <option selected value="admin">admin</option>
                             </select>
                             :
-                            <select type="radio" id="groupe" defaultValue="user" {...register("groupe", {required: true})}>
-                                <option value="user">user</option>
+                            <select type="radio" id="groupe" {...register("groupe", {required: true})}>
+                                <option selected value="user">user</option>
                                 <option value="admin">admin</option>
                             </select>
                         }
