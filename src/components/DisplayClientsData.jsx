@@ -37,8 +37,8 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
   } = client !== undefined && client;
 
   const ROLES = {
-    'User': "62cf5893bb421ce8fa8529ae",
-    'Admin': "62ceb80a29ad61b74e971ae3" ||  "62cea7cb29ad61b74e971aa6"
+    'User': "0",
+    'Admin': "1"
   } 
 
   const displayPrenom = !editMode ? (
@@ -267,7 +267,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
                   <button className="headerClient__close-button" onClick={handleCloseModal} style={{fontSize: "1.5rem"}}>X</button> 
                   :
                   <>
-                    { userRole &&
+                    { userRole === ROLES.Admin &&
                       <div className="display-clients-data__buttons-top">
                         <EditButton editMode={editMode} setEditMode={setEditMode} />
                         <DeleteButton clientId={clientId} />
