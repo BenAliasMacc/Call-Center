@@ -70,6 +70,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
        setNotesArray(newArray);
    }
 
+   /*test */ 
    function deleteNote(index) {
         setIsLoading(true);
        let newArray = notes;
