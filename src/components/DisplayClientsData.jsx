@@ -126,7 +126,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     <>
       <input
         className="headerClient__input"
-        type="text"
+        type="tel"
         id="telephone"
         defaultValue={telephone}
         {...register("telephone")}
