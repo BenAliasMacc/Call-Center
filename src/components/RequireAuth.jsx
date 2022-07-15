@@ -2,11 +2,14 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const RequireAuth = ({ allowedRoles }) => {
+    const userRole = localStorage.getItem("userRole");
     const { auth } = useAuth();
     const location = useLocation();
+    console.log(auth.roles);
+    console.log(allowedRoles);
 
     return (
-        auth?.roles?.find(role => allowedRoles?.includes(role))
+        allowedRoles?.includes(userRole)
             ? <Outlet />
             : auth?.user
                 ? <Navigate to="/unauthorized" state={{ from: location }} replace />

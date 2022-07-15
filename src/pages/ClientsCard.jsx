@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "../api/axios";
 import DisplayClientsData from "../components/DisplayClientsData";
 import Header from "../components/Header";
@@ -7,6 +7,8 @@ import Loader from '../components/Loader';
 
 const ClientsCard = () => {
 
+  const location = useLocation();
+  const navigate = useNavigate();
   const clientId = useParams().id;
   const [refresh, setRefresh] = useState(false)
   const token = localStorage.getItem("token");
@@ -27,8 +29,12 @@ const ClientsCard = () => {
           }
           // withCredentials: true
         });
-        setClient(response.data);
-        setIsLoading(false);
+        response.data.success === -1 ? 
+          navigate('/login', {state: { from: location }, replace: true })
+        : (
+          setClient(response.data)
+        )
+        setIsLoading(false)
       } catch (err) {}
     };
 
