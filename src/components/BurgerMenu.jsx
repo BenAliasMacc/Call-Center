@@ -9,8 +9,8 @@ const BurgerMenu = ({ logout }) => {
     const [showNav, setShowNav] = useState(false)
 
     const ROLES = {
-        'User': "62cf5893bb421ce8fa8529ae",
-        'Admin': "62ceb80a29ad61b74e971ae3" || "62cea7cb29ad61b74e971aa6"
+        'User': "0",
+        'Admin': "1"
     }
 
     const handleBurgerMenu = () => {
@@ -42,4 +42,4 @@ const BurgerMenu = ({ logout }) => {
     )
 }
 
-export default BurgerMenu
+export default BurgerMenu;
