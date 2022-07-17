@@ -154,6 +154,11 @@ const NewClients = () => {
                     {...register("crm")}
                     />
 
+                    <label htmlFor="consignes">Consignes</label>
+                    <textarea id="consignes"
+                    {...register("consignes")}
+                    />
+
                 </fieldset>
 
                 <fieldset>

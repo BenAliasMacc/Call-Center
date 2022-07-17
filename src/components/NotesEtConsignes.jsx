@@ -15,8 +15,6 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
    }, []);
    
    function handleSubmitNotes(e) {
-       e.stopPropagation();
-       e.preventDefault();
 
        if (notes) {
            fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
@@ -33,8 +31,8 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh }) => {
            .then(response => response.json())
            .then(data => {
                setInputNote('');
-            //    setRefresh(!refresh);
-               window.location.reload();
+            setRefresh(!refresh);
+            //    window.location.reload();
            })           
            .catch(error => console.log(error));
        } 
