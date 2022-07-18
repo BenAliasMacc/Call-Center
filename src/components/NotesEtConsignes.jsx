@@ -74,8 +74,8 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
    }
 
    function deleteNote(index) {
-        setIsLoading(true);
-       let newArray = notes;
+        setIsLoading(true); 
+       let newArray = [...notesArray];
        newArray.splice(index, 1);
 
        fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {

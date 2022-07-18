@@ -3,6 +3,7 @@ import useAuth from "../hooks/useAuth";
 
 const RequireAuth = ({ allowedRoles }) => {
     const userRole = localStorage.getItem("userRole");
+    const token = localStorage.getItem("token");
     const { auth } = useAuth();
     const location = useLocation();
     console.log(typeof(allowedRoles[0]));
@@ -13,7 +14,10 @@ const RequireAuth = ({ allowedRoles }) => {
             ? <Outlet />
             : auth?.user
                 ? <Navigate to="/unauthorized" state={{ from: location }} replace />
-                : <Navigate to="/" state={{ from: location }} replace />
+                : token ?
+                    <Navigate to="/" state={{ from: location }} replace />
+                :
+                    <Navigate to="/login" state={{ from: location }} replace />
     );
 }
 
