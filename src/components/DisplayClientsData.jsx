@@ -20,7 +20,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
   const [editMode, setEditMode] = useState(booleen);
   const [isModal] = useState(booleen);
   const [isLoading, setIsLoading] = useState(false);
-
+  
   const {
     nom,
     prenom,
@@ -35,6 +35,16 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     consignes,
     langue
   } = client !== undefined && client;
+
+  console.log(typeof(consignes.toString()));
+
+  const test = consignes.toString()
+
+  console.log(test);
+
+  const displayConsigne = consignes && test.replace('\\n', '<br>');
+
+  console.log(displayConsigne);
 
   const ROLES = {
     'User': "0",
@@ -187,7 +197,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
   );
   const displayConsignes = !editMode ? (
     <div className="textZone textZone-consignes width100">
-        {consignes}
+        {consignes.map(consigne => <p style={{whiteSpace: "pre-line"}}>{consigne}</p>)}
     </div>        
   ) : (
     <textarea
@@ -200,7 +210,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     </textarea>
   );
 
-  const handleCancelButton = (e) => {
+  const handleCancelButton = (e) => {Q
     e.preventDefault();    
     setEditMode(!editMode);    
   };
