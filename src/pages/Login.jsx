@@ -45,7 +45,6 @@ const Login = () => {
         
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userRole', response.data.groupe);
-
             console.log(response.data);
             const accessToken = response?.data?.token;
             const roles = [response?.data?.userId];

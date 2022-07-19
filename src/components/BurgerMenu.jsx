@@ -42,4 +42,4 @@ const BurgerMenu = ({ logout }) => {
     )
 }
 
-export default BurgerMenu
+export default BurgerMenu;
