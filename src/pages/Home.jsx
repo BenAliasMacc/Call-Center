@@ -33,11 +33,12 @@ const Home = () => {
                         // withCredentials: true
                     }
                 )
-                response.data.success === -1 ? 
+                if(response.data.success === -1) {
+                    localStorage.clear();
                     navigate('/login', {state: { from: location }, replace: true })
-                : (
+                } else {
                     setClients(response.data)
-                )
+                }
                 setIsLoading(false)
             } catch (err) {
                 console.log(err);

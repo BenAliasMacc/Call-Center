@@ -30,13 +30,13 @@ function App() {
 
         {/* we want to protect these routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}>
-          <Route path="/" element={<Home />} />
-          <Route path="new-clients" element={<NewClients />} />
+          <Route path="/" element={<Home />} />          
           <Route path=":id" element={<ClientsCard />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
           <Route path="gestion-users" element={<GestionUsers />} />
+          <Route path="new-clients" element={<NewClients />} />
         </Route>
 
         {/* catch all */}

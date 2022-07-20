@@ -10,12 +10,15 @@ import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 import DeleteClientsModal from "./DeleteClientsModal";
 import NotesEtConsignes from "./NotesEtConsignes";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refresh }) => {
   
   const userRole = localStorage.getItem("userRole");
   const { deleteClientsModal, setEditClientsModal, auth, setAuth } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
+  const location = useLocation();
   
   const [editMode, setEditMode] = useState(booleen);
   const [isModal] = useState(booleen);
@@ -240,11 +243,15 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
             }
             // withCredentials: true
           }
-        );
+        ); 
+        if (data.success === -1)  {
+            localStorage.clear();
+            navigate('/login', {state: { from: location }, replace: true });
+        }
         setEditClientsModal(false);        
         setRefresh(!refresh);
-        setEditMode(false);      
-        setIsLoading(false);
+        setEditMode(false);
+        setIsLoading(false);        
       } catch (err) {
         console.log();
       }

@@ -35,11 +35,13 @@ const NewClients = () => {
                         // withCredentials: true
                     }
                 );
-                response.data.success === -1 ? 
+                if (response.data.success === -1) {
                     navigate('/login', {state: { from: location }, replace: true })
-                : (
-                    navigate(from, { replace: true })
-                )
+                }
+                if (response.data.success === -2) {
+                    navigate('/', {state: { from: location }, replace: true })
+                }
+                navigate(from, { replace: true })                
                 setIsLoading(false);
           } catch (err) {
             console.log();
@@ -145,7 +147,7 @@ const NewClients = () => {
                     )}
 
                     <label htmlFor="site">Site web</label>
-                    <input type='url' id="site" preload="Texte initial" 
+                    <input type='url' id="site"
                     {...register("site")}
                     />
 

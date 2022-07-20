@@ -39,12 +39,17 @@ function Inscription(props) {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success === -1)  {
-                navigate('/login', {state: { from: location }, replace: true })
-            } else {
+            if(data.success === 1){
                 props.setIsCreated(false)
                 props.setRefreshList(!props.refreshList)
-            } 
+            }   
+            if (data.success === -1)  {
+                localStorage.clear();
+                navigate('/login', {state: { from: location }, replace: true });
+            }
+            if(data.success === -2) {
+                navigate('/', {state: { from: location }, replace: true });
+            }
             setIsLoading(false)
         })
         .catch(error =>console.log(error))

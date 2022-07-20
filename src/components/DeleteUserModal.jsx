@@ -9,6 +9,8 @@ const DeleteUserModal = (props) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleDeleteClient = () => { 
 
@@ -24,12 +26,18 @@ const DeleteUserModal = (props) => {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success === "1") {
-
-                setIsLoading(false);
+            if(data.success === 1){
                 props.setRefreshList(!props.refreshList);
                 props.setIsDeleteUserModal(false);
+            }   
+            if (data.success === -1)  {
+                localStorage.clear();
+                navigate('/login', {state: { from: location }, replace: true });
             }
+            if(data.success === -2) {
+                navigate('/', {state: { from: location }, replace: true });
+            }      
+            setIsLoading(false);
         })
         .catch(error =>console.log(error))
     };

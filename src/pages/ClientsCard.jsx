@@ -28,14 +28,19 @@ const ClientsCard = () => {
             Accept: "application/json, text/plain,"
           }
           // withCredentials: true
-        });
-        response.data.success === -1 ? 
-          navigate('/login', {state: { from: location }, replace: true })
-        : (
-          setClient(response.data)
-        )
-        setIsLoading(false)
-      } catch (err) {}
+        });        
+          
+        if (response.data.success === -1)  {
+            localStorage.clear();
+            navigate('/login', {state: { from: location }, replace: true });
+        }
+        setClient(response.data);
+        setIsLoading(false);
+      } catch (err) {
+        if (err.response?.status === 404) {
+          navigate('*', {state: { from: location }, replace: true });
+        }
+      }
     };
 
     getClients();

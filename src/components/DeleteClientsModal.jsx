@@ -36,11 +36,19 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
                 // withCredentials: true
             }
             );
-            setRefresh(!refresh)
+            if(response.data.success === 1){
+                setRefresh(!refresh)
+                setDeleteClientsModal(false);            
+                navigate(from, { replace: true })
+            }   
+            if (response.data.success === -1)  {
+                localStorage.clear();
+                navigate('/login', {state: { from: location }, replace: true });
+            }
+            if(response.data.success === -2) {
+                navigate('/', {state: { from: location }, replace: true });
+            }      
             setIsLoading(false);
-            setDeleteClientsModal(false);            
-            navigate(from, { replace: true })
-            // window.location.reload();
         } catch (err) {
             console.log();
         }

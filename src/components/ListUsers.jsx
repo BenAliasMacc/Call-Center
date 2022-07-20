@@ -39,12 +39,15 @@ function ListUsers() {
                     Authorization: `Bearer ${token}`,
                     Accept: "application/json, text/plain"
               }
-            });
-            response.data.success === -1 ? 
-                navigate('/login', {state: { from: location }, replace: true })
-            : (
-                setUsers(response.data)
-            )            
+            });   
+            if (response.data.success === -1)  {
+                localStorage.clear();
+                navigate('/login', {state: { from: location }, replace: true });
+            }
+            if(response.data.success === -2) {
+                navigate('/', {state: { from: location }, replace: true });
+            } 
+            setUsers(response.data);          
             setIsLoading(false);
           } catch (err) {
                 console.log(err)

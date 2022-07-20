@@ -37,11 +37,16 @@ function ModificationUser(props) {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.success === -1)  {
-                navigate('/login', {state: { from: location }, replace: true })
-            } else {
-                props.setOpenModification(false)
+            if(data.success === 1){
+                closeModale();
                 props.setRefreshList(!props.refreshList)
+            }   
+            if (data.success === -1)  {
+                localStorage.clear();
+                navigate('/login', {state: { from: location }, replace: true });
+            }
+            if(data.success === -2) {
+                navigate('/', {state: { from: location }, replace: true });
             }
             setIsLoading(false); 
         })
