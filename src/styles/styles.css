@@ -73,6 +73,11 @@
     overflow-y: scroll;
     z-index: 1;
 }
+@media screen and (max-height: 900px) {   
+    .containerColonne {       
+        height: 450px;
+    }
+}
 
 .textZone {
     padding: 10px;
@@ -84,11 +89,6 @@
 .btn {
     border-radius: 5px;
     background-color: rgb(13, 186, 216);
-}
-
-.globalContainer {
-    padding: 20px 60px;
-    margin-bottom: 40px;
 }
 
 .containerIcons {

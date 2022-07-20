@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { AuthProvider } from "../context/AuthProvider";
 import useAuth from "../hooks/useAuth";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";

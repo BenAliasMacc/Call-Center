@@ -21,23 +21,31 @@
 .notes {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: white;
     padding-block: 0.2rem;
     border-radius: 25px;
     text-align: justify;
     margin-top: 5px;
     font-size: 0.8rem;
-
+    &__input {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        margin-right: 5px;
+        input {
+            font-size: 0.8rem;
+            padding: 0.3rem;
+        }
+    }
     .pastille {
         margin-right: 5px;
     }
-
     .iconNotes {
         width: 15px;
         height: 15px;
         cursor: pointer;
     }
-
     .colorRed {
         color: red;
     }

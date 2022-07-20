@@ -4,7 +4,10 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    padding: 1rem;
+    padding-inline: 1rem;
+    @media screen and (max-height: 900px) {
+        justify-content: flex-end;
+    }
     &--container {
         width: 100%;
         height: 100%;
@@ -14,18 +17,6 @@
         border-bottom: 1px solid #ccc;
         box-shadow: 0 0 8px #ccc;
         border-radius: 0 0 5px 5px;        
-    }
-    &__buttons {
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-        gap: 2rem;
-        &__submit {
-            background-color: $tertiaryColor;
-        }
-        &__cancel {
-            color: $tertiaryColor;
-        }
     }
     & table {
         margin: 0 auto;

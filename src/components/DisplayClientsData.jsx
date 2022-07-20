@@ -210,7 +210,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     </textarea>
   );
 
-  const handleCancelButton = (e) => {Q
+  const handleCancelButton = (e) => {
     e.preventDefault();    
     setEditMode(!editMode);    
   };

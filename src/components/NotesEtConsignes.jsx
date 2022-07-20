@@ -6,12 +6,11 @@ import { BsCheck } from 'react-icons/bs';
 import { useForm } from "react-hook-form";
 import Loader from '../components/Loader';
 
-const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMode }) => {
+const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
 
-   const { notes, consignes } = client !== undefined && client;
+   const { notes } = client !== undefined && client;
    const [inputNote, setInputNote] = useState('');
    const [notesArray, setNotesArray] = useState([]);
-   const { register } = useForm();
    const [arrayOfIndex, setArrayOfIndex] = useState([]);
    const [newRefresh, setNewRefresh] = useState(false);
    const [isLoading, setIsLoading] = useState(false);
@@ -106,6 +105,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
         let indexOfNote = copyOfArray.indexOf(index);
         copyOfArray.splice(indexOfNote, 1);
         setArrayOfIndex(copyOfArray);
+        console.log(arrayOfIndex);
 
         if (notes[index] != notesArray[index]) { 
         
@@ -149,13 +149,13 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
            <form className="notesEtConsignes" onSubmit={handleSubmitNotes} >
                <div className="containerColonne colonne-notes width30"> 
                    <u>NOTES :</u> 
-                   <div className="textZone width100" style={{overflowY: "scroll", maxHeight: "40vh"}}>
+                   <div className="textZone width100" style={{overflowY: "scroll"}}>
                        {
                            notesArray.map((note, index) => 
                            <div key={index} className="notes">
                                {
                                    arrayOfIndex.includes(index) ? 
-                                   <div>
+                                   <div className="notes__input">
                                        <span style={{fontSize: "0.5rem"}} className="pastille">🟢</span><input onChange={(e) => handleChangeNote(e, index)} value={notesArray[index]} type='text'/>
                                    </div>
                                    :
