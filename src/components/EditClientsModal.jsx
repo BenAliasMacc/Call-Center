@@ -26,16 +26,14 @@ const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
               }
               // withCredentials: true
             });
-            if(response.data.success === 1){
-              setClient(response.data);
-            }   
             if (response.data.success === -1)  {
                 localStorage.clear();
                 navigate('/login', {state: { from: location }, replace: true });
             }
             if(response.data.success === -2) {
                 navigate('/', {state: { from: location }, replace: true });
-            }            
+            }
+            setClient(response.data)           
             setIsLoading(false);
           } catch (err) {}
         };

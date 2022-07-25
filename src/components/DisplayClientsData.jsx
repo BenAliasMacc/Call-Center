@@ -39,16 +39,6 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     langue
   } = client !== undefined && client;
 
-  console.log(typeof(consignes.toString()));
-
-  const test = consignes.toString()
-
-  console.log(test);
-
-  const displayConsigne = consignes && test.replace('\\n', '<br>');
-
-  console.log(displayConsigne);
-
   const ROLES = {
     'User': "0",
     'Admin': "1"
