@@ -104,3 +104,39 @@
     border-radius: 10px;
     text-align: center;
 }
+
+.modalMessage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1100;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 30%;
+    height: 400px;
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.btnSms {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    height: 40px;
+    background-color:rgb(13, 186, 216);
+    border-radius: 10px;
+    margin-top: 20px;
+}
