@@ -10,20 +10,20 @@ import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 import DeleteClientsModal from "./DeleteClientsModal";
 import NotesEtConsignes from "./NotesEtConsignes";
-import { useLocation, useNavigate } from "react-router-dom";
 
 const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refresh }) => {
   
   const userRole = localStorage.getItem("userRole");
   const { deleteClientsModal, setEditClientsModal, auth, setAuth } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const navigate = useNavigate();
-  const location = useLocation();
   
   const [editMode, setEditMode] = useState(booleen);
   const [isModal] = useState(booleen);
   const [isLoading, setIsLoading] = useState(false);
-  
+  const [isOpenMessage, setIsOpenMessage] = useState(false);
+  const [telephoneDest, setTelephoneDest] = useState("");
+  const [txtMessage, setTxtMessage] = useState("");
+
   const {
     nom,
     prenom,
@@ -190,7 +190,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
   );
   const displayConsignes = !editMode ? (
     <div className="textZone textZone-consignes width100">
-        {consignes.map(consigne => <p style={{whiteSpace: "pre-line"}}>{consigne}</p>)}
+        {consignes.map((consigne, index) => <p key={index} style={{whiteSpace: "pre-line"}}>{consigne}</p>)}
     </div>        
   ) : (
     <textarea
@@ -213,6 +213,10 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     setAuth({...auth, clientId: undefined})
   }
 
+  const handleCloseMessage = () => {
+    setIsOpenMessage(false);
+  }
+
   const onSubmit = data => {
 
     setIsLoading(true);
@@ -233,15 +237,11 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
             }
             // withCredentials: true
           }
-        ); 
-        if (data.success === -1)  {
-            localStorage.clear();
-            navigate('/login', {state: { from: location }, replace: true });
-        }
+        );
         setEditClientsModal(false);        
         setRefresh(!refresh);
-        setEditMode(false);
-        setIsLoading(false);        
+        setEditMode(false);      
+        setIsLoading(false);
       } catch (err) {
         console.log();
       }
@@ -250,17 +250,41 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     editClientData();
   };
 
+  function handleSubmitMessage(e) {
+    e.preventDefault();
+    
+    fetch("https://calldirect.herokuapp.com/api/smsemail/sendSms", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*', 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    number: "0584545127",
+                    message: "test"
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+            })
+            .catch(error =>console.log(error))
+  }
+
+  const stopPropagation = (e) => {
+    e.stopPropagation()
+  }
+
   return (
-    <section className="display-clients-data">        
+    <section className="display-clients-data" onClick={handleCloseModal}>        
         {client !== undefined && <div className="globalContainer width100">           
 
-            <header className='headerClient'>
+            <header className='headerClient' onClick={stopPropagation}>
 
                 <div className="flex containerIcons width30" >
                     <div className="flex containerIcon" >
-                        <a href={crm} rel="noreferrer" target="_blank">
-                            <AiOutlineMessage className="icon" />
-                        </a>
+                        <AiOutlineMessage className="icon" onClick={() => setIsOpenMessage(true)}/>
                     </div>
                     <div className="flex containerIcon" >
                         <a href={site} rel="noreferrer" target="_blank">
@@ -343,6 +367,19 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
           <div className='containerLoader'>
             <Loader />
           </div>
+        }
+
+        {
+            isOpenMessage &&
+            <div className='modalMessage' onClick={handleCloseMessage}>
+                <form onSubmit={(e) => handleSubmitMessage(e)} className='modal' onClick={stopPropagation}>
+                    <label>Tel</label>
+                    <input type="text" onChange={(e) => setTelephoneDest(e.target.value)}/>
+                    <label>Message</label>
+                    <input type='text' onChange={(e) => setTxtMessage(e.target.value)}/>
+                    <button className="btnSms">ENVOYER</button>
+                </form>
+            </div>
         }
     </section>
   );

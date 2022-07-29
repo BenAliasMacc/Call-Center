@@ -25,15 +25,15 @@ const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
                 Accept: "application/json, text/plain,"
               }
               // withCredentials: true
-            });
+            }); 
             if (response.data.success === -1)  {
                 localStorage.clear();
                 navigate('/login', {state: { from: location }, replace: true });
             }
             if(response.data.success === -2) {
                 navigate('/', {state: { from: location }, replace: true });
-            }
-            setClient(response.data)           
+            }            
+            setClient(response.data);
             setIsLoading(false);
           } catch (err) {}
         };

@@ -50,7 +50,6 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
             }      
             setIsLoading(false);
         } catch (err) {
-            console.log();
         }
         };
 
@@ -62,10 +61,14 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
         setDeleteClientsModal(false);
     }
 
+    const stopPropagation = (e) => {
+        e.stopPropagation()
+    }
+
     return (
 
-        <div className='delete-clients-modal'>
-            <div className='delete-clients-modal--container'>
+        <div className='delete-clients-modal' onClick={handleCloseModal}>
+            <div className='delete-clients-modal--container' onClick={stopPropagation}>
                 <div className='delete-clients-modal__text'>
                     <h2><img src={bin} alt="suppression" /> Confirmer la suppression ?</h2>
                     <p>Attention si vous cliquez sur confirmer la suppression de la fiche client sera définitive</p>
