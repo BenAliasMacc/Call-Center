@@ -23,10 +23,6 @@ function ListUsers() {
     const [userId, setUserId] = useState('');
     const [user, setUser] = useState();
 
-    console.log(user);
-
-    console.log(userId)
-
     useEffect(() => {
 
         setIsLoading(true);

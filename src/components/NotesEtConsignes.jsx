@@ -119,7 +119,6 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
         let indexOfNote = copyOfArray.indexOf(index);
         copyOfArray.splice(indexOfNote, 1);
         setArrayOfIndex(copyOfArray);
-        console.log(arrayOfIndex);
 
         if (notes[index] !== notesArray[index]) { 
         

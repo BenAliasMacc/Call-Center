@@ -5,8 +5,6 @@ import Loader from '../components/Loader';
 
 const DeleteUserModal = (props) => {
 
-    console.log(props)
-
     const [isLoading, setIsLoading] = useState(false);
     const token = localStorage.getItem('token');
     const navigate = useNavigate();

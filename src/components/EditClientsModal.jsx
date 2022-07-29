@@ -25,10 +25,7 @@ const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
                 Accept: "application/json, text/plain,"
               }
               // withCredentials: true
-            });
-            if(response.data.success === 1){
-              setClient(response.data);
-            }   
+            }); 
             if (response.data.success === -1)  {
                 localStorage.clear();
                 navigate('/login', {state: { from: location }, replace: true });
@@ -36,6 +33,7 @@ const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
             if(response.data.success === -2) {
                 navigate('/', {state: { from: location }, replace: true });
             }            
+            setClient(response.data);
             setIsLoading(false);
           } catch (err) {}
         };

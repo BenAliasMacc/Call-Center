@@ -44,7 +44,7 @@ const NewClients = () => {
                 navigate(from, { replace: true })                
                 setIsLoading(false);
           } catch (err) {
-            console.log();
+            
           }
     } ;
   

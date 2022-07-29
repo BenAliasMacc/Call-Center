@@ -6,7 +6,6 @@ const ContainerHeader = ({ name, firstname, clientId, setEditMode, editMode, isM
   const { setEditClientsModal, auth, setAuth } = useAuth();
 
   const handleCloseModal = () => {
-    console.log(auth);
     setEditClientsModal(false);
     setAuth({...auth, clientId: undefined})
   }

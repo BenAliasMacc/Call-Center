@@ -18,8 +18,6 @@ const Home = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-      
-    console.log(auth);
 
     useEffect(() => {
         const getClients = async () => {
