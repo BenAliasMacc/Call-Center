@@ -9,6 +9,7 @@ import NewClients from './pages/NewClients';
 import GestionUsers from './pages/GestionUsers';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import ClientsCard from './pages/ClientsCard';
+// import SendSms from './components/SendSms';
 
 const ROLES = {
   'User': "0",
@@ -23,6 +24,7 @@ function App() {
         {/* public routes */}
         <Route path="login" element={<Login />} />
         <Route path="unauthorized" element={<Unauthorized />} />
+        {/* <Route path="send-sms" element={<SendSms /> } /> */}
         {/* <Route path="/" element={<Home />} /> */}
         {/* <Route path="new-clients" element={<NewClients />} /> */}
         {/* <Route path="gestion-users" element={<GestionUsers />} /> */}
