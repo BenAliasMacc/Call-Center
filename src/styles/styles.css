@@ -73,12 +73,19 @@
     overflow-y: scroll;
     z-index: 1;
 }
+@media screen and (max-height: 900px) {   
+    .containerColonne {   
+        bottom: -350px;
+        height: 350px;
+    }
+}
 
 .textZone {
     padding: 10px;
     margin-top: 10px;
     height: 80%;
     border: 1px solid black;
+    overflow: scroll;
 }
 
 .btn {
@@ -123,18 +130,26 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    width: 30%;
-    height: 400px;
+    flex-grow: inherit;
+    width: 400px;
+    height: fit-content;
     background-color: white;
     padding: 40px;
     border-radius: 10px;
+}
+
+.modal > input {
+    width: 75%;
+}
+.modal > textarea {
+    height: 250px;
 }
 
 .btnSms {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20%;
+    width: 20%fit-content;
     height: 40px;
     background-color:rgb(13, 186, 216);
     border-radius: 10px;

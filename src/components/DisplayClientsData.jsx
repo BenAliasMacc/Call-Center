@@ -376,8 +376,8 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
                     <label>Tel</label>
                     <input type="text" onChange={(e) => setTelephoneDest(e.target.value)}/>
                     <label>Message</label>
-                    <input type='text' onChange={(e) => setTxtMessage(e.target.value)}/>
-                    <button className="btnSms">ENVOYER</button>
+                    <textarea onChange={(e) => setTxtMessage(e.target.value)}/>
+                    <button className="btnSms">Envoyer</button>
                 </form>
             </div>
         }
