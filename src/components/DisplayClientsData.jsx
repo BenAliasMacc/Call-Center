@@ -249,17 +249,17 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
   function handleSubmitMessage(e) {
     e.preventDefault();
     
-    fetch("https://calldirect.herokuapp.com/api/smsemail/sendSms", {
+    fetch("http://localhost:80/api/smsemail/sendEmail", {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json, text/plain, */*', 
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
+              /*   body: JSON.stringify({
                     number: "0584545127",
                     message: "test"
-                }),
+                }), */
             })
             .then(response => response.json())
             .then(data => {
