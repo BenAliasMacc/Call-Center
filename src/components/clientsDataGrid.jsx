@@ -1,4 +1,3 @@
-import React, { useRef, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import {
   DataGrid,
@@ -10,9 +9,11 @@ import { Link } from 'react-router-dom';
 import addButton from '../assets/icons/add-button.svg';
 import DeleteButton from './DeleteButton';
 import OpenModal from './OpenModal';
+import { useState } from 'react';
 
 //-----------------------------STRIPED DATA-GRUD-----------------------------//
 //--------------------------------------------------------------------------//
+const userRole = localStorage.getItem("userRole");
 const ODD_OPACITY = 0.2;
 
 const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
@@ -62,7 +63,7 @@ function QuickSearchToolbar() {
         p: 0.5,
         pb: 0,
       }} />
-      <button className='add-client'><Link to="/new-clients"><img src={addButton} alt="ajouter un client" /></Link></button>
+      {userRole === "1" && <button className='add-client'><Link to="/new-clients"><img src={addButton} alt="ajouter un client" /></Link></button>}
     </Box>
   );
 }
@@ -110,8 +111,10 @@ const columns = [
 ];
 //-----------------------------------------------------
 
-export default function QuickFilteringCustomizedGrid({ clients, setClientId }) {
-  const [pageSize, setPageSize] = React.useState(10);
+export default function QuickFilteringCustomizedGrid({ clients, lengthDatas }) {
+  const [pageSize, setPageSize] = useState(10);
+
+  console.log(lengthDatas)
 
   return (
     <>
@@ -127,7 +130,7 @@ export default function QuickFilteringCustomizedGrid({ clients, setClientId }) {
             disableColumnFilter
             disableColumnSelector
             disableDensitySelector
-            pageSize={pageSize}
+            pageSize={lengthDatas}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             rowsPerPageOptions={[10, 20, 50, 100]}
             components={{ Toolbar: QuickSearchToolbar}} 

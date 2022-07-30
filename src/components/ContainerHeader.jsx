@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { AuthProvider } from "../context/AuthProvider";
 import useAuth from "../hooks/useAuth";
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
@@ -8,7 +6,6 @@ const ContainerHeader = ({ name, firstname, clientId, setEditMode, editMode, isM
   const { setEditClientsModal, auth, setAuth } = useAuth();
 
   const handleCloseModal = () => {
-    console.log(auth);
     setEditClientsModal(false);
     setAuth({...auth, clientId: undefined})
   }

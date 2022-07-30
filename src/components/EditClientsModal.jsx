@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import DisplayClientsData from './DisplayClientsData';
 import Loader from './Loader';
@@ -8,6 +9,8 @@ const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
     const token = localStorage.getItem("token");
     const [client, setClient] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
 
@@ -22,7 +25,14 @@ const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
                 Accept: "application/json, text/plain,"
               }
               // withCredentials: true
-            });           
+            }); 
+            if (response.data.success === -1)  {
+                localStorage.clear();
+                navigate('/login', {state: { from: location }, replace: true });
+            }
+            if(response.data.success === -2) {
+                navigate('/', {state: { from: location }, replace: true });
+            }            
             setClient(response.data);
             setIsLoading(false);
           } catch (err) {}

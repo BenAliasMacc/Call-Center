@@ -10,6 +10,7 @@ import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 import DeleteClientsModal from "./DeleteClientsModal";
 import NotesEtConsignes from "./NotesEtConsignes";
+import MessageMenu from "./MessageMenu";
 
 const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refresh }) => {
   
@@ -20,9 +21,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
   const [editMode, setEditMode] = useState(booleen);
   const [isModal] = useState(booleen);
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpenMessage, setIsOpenMessage] = useState(false);
-  const [telephoneDest, setTelephoneDest] = useState("");
-  const [txtMessage, setTxtMessage] = useState("");
+  const [showNavMessage, setShowNavMessage] = useState(false);
 
   const {
     nom,
@@ -190,7 +189,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
   );
   const displayConsignes = !editMode ? (
     <div className="textZone textZone-consignes width100">
-        {consignes}
+        {consignes.map((consigne, index) => <p key={index} style={{whiteSpace: "pre-line"}}>{consigne}</p>)}
     </div>        
   ) : (
     <textarea
@@ -246,37 +245,24 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     editClientData();
   };
 
-  function handleSubmitMessage(e) {
-    e.preventDefault();
-    
-    fetch("http://localhost:80/api/smsemail/sendEmail", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json, text/plain, */*', 
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-              /*   body: JSON.stringify({
-                    number: "0584545127",
-                    message: "test"
-                }), */
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-            })
-            .catch(error =>console.log(error))
+  const handleNavMessage = () => {
+    setShowNavMessage(!showNavMessage);
+  };
+
+  const stopPropagation = (e) => {
+    e.stopPropagation()
   }
 
   return (
-    <section className="display-clients-data">        
+    <section className="display-clients-data" onClick={handleCloseModal}>        
         {client !== undefined && <div className="globalContainer width100">           
 
-            <header className='headerClient'>
+            <header className='headerClient' onClick={stopPropagation}>
 
                 <div className="flex containerIcons width30" >
                     <div className="flex containerIcon" >
-                        <AiOutlineMessage className="icon" onClick={() => setIsOpenMessage(true)}/>
+                        <AiOutlineMessage className="icon" onClick={handleNavMessage}/>
+                        <MessageMenu showNavMessage={showNavMessage} token={token} />
                     </div>
                     <div className="flex containerIcon" >
                         <a href={site} rel="noreferrer" target="_blank">
@@ -359,19 +345,6 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
           <div className='containerLoader'>
             <Loader />
           </div>
-        }
-
-        {
-            isOpenMessage &&
-            <div className='modalMessage'>
-                <form onSubmit={(e) => handleSubmitMessage(e)} className='modal'>
-                    <label>Tel</label>
-                    <input type="text" onChange={(e) => setTelephoneDest(e.target.value)}/>
-                    <label>Message</label>
-                    <input type='text' onChange={(e) => setTxtMessage(e.target.value)}/>
-                    <button className="btnSms">ENVOYER</button>
-                </form>
-            </div>
         }
     </section>
   );

@@ -3,19 +3,20 @@ import '../styles/styles.css';
 import { MdDeleteForever } from 'react-icons/md';
 import { MdPublishedWithChanges } from 'react-icons/md';
 import { BsCheck } from 'react-icons/bs';
-import { useForm } from "react-hook-form";
 import Loader from '../components/Loader';
+import { useLocation, useNavigate } from "react-router-dom";
 
-const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMode }) => {
+const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
 
-   const { notes, consignes } = client !== undefined && client;
-   const [inputNote, setInputNote] = useState('');
-   const [notesArray, setNotesArray] = useState([]);
-   const { register } = useForm();
-   const [arrayOfIndex, setArrayOfIndex] = useState([]);
-   const [newRefresh, setNewRefresh] = useState(false);
-   const [isLoading, setIsLoading] = useState(false);
-   const [isChangeIcon, setIsChangeIcon] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { notes } = client !== undefined && client;
+    const [inputNote, setInputNote] = useState('');
+    const [notesArray, setNotesArray] = useState([]);
+    const [arrayOfIndex, setArrayOfIndex] = useState([]);
+    const [newRefresh, setNewRefresh] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isChangeIcon, setIsChangeIcon] = useState(false);
 
    useEffect(() => {
        setNotesArray([...notes]); 
@@ -33,14 +34,18 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
            })
            .then(response => response.json())
            .then(data => {
-                setNotesArray(data.notes);
+                if (data.success === -1)  {
+                    localStorage.clear();
+                    navigate('/login', {state: { from: location }, replace: true });
+                }
+                setNotesArray(data.notes);      
            })
            .catch(error => console.log(error));
 
 }, [newRefresh]);
    
    function handleSubmitNotes(e) {
-        setIsLoading(true);
+        /* setIsLoading(true); */
        e.stopPropagation();
        e.preventDefault();
 
@@ -57,10 +62,14 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
                })
            })
            .then(response => response.json())
-           .then(data => {
-               setInputNote('');
-               setNewRefresh(!newRefresh);
-               setIsLoading(false);
+           .then(data => {                    
+                if (data.success === -1)  {
+                    localStorage.clear();
+                    navigate('/login', {state: { from: location }, replace: true });
+                }
+                setInputNote('');
+                setNewRefresh(!newRefresh);
+                setIsLoading(false);
            })
            .catch(error => console.log(error));
        } 
@@ -74,7 +83,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
    }
 
    function deleteNote(index) {
-        setIsLoading(true); 
+        /* setIsLoading(true);  */
        let newArray = [...notesArray];
        newArray.splice(index, 1);
 
@@ -91,14 +100,18 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
            })
            .then(response => response.json())
            .then(data => {
-               setInputNote('');
-               setNewRefresh(!newRefresh);
-               setIsLoading(false);
+                if (data.success === -1)  {
+                    localStorage.clear();
+                    navigate('/login', {state: { from: location }, replace: true });
+                }
+                setInputNote('');
+                setNewRefresh(!newRefresh);  
+                setIsLoading(false);
            })
            .catch(error => console.log(error));
    }
 
-   function handleModifyNote(index, note) {
+   function handleModifyNote(index) {
 
     if (arrayOfIndex.includes(index)) {
 
@@ -107,9 +120,9 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
         copyOfArray.splice(indexOfNote, 1);
         setArrayOfIndex(copyOfArray);
 
-        if (notes[index] != notesArray[index]) { 
+        if (notes[index] !== notesArray[index]) { 
         
-            setIsLoading(true);
+            /* setIsLoading(true); */
     
             fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
                 method: 'PUT',
@@ -126,7 +139,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
             .then(data => {
                 setIsLoading(false);
                 if (data.success === -1)  {
-                        /* navigate('/login', {state: { from: location }, replace: true }) */
+                        navigate('/login', {state: { from: location }, replace: true })
                    } else {
                 }
             })
@@ -149,13 +162,13 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
            <form className="notesEtConsignes" onSubmit={handleSubmitNotes} >
                <div className="containerColonne colonne-notes width30"> 
                    <u>NOTES :</u> 
-                   <div className="textZone width100" style={{overflowY: "scroll", maxHeight: "40vh"}}>
+                   <div className="textZone width100" style={{overflowY: "scroll"}}>
                        {
                            notesArray.map((note, index) => 
                            <div key={index} className="notes">
                                {
                                    arrayOfIndex.includes(index) ? 
-                                   <div>
+                                   <div className="notes__input">
                                        <span style={{fontSize: "0.5rem"}} className="pastille">🟢</span><input onChange={(e) => handleChangeNote(e, index)} value={notesArray[index]} type='text'/>
                                    </div>
                                    :
@@ -193,3 +206,12 @@ const NotesEtConsignes = ({ clientId, token, client, refresh, setRefresh, editMo
 }
 
 export default NotesEtConsignes;
+
+
+// const navigate = useNavigate();
+// const location = useLocation();
+
+// if (data.success === -1)  {
+//     localStorage.clear();
+//     navigate('/login', {state: { from: location }, replace: true });
+// }

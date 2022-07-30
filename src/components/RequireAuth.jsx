@@ -6,8 +6,6 @@ const RequireAuth = ({ allowedRoles }) => {
     const token = localStorage.getItem("token");
     const { auth } = useAuth();
     const location = useLocation();
-    console.log(typeof(allowedRoles[0]));
-    console.log(typeof(userRole));
 
     return (
         allowedRoles?.includes(userRole)

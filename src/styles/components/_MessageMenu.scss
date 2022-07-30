@@ -1,0 +1,82 @@
+.message-menu__list {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: -48px;
+    top: 3.2rem;
+    gap: 0.1rem;
+    transition: all 0.5s ease-in-out;
+    z-index: 10;
+    &__link {
+        display: flex;
+        align-items: center;
+        width: 100px;
+        height: 0rem;
+        background-color: white;
+        border-radius: 6px;
+        box-shadow: 1px 3px 3px #b1b0ad;
+        transition: all 0.5s ease-in-out;
+        & button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            font-size: 1rem;        
+            font-weight: bold;
+            border: 2px solid $tertiaryColor;
+            padding-left: 0.5rem;
+            gap: 0.5rem;
+            visibility: hidden;
+            color: $tertiaryColor;
+            text-decoration: none;
+            transition: all 0.4s ease-in-out;
+            &:hover {
+                padding-left: 1.5rem;
+                color: white;
+            }
+        }        
+    }
+  }
+  
+  .show-navbar .message-menu__list__link {
+    height: 2rem;
+    & a, button {
+        visibility: visible!important;
+    }
+  }
+
+.containerIcon {
+    .modalMessage {
+        .modal {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            flex-grow: inherit;
+            width: 400px;
+            height: fit-content;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+        }
+    }
+}
+
+.modal > input {
+    width: 50%;
+}
+.modal > textarea {
+    height: 250px;
+}
+
+.btnSms {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%fit-content;
+    height: 40px;
+    background-color:rgb(13, 186, 216);
+    border-radius: 10px;
+    margin-top: 20px;
+}

@@ -28,14 +28,19 @@ const ClientsCard = () => {
             Accept: "application/json, text/plain,"
           }
           // withCredentials: true
-        });
-        response.data.success === -1 ? 
-          navigate('/login', {state: { from: location }, replace: true })
-        : (
-          setClient(response.data)
-        )
-        setIsLoading(false)
-      } catch (err) {}
+        });        
+          
+        if (response.data.success === -1)  {
+            localStorage.clear();
+            navigate('/login', {state: { from: location }, replace: true });
+        }
+        setClient(response.data);
+        setIsLoading(false);
+      } catch (err) {
+        if (err.response?.status === 404) {
+          navigate('*', {state: { from: location }, replace: true });
+        }
+      }
     };
 
     getClients();
@@ -46,7 +51,7 @@ const ClientsCard = () => {
       <Header />
 
       {client !== undefined && (
-        <section className="clients-card" style={{marginTop: "40px"}}>
+        <section className="clients-card" style={{marginTop: "70px"}}>
           <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={false} setRefresh={setRefresh} refresh={refresh} />
 
           { isLoading && 
