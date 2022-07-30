@@ -124,34 +124,3 @@
     z-index: 1100;
     background-color: rgba(0, 0, 0, .5);
 }
-
-.modal {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    flex-grow: inherit;
-    width: 400px;
-    height: fit-content;
-    background-color: white;
-    padding: 40px;
-    border-radius: 10px;
-}
-
-.modal > input {
-    width: 75%;
-}
-.modal > textarea {
-    height: 250px;
-}
-
-.btnSms {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20%fit-content;
-    height: 40px;
-    background-color:rgb(13, 186, 216);
-    border-radius: 10px;
-    margin-top: 20px;
-}

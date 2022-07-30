@@ -10,6 +10,7 @@ import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 import DeleteClientsModal from "./DeleteClientsModal";
 import NotesEtConsignes from "./NotesEtConsignes";
+import MessageMenu from "./MessageMenu";
 
 const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refresh }) => {
   
@@ -20,9 +21,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
   const [editMode, setEditMode] = useState(booleen);
   const [isModal] = useState(booleen);
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpenMessage, setIsOpenMessage] = useState(false);
-  const [telephoneDest, setTelephoneDest] = useState("");
-  const [txtMessage, setTxtMessage] = useState("");
+  const [showNavMessage, setShowNavMessage] = useState(false);
 
   const {
     nom,
@@ -213,10 +212,6 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     setAuth({...auth, clientId: undefined})
   }
 
-  const handleCloseMessage = () => {
-    setIsOpenMessage(false);
-  }
-
   const onSubmit = data => {
 
     setIsLoading(true);
@@ -250,27 +245,9 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     editClientData();
   };
 
-  function handleSubmitMessage(e) {
-    e.preventDefault();
-    
-    fetch("https://calldirect.herokuapp.com/api/smsemail/sendSms", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json, text/plain, */*', 
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    number: "0584545127",
-                    message: "test"
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-            })
-            .catch(error =>console.log(error))
-  }
+  const handleNavMessage = () => {
+    setShowNavMessage(!showNavMessage);
+  };
 
   const stopPropagation = (e) => {
     e.stopPropagation()
@@ -284,7 +261,8 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
 
                 <div className="flex containerIcons width30" >
                     <div className="flex containerIcon" >
-                        <AiOutlineMessage className="icon" onClick={() => setIsOpenMessage(true)}/>
+                        <AiOutlineMessage className="icon" onClick={handleNavMessage}/>
+                        <MessageMenu showNavMessage={showNavMessage} token={token} />
                     </div>
                     <div className="flex containerIcon" >
                         <a href={site} rel="noreferrer" target="_blank">
@@ -367,19 +345,6 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
           <div className='containerLoader'>
             <Loader />
           </div>
-        }
-
-        {
-            isOpenMessage &&
-            <div className='modalMessage' onClick={handleCloseMessage}>
-                <form onSubmit={(e) => handleSubmitMessage(e)} className='modal' onClick={stopPropagation}>
-                    <label>Tel</label>
-                    <input type="text" onChange={(e) => setTelephoneDest(e.target.value)}/>
-                    <label>Message</label>
-                    <textarea onChange={(e) => setTxtMessage(e.target.value)}/>
-                    <button className="btnSms">Envoyer</button>
-                </form>
-            </div>
         }
     </section>
   );
