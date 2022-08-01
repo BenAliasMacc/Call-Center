@@ -54,15 +54,16 @@ const Login = () => {
             navigate(from, { replace: true });
         } catch (err) {
             if (!err?.response) {
-                setErrMsg('No Server Response');
+                setErrMsg('Pas de réponse du serveur');
             } else if (err.response?.status === 400) {
-                setErrMsg('Missing Username or Password');
+                setErrMsg('L\'Email ou le mot de passe est manquant');
             } else if (err.response?.status === 401) {
-                setErrMsg('Unauthorized');
+                setErrMsg('L\'Email ou le mot de passe est erroné');
             } else {
                 setErrMsg('Login Failed');
             }
             errRef.current.focus();
+            setIsLoading(false);
         }
     }
 
