@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import axios from "../api/axios";
 import { AiOutlineMessage } from "react-icons/ai";
 import { FaInternetExplorer } from 'react-icons/fa';
@@ -11,12 +11,14 @@ import EditButton from "./EditButton";
 import DeleteClientsModal from "./DeleteClientsModal";
 import NotesEtConsignes from "./NotesEtConsignes";
 import MessageMenu from "./MessageMenu";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRefresh, refresh }) => {
   
   const userRole = localStorage.getItem("userRole");
   const { deleteClientsModal, setEditClientsModal, auth, setAuth } = useAuth();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { control, register, handleSubmit, formState: { errors } } = useForm();
   
   const [editMode, setEditMode] = useState(booleen);
   const [isModal] = useState(booleen);
@@ -127,13 +129,26 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     telephone
   ) : (
     <>
-      <input
-        className="headerClient__input"
-        type="tel"
-        id="telephone"
-        defaultValue={telephone}
-        {...register("telephone")}
+      <Controller
+      control={control}
+      name="telephone"
+      rules={{ required: true }}
+      defaultValue={telephone}
+      render={({ field: { ref, ...field } }) => (
+          <PhoneInput
+          {...field}
+          inputExtraProps={{
+              ref,
+              required: true,
+              autoFocus: true              
+          }}          
+          country={"il"}
+          onlyCountries={["il", "fr"]}
+          countryCodeEditable={false}
+          />
+      )}
       />
+      {errors?.telephone?.type === "required" && <p className="error-message">Ce champ doit être complété</p>}
     </>
   );
   const displaySite = !editMode ? (

@@ -144,9 +144,7 @@ const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, tok
                 isOpenMessage &&
                 <div className='modalMessage' onClick={handleCloseModals}>
                     <form onSubmit={(e) => handleSubmitMessage(e)} className='modal' onClick={stopPropagation}>
-                        <label>Tel</label>
-                        <input type="text" onChange={(e) => setTelephoneDest(e.target.value)}/>
-                        <label>Modèle</label>
+                        <label>Message</label>
                         <textarea onChange={(e) => setTxtMessage(e.target.value)}/>
                         <button className="btnSms">Envoyer</button>
                     </form>
@@ -179,7 +177,7 @@ const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, tok
                     <form onSubmit={(e) => handleSubmitModels(e)} className='modal' onClick={stopPropagation}>
                         <label>Titre</label>
                         <input onChange={(e) => setTitleModel(e.target.value)}/>
-                        <label>Message</label>
+                        <label>Modèle</label>
                         <textarea onChange={(e) => setTxtModel(e.target.value)}/>
                         <button className="btnSms">Sauvegarder</button>
                     </form>
