@@ -114,3 +114,32 @@
     border-radius: 10px;
     margin-top: 20px;
 }
+
+.button-model { 
+    position: relative;
+    color: black;
+    font-size: 1rem;
+    &__button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        img {
+            transition: 0.3s;
+        }
+    }
+    &__list {
+        position: absolute;
+        background-color: white;
+        width: 80px; 
+        border-inline: 1px solid black;
+        border-top: 1px solid black;
+        li {
+            border-bottom: 1px solid black;
+            padding: 0.2rem;
+        }
+    }
+}
+
+.show-models .button-model__button img {
+    transform: rotate(180deg);
+}

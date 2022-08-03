@@ -12,7 +12,7 @@ import DeleteClientsModal from "./DeleteClientsModal";
 import NotesEtConsignes from "./NotesEtConsignes";
 import MessageMenu from "./MessageMenu";
 
-const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refresh }) => {
+const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRefresh, refresh }) => {
   
   const userRole = localStorage.getItem("userRole");
   const { deleteClientsModal, setEditClientsModal, auth, setAuth } = useAuth();
@@ -35,7 +35,8 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
     site,
     crm,
     consignes,
-    langue
+    langue,
+    modeles
   } = client !== undefined && client;
 
   const ROLES = {
@@ -218,8 +219,6 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
 
     const editClientData = async () => {
 
-      console.log(data);
-
       try {
         const response = await axios.put(
           `/clients/modifyClient/${clientId}`,
@@ -239,7 +238,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
         setIsLoading(false);
       } catch (err) {
         console.log();
-      }
+      } 
     };
 
     editClientData();
@@ -262,7 +261,7 @@ const DisplayClientsData = ({ client, clientId, token, booleen, setRefresh, refr
                 <div className="flex containerIcons width30" >
                     <div className="flex containerIcon" >
                         <AiOutlineMessage className="icon" onClick={handleNavMessage}/>
-                        <MessageMenu showNavMessage={showNavMessage} token={token} />
+                        <MessageMenu client={client} setClient={setClient}  modeles={modeles} showNavMessage={showNavMessage} setShowNavMessage={setShowNavMessage} token={token} />
                     </div>
                     <div className="flex containerIcon" >
                         <a href={site} rel="noreferrer" target="_blank">
