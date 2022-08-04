@@ -276,7 +276,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                 <div className="flex containerIcons width30" >
                     <div className="flex containerIcon" >
                         <AiOutlineMessage className="icon" onClick={handleNavMessage}/>
-                        <MessageMenu client={client} setClient={setClient}  modeles={modeles} showNavMessage={showNavMessage} setShowNavMessage={setShowNavMessage} token={token} />
+                        <MessageMenu client={client} setClient={setClient}  modeles={modeles} showNavMessage={showNavMessage} setShowNavMessage={setShowNavMessage} token={token} setRefresh={setRefresh} refresh={refresh} />
                     </div>
                     <div className="flex containerIcon" >
                         <a href={site} rel="noreferrer" target="_blank">

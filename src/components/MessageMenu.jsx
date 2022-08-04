@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ButtonModel } from "./ButtonModel";
 
-const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, token, modeles }) => {
+const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, token, modeles, setRefresh, refresh }) => {
 
     const [telephoneDest, setTelephoneDest] = useState("");
     const [txtMessage, setTxtMessage] = useState("");
@@ -37,7 +37,7 @@ const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, tok
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
+                    console.log(data);
                 })
                 .catch(error =>console.log(error))
       }
@@ -67,24 +67,31 @@ const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, tok
 
     function handleSubmitModels(e) {
         e.preventDefault();
-        
-        fetch("https://calldirect.herokuapp.com/api/clients/createClient", {
+
+        const newModeles = [...modeles];
+        newModeles.push({
+            title: titleModel,
+            modele: txtModel
+        });
+
+        const newClient = {...client, modeles: newModeles};
+
+        fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${client._id}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain, */*', 
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            // body: JSON.stringify({
-            //     setClient(...client, modeles:{
-            //         title: setTitleModel,
-            //         modele: setTxtModel                    
-            //     })
-            // }),           
+            body: JSON.stringify(newClient)         
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data)
+            console.log(data);
+            if (data.success === 1) {
+                setIsOpenModels(false);
+                setRefresh(!refresh);
+            }
         })
         .catch(error =>console.log(error))
     }
