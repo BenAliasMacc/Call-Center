@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import BackHomeLink from "../components/BackHomeLink";
 import Header from "../components/Header";
 import Loader from '../components/Loader';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const NewClients = () => {
 
@@ -12,7 +14,7 @@ const NewClients = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/"
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { control, register, handleSubmit, formState: { errors } } = useForm();
   const token = localStorage.getItem('token');
   const [isLoading, setIsLoading] = useState(false);
   
@@ -181,10 +183,31 @@ const NewClients = () => {
                     {errors?.mail?.type === "required" && <p className="error-message">Ce champ doit être complété</p>}
 
                     <label htmlFor="telephone">Téléphone <span className="mandatory">*</span></label>
-                    <input type='number' id="telephone"
+                    {/* <input type='number' id="telephone"
                     {...register("telephone", {
                         required: true
                     })}
+                    />
+                    {errors?.telephone?.type === "required" && <p className="error-message">Ce champ doit être complété</p>} */}
+
+                    <Controller
+                    control={control}
+                    name="telephone"
+                    rules={{ required: true }}
+                    render={({ field: { ref, ...field } }) => (
+                        <PhoneInput
+                        {...field}
+                        inputExtraProps={{
+                            ref,
+                            required: true,
+                            autoFocus: true
+                        }}
+                        country={"il"}
+                        onlyCountries={["il", "fr"]}
+                        countryCodeEditable={false}
+                        specialLabel={"Player Mobile Number"}
+                        />
+                    )}
                     />
                     {errors?.telephone?.type === "required" && <p className="error-message">Ce champ doit être complété</p>}
 

@@ -111,10 +111,8 @@ const columns = [
 ];
 //-----------------------------------------------------
 
-export default function QuickFilteringCustomizedGrid({ clients, lengthDatas }) {
+export default function QuickFilteringCustomizedGrid({ clients }) {
   const [pageSize, setPageSize] = useState(10);
-
-  console.log(lengthDatas)
 
   return (
     <>
@@ -130,7 +128,7 @@ export default function QuickFilteringCustomizedGrid({ clients, lengthDatas }) {
             disableColumnFilter
             disableColumnSelector
             disableDensitySelector
-            pageSize={lengthDatas}
+            pageSize={pageSize}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             rowsPerPageOptions={[10, 20, 50, 100]}
             components={{ Toolbar: QuickSearchToolbar}} 

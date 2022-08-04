@@ -45,7 +45,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
 }, [newRefresh]);
    
    function handleSubmitNotes(e) {
-        /* setIsLoading(true); */
+        setIsLoading(true);
        e.stopPropagation();
        e.preventDefault();
 
@@ -83,7 +83,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
    }
 
    function deleteNote(index) {
-        /* setIsLoading(true);  */
+        setIsLoading(true); 
        let newArray = [...notesArray];
        newArray.splice(index, 1);
 
@@ -122,7 +122,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
 
         if (notes[index] !== notesArray[index]) { 
         
-            /* setIsLoading(true); */
+            setIsLoading(true);
     
             fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
                 method: 'PUT',

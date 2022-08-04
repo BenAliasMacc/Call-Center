@@ -18,7 +18,6 @@ const Home = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
-    const [lengthDatas, setLengthDatas] = useState(0);
 
     useEffect(() => {
         const getClients = async () => {
@@ -36,8 +35,7 @@ const Home = () => {
                     localStorage.clear();
                     navigate('/login', {state: { from: location }, replace: true })
                 } else {
-                    setClients(response.data);
-                    setLengthDatas(response.data.length)
+                    setClients(response.data)
                 }
                 setIsLoading(false)
             } catch (err) {
@@ -55,7 +53,7 @@ const Home = () => {
 
             <section className="home" style={{marginTop: "80px"}}>
                 <div className="home--container">
-                    <DataGrid clients={clients} lengthDatas={lengthDatas} />                    
+                    <DataGrid clients={clients} />                    
                 </div>
 
                 { isLoading && 
