@@ -17,13 +17,10 @@ const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, tok
     const [modelSelected, setModelSelected] = useState();
     const diplayNav = showNavMessage ? "show-navbar" : "";
 
-    console.log(modeles);
-    console.log(modelSelected);
-
     function handleSubmitMessage(e) {
         e.preventDefault();
         
-        fetch("https://calldirect.herokuapp.com/api/smsemail/sendSms", {
+        fetch("https://calldirect.herokuapp.com/api/smsemail/sendSmsIsr", {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json, text/plain, */*', 
@@ -31,16 +28,18 @@ const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, tok
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        number: "0584545127",
-                        message: "test"
+                        number: "+"+client.telephone,
+                        message: txtMessage
                     }),
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    if (data.success == '1') {
+                        setIsOpenMessage(false);
+                    }
                 })
                 .catch(error =>console.log(error))
-      }
+        }
 
     function handleSubmitEmail(e) {
         e.preventDefault();
