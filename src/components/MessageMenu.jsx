@@ -20,26 +20,31 @@ const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, tok
     function handleSubmitMessage(e) {
         e.preventDefault();
         
-        fetch("https://calldirect.herokuapp.com/api/smsemail/sendSmsIsr", {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*', 
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        number: "+"+client.telephone,
-                        message: txtMessage
-                    }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success == '1') {
-                        setIsOpenMessage(false);
-                    }
-                })
-                .catch(error =>console.log(error))
+        if (client.telephone.startsWith('972')) {
+
+            fetch("https://calldirect.herokuapp.com/api/smsemail/sendSmsIsr", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*', 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    number: "+"+client.telephone,
+                    message: txtMessage
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success == '1') {
+                    setIsOpenMessage(false);
+                }
+            })
+            .catch(error =>console.log(error))
+        } else if (client.telephone.startsWith('33')) {
+            console.log('test')
         }
+    }
 
     function handleSubmitEmail(e) {
         e.preventDefault();
