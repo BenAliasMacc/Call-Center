@@ -5,6 +5,7 @@ import { AiOutlineMessage } from "react-icons/ai";
 import { FaInternetExplorer } from 'react-icons/fa';
 import Loader from '../components/Loader';
 import useAuth from "../hooks/useAuth";
+import { toast } from 'react-toastify';
 import '../styles/styles.css';
 import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
@@ -247,12 +248,13 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
             // withCredentials: true
           }
         );
+        toast.success('Modifications enregistré')
         setEditClientsModal(false);        
         setRefresh(!refresh);
         setEditMode(false);      
         setIsLoading(false);
       } catch (err) {
-        console.log();
+        toast.error('Erreur lors de la validation')
       } 
     };
 

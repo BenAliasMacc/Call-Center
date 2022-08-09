@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import { toast } from 'react-toastify';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import axios from '../api/axios';
 import useAuth from '../hooks/useAuth';
 import bin from '../assets/icons/bin-modal.svg';
@@ -37,6 +39,7 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
             }
             );
             if(response.data.success === 1){
+                toast.info("Suppression effectué")
                 setRefresh(!refresh)
                 setDeleteClientsModal(false);            
                 navigate(from, { replace: true })
@@ -50,6 +53,7 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
             }      
             setIsLoading(false);
         } catch (err) {
+            toast.error("Erreur lors de la suppression")
         }
         };
 

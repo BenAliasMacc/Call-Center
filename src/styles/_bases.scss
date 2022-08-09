@@ -135,3 +135,39 @@ fieldset {
     justify-content: flex-start;
     align-items: flex-end;
 }
+
+.Toastify__toast--success {
+    background-color: #07bc0c;    
+    color: white;
+}
+
+.Toastify__progress-bar--success {
+    background-color: white;
+}
+
+.Toastify__toast--error {
+    background-color: #e74c3c;    
+    color: white;
+}
+
+.Toastify__progress-bar--error {
+    background-color: white;
+}
+
+.Toastify__toast--info {
+    background-color: #f1c40f;    
+    color: white;
+}
+
+.Toastify__progress-bar--info {
+    background-color: white;
+}
+
+.Toastify__close-button {
+    color: white;
+    opacity: 1;
+}
+
+.Toastify__toast-icon  {
+    display: none;
+}

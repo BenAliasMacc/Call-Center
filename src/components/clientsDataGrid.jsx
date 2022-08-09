@@ -112,7 +112,7 @@ const columns = [
 //-----------------------------------------------------
 
 export default function QuickFilteringCustomizedGrid({ clients }) {
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(100);
 
   return (
     <>
