@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import axios from "../api/axios";
 import BackHomeLink from "../components/BackHomeLink";
 import Header from "../components/Header";
@@ -43,10 +44,11 @@ const NewClients = () => {
                 if (response.data.success === -2) {
                     navigate('/', {state: { from: location }, replace: true })
                 }
+                toast.success("Nouveau client enregistré")
                 navigate(from, { replace: true })                
                 setIsLoading(false);
           } catch (err) {
-            
+            toast.error('Erreur lors de la validation')
           }
     } ;
   

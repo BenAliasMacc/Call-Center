@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import bin from '../assets/icons/bin-modal.svg';
 import Loader from '../components/Loader';
+import { toast } from 'react-toastify';
 
 const DeleteUserModal = (props) => {
 
@@ -25,6 +26,7 @@ const DeleteUserModal = (props) => {
         .then(response => response.json())
         .then(data => {
             if(data.success === 1){
+                toast.info("Utilisateur supprimé")
                 props.setRefreshList(!props.refreshList);
                 props.setIsDeleteUserModal(false);
             }   
@@ -37,7 +39,9 @@ const DeleteUserModal = (props) => {
             }      
             setIsLoading(false);
         })
-        .catch(error =>console.log(error))
+        .catch(error => {
+            toast.info("Erreur lors de la suppression")
+        })
     };
 
     return (

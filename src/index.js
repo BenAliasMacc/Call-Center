@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
 import App from './App';
 import { AuthProvider } from './context/AuthProvider';
@@ -15,5 +17,6 @@ root.render(
         </Routes>
       </AuthProvider>
     </BrowserRouter>
+    <ToastContainer />
   </React.StrictMode>,
 );

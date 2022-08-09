@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import axios from "../api/axios";
 import Loader from '../components/Loader';
 import '../styles/modalAnimation.css';
@@ -42,6 +43,7 @@ function Inscription(props) {
             if(data.success === 1){
                 props.setIsCreated(false)
                 props.setRefreshList(!props.refreshList)
+                toast.success("Nouvelle utilisateur enregistré")
             }   
             if (data.success === -1)  {
                 localStorage.clear();
@@ -52,8 +54,9 @@ function Inscription(props) {
             }
             setIsLoading(false)
         })
-        .catch(error =>console.log(error))
-
+        .catch(error => {
+            toast.error('Erreur lors de la validation')
+        })
     }
   
     return (

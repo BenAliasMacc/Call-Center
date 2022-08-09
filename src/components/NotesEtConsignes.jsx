@@ -20,7 +20,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
 
    useEffect(() => {
        setNotesArray([...notes]); 
-   }, [refresh]);
+   }, [notes]);
 
    useEffect(() => {
     
@@ -46,33 +46,38 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
    
    function handleSubmitNotes(e) {
         setIsLoading(true);
-       e.stopPropagation();
-       e.preventDefault();
+        console.log(inputNote);
+        e.stopPropagation();
+        e.preventDefault();
 
-       if (notes) {
-           fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
-               method: "PUT",
-               headers: {
-                   "Content-Type": "application/json",
-                   "Authorization": `Bearer ${token}`,
-                   "Accept": "application/json, text/plain,"
-               },
-               body: JSON.stringify({
-                   notes: [...notesArray, inputNote]
-               })
-           })
-           .then(response => response.json())
-           .then(data => {                    
-                if (data.success === -1)  {
-                    localStorage.clear();
-                    navigate('/login', {state: { from: location }, replace: true });
-                }
-                setInputNote('');
-                setNewRefresh(!newRefresh);
-                setIsLoading(false);
-           })
-           .catch(error => console.log(error));
-       } 
+        if (notes && inputNote !== "") {
+            fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                    "Accept": "application/json, text/plain,"
+                },
+                body: JSON.stringify({
+                    notes: [...notesArray, inputNote]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {                    
+                    if (data.success === -1)  {
+                        localStorage.clear();
+                        navigate('/login', {state: { from: location }, replace: true });
+                    }            
+                    console.log(notesArray);
+                    console.log(notes);        
+                    setNewRefresh(!newRefresh);
+                    setInputNote('');                
+                    setIsLoading(false);                    
+            })
+            .catch(error => console.log(error));
+        }else{
+            setIsLoading(false); 
+        }
    };
 
    function handleChangeNote(e, index) {
@@ -84,31 +89,31 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
 
    function deleteNote(index) {
         setIsLoading(true); 
-       let newArray = [...notesArray];
-       newArray.splice(index, 1);
+        let newArray = [...notesArray];
+        newArray.splice(index, 1);
 
-       fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
-               method: "PUT",
-               headers: {
-                   "Content-Type": "application/json",
-                   "Authorization": `Bearer ${token}`,
-                   "Accept": "application/json, text/plain,"
-               },
-               body: JSON.stringify({
-                   notes: newArray
-               })
-           })
-           .then(response => response.json())
-           .then(data => {
-                if (data.success === -1)  {
-                    localStorage.clear();
-                    navigate('/login', {state: { from: location }, replace: true });
-                }
-                setInputNote('');
-                setNewRefresh(!newRefresh);  
-                setIsLoading(false);
-           })
-           .catch(error => console.log(error));
+        fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                    "Accept": "application/json, text/plain,"
+                },
+                body: JSON.stringify({
+                    notes: newArray
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                    if (data.success === -1)  {
+                        localStorage.clear();
+                        navigate('/login', {state: { from: location }, replace: true });
+                    }
+                    setInputNote('');
+                    setNewRefresh(!newRefresh);  
+                    setIsLoading(false);
+            })
+            .catch(error => console.log(error));
    }
 
    function handleModifyNote(index) {
