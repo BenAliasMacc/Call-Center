@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
-import { BallTriangle, Circles } from "react-loader-spinner";
+import { BallTriangle, Circles, TailSpin } from "react-loader-spinner";
 
 const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles, setRefresh, refresh }) => {
 
-    const [isLoading, setIsLoading] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const [telephoneDest, setTelephoneDest] = useState("");
     const [txtMessage, setTxtMessage] = useState("");
     const [emailDest, setEmailDest] = useState("");
@@ -169,9 +169,12 @@ const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles
                         <label>Message</label>
                         <textarea onChange={(e) => setTxtMessage(e.target.value)}/>
                         <button className="btnSms">
-                        <Circles color="#00BFFF" height={80} width={80}/>
+                        {isLoading ?
+                            <TailSpin color="white" height={32} width={32} /> 
+                            :
                             <p>Envoyer</p>
-                        </button>
+                        }
+                        </button>                        
                     </form>
                 </div>
             }
@@ -191,7 +194,13 @@ const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles
                             onChange={(e) => setTxtEmail(e.target.value)}
                             defaultValue={modelSelected !== undefined ? modeles[modelSelected].modele : ""}
                         />
-                        <button className="btnSms">Envoyer</button>
+                        <button className="btnSms">
+                        {isLoading ?
+                            <TailSpin color="white" height={32} width={32} /> 
+                            :
+                            <p>Envoyer</p>
+                        }
+                        </button>
                     </form>
                 </div>
             }           

@@ -141,8 +141,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20%;
     height: 40px;
+    width: 100px;
     background-color:rgb(13, 186, 216);
     border-radius: 10px;
     margin-top: 20px;
