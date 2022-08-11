@@ -26,6 +26,8 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   const [isLoading, setIsLoading] = useState(false);
   const [showNavMessage, setShowNavMessage] = useState(false);
 
+  console.log(isModal);
+
   const {
     nom,
     prenom,
@@ -221,7 +223,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
 
   const handleCancelButton = (e) => {
     e.preventDefault();    
-    setEditMode(!editMode);    
+    setEditMode(!editMode);
   };
 
   const handleCloseModal = () => {
@@ -344,17 +346,14 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                       {displayConsignes}
                 </div>
               }
-
-                
               </form>
             </header>
 
-            {!isModal && <NotesEtConsignes editMode={editMode} clientId={clientId} token={token} client={client} refresh={refresh} setRefresh={setRefresh}/>}    
-
+            {!isModal && <NotesEtConsignes editMode={editMode} clientId={clientId} token={token} client={client} refresh={refresh} setRefresh={setRefresh}/>}
         </div>}
 
         {deleteClientsModal === true && 
-          <DeleteClientsModal clientId={clientId} />
+          <DeleteClientsModal clientId={clientId} setRefresh={setRefresh} />
         }
 
         { isLoading && 

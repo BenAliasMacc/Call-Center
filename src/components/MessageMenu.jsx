@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
-import { BallTriangle, Circles, TailSpin } from "react-loader-spinner";
+import { TailSpin } from "react-loader-spinner";
 
 const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles, setRefresh, refresh }) => {
 
+
     const [isLoading, setIsLoading] = useState(false);
-    const [telephoneDest, setTelephoneDest] = useState("");
+    // const [telephoneDest, setTelephoneDest] = useState("");
     const [txtMessage, setTxtMessage] = useState("");
     const [emailDest, setEmailDest] = useState("");
     const [txtEmail, setTxtEmail] = useState("");
@@ -103,6 +104,11 @@ const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
+            if (data.success === 1) {
+                setIsOpenModels(false);
+                setRefresh(!refresh);
+            }
             if (data.success === 1) {
                 setIsOpenModels(false);
                 setRefresh(!refresh);
@@ -164,8 +170,9 @@ const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles
         
             {
                 isOpenMessage &&
-                <div className='modalMessage' onClick={handleCloseModals}>
-                    <form onSubmit={(e) => handleSubmitMessage(e)} className='modal' onClick={stopPropagation}>
+                <div className='modalMessage' onClick={handleCloseModals} >
+                    <form onSubmit={(e) => handleSubmitMessage(e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
+                    <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>             
                         <label>Message</label>
                         <textarea onChange={(e) => setTxtMessage(e.target.value)}/>
                         <button className="btnSms">
@@ -181,8 +188,9 @@ const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles
 
             {
                 isOpenEmail &&
-                <div className='modalEmail' onClick={handleCloseModals}>                    
-                    <form onSubmit={(e) => handleSubmitEmail(e)} className='modal' onClick={stopPropagation}>
+                <div className='modalEmail' onClick={handleCloseModals}>       
+                    <form onSubmit={(e) => handleSubmitEmail(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
+                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>              
                         <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
                         <label>Objet</label>
                         <input 
@@ -208,7 +216,8 @@ const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles
             {
                 isOpenModels &&
                 <div className='modalEmail' onClick={handleCloseModals}>                    
-                    <form onSubmit={(e) => handleSubmitModels(e)} className='modal' onClick={stopPropagation}>
+                    <form onSubmit={(e) => handleSubmitModels(e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
+                    <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>              
                         <label>Titre</label>
                         <input onChange={(e) => setTitleModel(e.target.value)}/>
                         <label>Modèle</label>

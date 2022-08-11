@@ -54,6 +54,7 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
             setIsLoading(false);
         } catch (err) {
             toast.error("Erreur lors de la suppression")
+            console.log(err);
         }
         };
 
