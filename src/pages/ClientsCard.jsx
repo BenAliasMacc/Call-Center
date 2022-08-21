@@ -17,11 +17,21 @@ const ClientsCard = () => {
 
   useEffect(() => {
 
+    let numClient = '';
+
+    if (clientId.includes('&')) {
+
+        numClient = clientId.split("tel=")[1].split("&");
+        numClient = numClient[0];
+    } else {
+        numClient = clientId;
+    }
+
     setIsLoading(true);
 
     const getClients = async () => {
       try {
-        const response = await axios.get(`/clients/getClient/${clientId}`, {
+        const response = await axios.get(`/clients/getClient/${numClient}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
