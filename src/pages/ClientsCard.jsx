@@ -4,8 +4,9 @@ import axios from "../api/axios";
 import DisplayClientsData from "../components/DisplayClientsData";
 import Header from "../components/Header";
 import Loader from '../components/Loader';
+import { useSearchParams } from 'react-router-dom';
 
-const ClientsCard = () => {
+const ClientsCard = (props) => {
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -15,9 +16,11 @@ const ClientsCard = () => {
   const [client, setClient] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
+  const [searchParams] = useSearchParams();
+
   useEffect(() => {
 
-    let numClient = '';
+    /* let numClient = '';
 
     if (clientId.includes('&')) {
 
@@ -25,13 +28,13 @@ const ClientsCard = () => {
         numClient = numClient[0];
     } else {
         numClient = clientId;
-    }
+    } */
 
     setIsLoading(true);
 
     const getClients = async () => {
       try {
-        const response = await axios.get(`/clients/getClient/${numClient}`, {
+        const response = await axios.get(`/clients/getClient/${searchParams.get('tel')}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,

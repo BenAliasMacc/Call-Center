@@ -75,7 +75,7 @@ const columns = [
     field: 'id', 
     headerName: 'Identifiant', 
     flex: 2,
-    renderCell: (params) => (<Link to={`${params.row.id}`}>{params.value}</Link>)
+    renderCell: (params) => (<Link to={`/client?tel=${params.row.id}`}>{params.value}</Link>)
   },
   { field: 'nom', headerName: 'Nom', flex: 2 },
   { field: 'prenom', headerName: 'Prénom', flex: 2 },
