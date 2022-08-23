@@ -93,7 +93,7 @@ const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, tok
 
         const newClient = {...client, modeles: newModeles};
 
-        fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${client._id}`, {
+        fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${client.id}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json, text/plain, */*', 
