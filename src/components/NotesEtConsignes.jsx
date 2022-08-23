@@ -51,6 +51,8 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
         e.stopPropagation();
         e.preventDefault();
 
+        console.log(clientId)
+
         if (notes && inputNote !== "") {
             fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
                 method: "PUT",
@@ -129,6 +131,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
         if (notes[index] !== notesArray[index]) { 
         
             setIsLoading(true);
+            console.log(clientId)
     
             fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
                 method: 'PUT',

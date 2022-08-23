@@ -108,11 +108,7 @@ const MessageMenu = ({ client, setClient, showNavMessage, setShowNavMessage, tok
             if (data.success === 1) {
                 setIsOpenModels(false);
                 setRefresh(!refresh);
-            }
-            if (data.success === 1) {
-                setIsOpenModels(false);
-                setRefresh(!refresh);
-            }            
+            }           
         })
         .catch(error =>console.log(error))
     }

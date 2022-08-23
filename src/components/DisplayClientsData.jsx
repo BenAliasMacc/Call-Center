@@ -295,7 +295,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                     { userRole === ROLES.Admin &&
                       <div className="display-clients-data__buttons-top">
                         <EditButton editMode={editMode} setEditMode={setEditMode} />
-                        <DeleteButton clientId={clientId} />
+                        <DeleteButton clientId={client._id} />
                       </div>
                     }                   
                   </>

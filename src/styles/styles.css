@@ -130,7 +130,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    width: 30%;
+    min-width: 300px;
     height: 400px;
     background-color: white;
     padding: 40px;

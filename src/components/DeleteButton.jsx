@@ -5,6 +5,8 @@ import useAuth from "../hooks/useAuth";
 
 const DeleteButton = ({ clientId }) => {
 
+    console.log(clientId)
+
     const userRole = localStorage.getItem("userRole");
     const { setDeleteClientsModal, auth, setAuth } = useAuth();
     const [isLoading] = useState(false);

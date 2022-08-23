@@ -10,13 +10,14 @@ const ClientsCard = (props) => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const clientId = useParams().id;
+  let clientId = ''
   const [refresh, setRefresh] = useState(false)
   const token = localStorage.getItem("token");
   const [client, setClient] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   const [searchParams] = useSearchParams();
+  clientId = searchParams.get('tel');
 
   useEffect(() => {
 
@@ -34,7 +35,7 @@ const ClientsCard = (props) => {
 
     const getClients = async () => {
       try {
-        const response = await axios.get(`/clients/getClient/${searchParams.get('tel')}`, {
+        const response = await axios.get(`/clients/getClient/${clientId}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
