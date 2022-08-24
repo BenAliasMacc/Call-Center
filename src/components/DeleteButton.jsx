@@ -17,7 +17,7 @@ const DeleteButton = ({ clientId }) => {
     const handleOpenModal = (e) => {
             e.preventDefault();
             setDeleteClientsModal(true)
-            setAuth({...auth, clientId})    
+            setAuth({...auth, clientId})
     }
 
     return (    

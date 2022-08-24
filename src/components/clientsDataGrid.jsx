@@ -75,7 +75,7 @@ const columns = [
     field: 'id', 
     headerName: 'Identifiant', 
     flex: 2,
-    renderCell: (params) => (<Link to={`${params.row._id}`}>{params.value}</Link>)
+    renderCell: (params) => (<Link to={`/client?tel=${params.row.id}`}>{params.value}</Link>)
   },
   { field: 'nom', headerName: 'Nom', flex: 2 },
   { field: 'prenom', headerName: 'Prénom', flex: 2 },
@@ -100,7 +100,7 @@ const columns = [
     renderCell: (params) => (
         <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%" }}>
             <div>
-              <OpenModal clientId={params.row._id} />              
+              <OpenModal clientId={params.row.id} />
             </div>
             <div>
               <DeleteButton clientId={params.row._id} />

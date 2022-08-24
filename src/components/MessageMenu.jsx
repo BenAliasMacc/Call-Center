@@ -3,7 +3,7 @@ import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
 import { TailSpin } from "react-loader-spinner";
 
-const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles, setRefresh, refresh }) => {
+const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, token, modeles, setRefresh, refresh }) => {
 
 
     const [isLoading, setIsLoading] = useState(false);
@@ -93,29 +93,55 @@ const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles
 
         const newClient = {...client, modeles: newModeles};
 
-        fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${client._id}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json, text/plain, */*', 
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newClient)         
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            if (data.success === 1) {
-                setIsOpenModels(false);
-                setRefresh(!refresh);
-            }
-            if (data.success === 1) {
-                setIsOpenModels(false);
-                setRefresh(!refresh);
-            }            
-        })
-        .catch(error =>console.log(error))
+        if (titleModel && txtModel !== "") {
+            fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*', 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newClient)         
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success === 1) {
+                    toast.success('Modèle enregistré')
+                    setIsOpenModels(false);
+                    setRefresh(!refresh);                
+                }  
+            })
+            .catch(error => toast.error('Erreur lors de la validation'))
+        }
     }
+
+    function handleDeleteModel(index) {
+
+        let newArray = [...modeles];
+        newArray.splice(index, 1);
+
+        fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                    "Accept": "application/json, text/plain,"
+                },
+                body: JSON.stringify({
+                    modeles: newArray
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success === 1) {
+                    toast.success('Modèle enregistré')
+                    setModelSelected()
+                    setIsOpenModels(false);
+                    setRefresh(!refresh);       
+                } 
+            })
+            .catch(error => toast.error('Erreur lors de la supression'));
+   }
 
     const handleModalEmail = () => {
         setIsOpenEmail(true)
@@ -216,13 +242,21 @@ const MessageMenu = ({ client, showNavMessage, setShowNavMessage, token, modeles
             {
                 isOpenModels &&
                 <div className='modalEmail' onClick={handleCloseModals}>                    
-                    <form onSubmit={(e) => handleSubmitModels(e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
-                    <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>              
+                    <form onSubmit={handleSubmitModels} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
+                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>
+                        <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />            
                         <label>Titre</label>
-                        <input onChange={(e) => setTitleModel(e.target.value)}/>
+                        <input 
+                            onChange={(e) => setTitleModel(e.target.value)}
+                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
+                        />                        
                         <label>Modèle</label>
-                        <textarea onChange={(e) => setTxtModel(e.target.value)}/>
+                        <textarea 
+                            onChange={(e) => setTxtModel(e.target.value)}
+                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
+                        />
                         <button className="btnSms">Sauvegarder</button>
+                        <button onClick={() => handleDeleteModel(modeles[modelSelected])} className="btnSms">Supprimer</button>
                     </form>
                 </div>
             }            

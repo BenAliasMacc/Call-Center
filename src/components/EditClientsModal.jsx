@@ -14,7 +14,7 @@ const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
 
     useEffect(() => {
 
-        setIsLoading(true);
+        // setIsLoading(true);
 
         const getClients = async () => {
           try {
@@ -26,6 +26,7 @@ const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
               }
               // withCredentials: true
             }); 
+            console.log(response.data);
             if (response.data.success === -1)  {
                 localStorage.clear();
                 navigate('/login', {state: { from: location }, replace: true });

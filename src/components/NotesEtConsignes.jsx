@@ -6,7 +6,7 @@ import { BsCheck } from 'react-icons/bs';
 import Loader from '../components/Loader';
 import { useLocation, useNavigate } from "react-router-dom";
 
-const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
+const NotesEtConsignes = ({ clientId, token, client }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -46,7 +46,6 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
    
    function handleSubmitNotes(e) {
         setIsLoading(true);
-        console.log(inputNote);
         e.stopPropagation();
         e.preventDefault();
 
@@ -67,9 +66,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
                     if (data.success === -1)  {
                         localStorage.clear();
                         navigate('/login', {state: { from: location }, replace: true });
-                    }            
-                    console.log(notesArray);
-                    console.log(notes);        
+                    }               
                     setNewRefresh(!newRefresh);
                     setInputNote('');                
                     setIsLoading(false);                    

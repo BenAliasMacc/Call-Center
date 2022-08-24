@@ -26,8 +26,6 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   const [isLoading, setIsLoading] = useState(false);
   const [showNavMessage, setShowNavMessage] = useState(false);
 
-  console.log(isModal);
-
   const {
     nom,
     prenom,
@@ -234,7 +232,6 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   const onSubmit = data => {
 
     setIsLoading(true);
-
     const editClientData = async () => {
 
       try {
@@ -269,7 +266,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
 
   const stopPropagation = (e) => {
     e.stopPropagation()
-  }
+  }  
 
   return (
     <section className="display-clients-data" onClick={handleCloseModal}>        
@@ -280,7 +277,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                 <div className="flex containerIcons width30" >
                     <div className="flex containerIcon" >
                         <AiOutlineMessage className="icon" onClick={handleNavMessage}/>
-                        <MessageMenu client={client} setClient={setClient}  modeles={modeles} showNavMessage={showNavMessage} setShowNavMessage={setShowNavMessage} token={token} />
+                        <MessageMenu refresh={refresh} setRefresh={setRefresh} client={client} setClient={setClient} clientId={clientId} modeles={modeles} showNavMessage={showNavMessage} setShowNavMessage={setShowNavMessage} token={token} />
                     </div>
                     <div className="flex containerIcon" >
                         <a href={site} rel="noreferrer" target="_blank">
@@ -297,7 +294,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                     { userRole === ROLES.Admin &&
                       <div className="display-clients-data__buttons-top">
                         <EditButton editMode={editMode} setEditMode={setEditMode} />
-                        <DeleteButton clientId={clientId} />
+                        <DeleteButton clientId={client.id} />
                       </div>
                     }                   
                   </>
@@ -353,7 +350,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
         </div>}
 
         {deleteClientsModal === true && 
-          <DeleteClientsModal clientId={clientId} setRefresh={setRefresh} />
+          <DeleteClientsModal clientId={client._id} setRefresh={setRefresh} />
         }
 
         { isLoading && 

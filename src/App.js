@@ -1,3 +1,4 @@
+
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Layout from './components/Layout';
@@ -33,7 +34,7 @@ function App() {
         {/* we want to protect these routes */}
         <Route element={<RequireAuth allowedRoles={[ROLES.User, ROLES.Admin]} />}>
           <Route path="/" element={<Home />} />          
-          <Route path=":id" element={<ClientsCard />} />
+          <Route path="/client" element={<ClientsCard />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>

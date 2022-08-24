@@ -1,21 +1,33 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import DisplayClientsData from "../components/DisplayClientsData";
 import Header from "../components/Header";
 import Loader from '../components/Loader';
+import { useSearchParams } from 'react-router-dom';
 
 const ClientsCard = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const clientId = useParams().id;
+  let clientId = "";
   const [refresh, setRefresh] = useState(false)
   const token = localStorage.getItem("token");
   const [client, setClient] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
+  const [searchParams] = useSearchParams();
+  clientId = searchParams.get('tel');
+
   useEffect(() => {
+
+    /* let numClient = '';
+    if (clientId.includes('&')) {
+        numClient = clientId.split("tel=")[1].split("&");
+        numClient = numClient[0];
+    } else {
+        numClient = clientId;
+    } */
 
     setIsLoading(true);
 
