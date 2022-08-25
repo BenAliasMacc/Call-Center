@@ -82,14 +82,15 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
         })
     }
 
-    function handleSubmitModels(e) {
-        e.preventDefault();
+    function handleSubmitModels(index, e) {
 
+        e.preventDefault();
+        
         const newModeles = [...modeles];
         newModeles.push({
             title: titleModel,
             modele: txtModel
-        });
+        }); 
 
         const newClient = {...client, modeles: newModeles};
 
@@ -115,7 +116,10 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
         }
     }
 
-    function handleDeleteModel(index) {
+    function handleDeleteModel(index, e) {
+
+        e.preventDefault()
+        console.log(index);
 
         let newArray = [...modeles];
         newArray.splice(index, 1);
@@ -134,7 +138,7 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
             .then(response => response.json())
             .then(data => {
                 if (data.success === 1) {
-                    toast.success('Modèle enregistré')
+                    toast.info('Modèle supprimé')
                     setModelSelected()
                     setIsOpenModels(false);
                     setRefresh(!refresh);       
@@ -242,7 +246,7 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
             {
                 isOpenModels &&
                 <div className='modalEmail' onClick={handleCloseModals}>                    
-                    <form onSubmit={handleSubmitModels} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
+                    <form onSubmit={(e)=>handleSubmitModels(modelSelected, e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
                         <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>
                         <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />            
                         <label>Titre</label>
@@ -255,8 +259,10 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
                             onChange={(e) => setTxtModel(e.target.value)}
                             defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
                         />
-                        <button className="btnSms">Sauvegarder</button>
-                        <button onClick={() => handleDeleteModel(modeles[modelSelected])} className="btnSms">Supprimer</button>
+                        <div className="buttons-Model">
+                            <button className="btnSms">Sauvegarder</button>
+                            {modelSelected !== undefined && <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button>}                            
+                        </div>
                     </form>
                 </div>
             }            
