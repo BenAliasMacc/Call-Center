@@ -175,11 +175,11 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                 <div className='modalEmail' onClick={handleCloseMessage}>       
                     <form onSubmit={(e) => handleSubmitEmail(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
                         <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>                                     
-                        {modeles.length !== 0 &&
+                        {(modeles && modeles.length !== 0) &&
                             <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
                         }
                         
-                        { (emailsEnvoie.length > 0 || telephonesEnvoie) > 0 &&
+                        { (emailsEnvoie && (emailsEnvoie.length > 0 || telephonesEnvoie.length > 0)) &&
                         <>
                             <div>Destinataire</div>
                             <div className="destinataireMessage">
