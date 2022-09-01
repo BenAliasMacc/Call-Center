@@ -41,7 +41,10 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     consignes,
     consignesOut,
     langue,
-    modeles
+    modeles,
+    emailsEnvoie,
+    telephonesEnvoie,
+    choixEnvoie
   } = client !== undefined && client;
 
   const ROLES = {
@@ -206,6 +209,63 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
       />
     </>
   );
+  const displayEmailsEnvoie = !editMode ? (
+    emailsEnvoie
+  ) : (
+    <>
+      <textarea
+        className="headerClient__input"
+        type="text"
+        id="emailsEnvoie"
+        defaultValue={emailsEnvoie}
+        {...register("emailsEnvoie")}
+      />
+    </>
+  );
+  const displayTelephonesEnvoie = !editMode ? (
+    telephonesEnvoie
+  ) : (
+    <>
+      <textarea
+        className="headerClient__input"
+        type="text"
+        id="telephonesEnvoie"
+        defaultValue={telephonesEnvoie}
+        {...register("telephonesEnvoie")}
+      />
+    </>
+  );
+  const displayChoixEnvoie = !editMode ? (
+    choixEnvoie
+  ) : (
+    <>
+      <div>
+        <label htmlFor="byMail">Email</label>
+        <input 
+          type="radio" value="1" id="byMail"
+          {...register("choixEnvoie", {
+          required: true})}                            
+        />
+      </div>
+      <div>
+        <label htmlFor="byTel">Téléphone</label>
+        <input 
+          type="radio" value="2" id="byTel" 
+          {...register("choixEnvoie", {
+          required: true})}                    
+        />                        
+      </div>
+      <div>
+        <label htmlFor="both">Les deux</label>
+        <input 
+          type="radio" value="3" id="byTel" 
+          {...register("choixEnvoie", {
+          required: true})}
+        />                        
+       </div>
+    </>
+  );
+
   const displayConsignes = !editMode ? (
     <div className="textZone-consignes width100">
         {consignes.map((consigne, index) => <p key={index} style={{whiteSpace: "pre-line"}}>{consigne}</p>)}

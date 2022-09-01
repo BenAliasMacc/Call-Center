@@ -175,7 +175,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                 <div className='modalEmail' onClick={handleCloseMessage}>       
                     <form onSubmit={(e) => handleSubmitEmail(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
                         <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>                                     
-                        {modeles.length > 0 &&
+                        {modeles.length !== 0 &&
                             <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
                         }
                         
@@ -183,12 +183,12 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                         <>
                             <div>Destinataire</div>
                             <div className="destinataireMessage">
-                                {  emailsEnvoie.length > 0 &&
+                                {(emailsEnvoie.length > 0 && (client.choixEnvoie === "1" || client.choixEnvoie === "3")) &&
                                     <select name="emailDest">
                                         {emailsEnvoie.map((email, i) => <option key={i} value={email}>{email}</option>)}
                                     </select>
                                 }
-                                {telephonesEnvoie.length > 0 &&
+                                {(telephonesEnvoie.length > 0 && (client.choixEnvoie === "2" || client.choixEnvoie === "3")) &&
                                     <select name="telDest">
                                         {telephonesEnvoie.map((telephone, i) => <option key={i} value={telephone}>{telephone}</option>)}
                                     </select>
