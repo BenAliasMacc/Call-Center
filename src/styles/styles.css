@@ -62,8 +62,7 @@
     margin: 10px;
 }
 
-.containerColonne {        
-    height: 500px;
+.containerColonne {
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -73,19 +72,19 @@
     overflow-y: scroll;
     z-index: 1;
 }
-@media screen and (max-height: 900px) {   
+/* @media screen and (max-height: 900px) {   
     .containerColonne {   
         bottom: -350px;
         height: 350px;
     }
-}
+} */
 
 .textZone {
     padding: 10px;
     margin-top: 10px;
-    height: 80%;
     border: 1px solid black;
     overflow: scroll;
+    height: 100%;
 }
 
 .btn {
@@ -94,8 +93,7 @@
 }
 
 .globalContainer {
-    padding: 20px 60px;
-    margin-bottom: 40px;
+    height: 100%;
 }
 
 .containerIcons {

@@ -63,7 +63,7 @@ const ClientsCard = () => {
       <Header />
 
       {client !== undefined && (
-        <section className="clients-card" style={{marginTop: "70px"}}>
+        <section className="clients-card">
           <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={false} setRefresh={setRefresh} refresh={refresh} />
 
           { isLoading && 

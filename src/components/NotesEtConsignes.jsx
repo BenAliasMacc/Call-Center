@@ -115,6 +115,7 @@ const NotesEtConsignes = ({ clientId, token, client }) => {
 
    function handleModifyNote(index) {
 
+    console.log(arrayOfIndex);
     if (arrayOfIndex.includes(index)) {
 
         let copyOfArray = [...arrayOfIndex];

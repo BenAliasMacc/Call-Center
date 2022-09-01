@@ -2,24 +2,28 @@ import { useState } from "react";
 import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
 import { TailSpin } from "react-loader-spinner";
+import { AiFillSetting } from "react-icons/ai";
 
-const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, token, modeles, setRefresh, refresh }) => {
-
+const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels, setShowModels, token, modeles, setRefresh, refresh }) => {
 
     const [isLoading, setIsLoading] = useState(false);
-    // const [telephoneDest, setTelephoneDest] = useState("");
+    const [telephoneDest, setTelephoneDest] = useState(0);
+    const [mailDest, setMailDest] = useState(0);
     const [txtMessage, setTxtMessage] = useState("");
+    const [titleMessage, setTitleMessage] = useState("");
     const [emailDest, setEmailDest] = useState("");
     const [txtEmail, setTxtEmail] = useState("");
     const [objectEmail, setObjectEmail] = useState("");
     const [txtModel, setTxtModel] = useState("");
     const [titleModel, setTitleModel] = useState("");
-    const [isOpenMessage, setIsOpenMessage] = useState(false);
-    const [isOpenEmail, setIsOpenEmail] = useState(false);
-    const [isOpenModels, setIsOpenModels] = useState(false);
     const [isOpen, setIsOpen] = useState(false);    
-    const [modelSelected, setModelSelected] = useState();
-    const diplayNav = showNavMessage ? "show-navbar" : "";
+    const [modelSelected, setModelSelected] = useState();    
+    const emailsEnvoie = client.emailsEnvoie[0] && client.emailsEnvoie[0].replace(" ", "\n").split("\n")
+    const telephonesEnvoie = client.telephonesEnvoie[0] && client.telephonesEnvoie[0].split("\n")
+
+    console.log(client);
+    console.log(modelSelected);
+    console.log(modeles.length);
 
     function handleSubmitMessage(e) {
         e.preventDefault();
@@ -42,8 +46,7 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
             .then(response => response.json())
             .then(data => {  
                 if (data.success === 1) {   
-                    setIsLoading(false);                                
-                    setIsOpenMessage(false);
+                    setIsLoading(false);     
                     toast.success("Message envoyé")
                 }
             })
@@ -108,7 +111,6 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
             .then(data => {
                 if (data.success === 1) {
                     toast.success('Modèle enregistré')
-                    setIsOpenModels(false);
                     setRefresh(!refresh);                
                 }  
             })
@@ -140,34 +142,22 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
                 if (data.success === 1) {
                     toast.info('Modèle supprimé')
                     setModelSelected()
-                    setIsOpenModels(false);
                     setRefresh(!refresh);       
                 } 
             })
             .catch(error => toast.error('Erreur lors de la supression'));
    }
 
-    const handleModalEmail = () => {
-        setIsOpenEmail(true)
-        setShowNavMessage(false)        
-    }
-
-    const handleModalMessage = () => {
-        setIsOpenMessage(true)
-        setShowNavMessage(false)        
-    }
-
-    const handleModalModels = () => {
-        setIsOpenModels(true)
-        setShowNavMessage(false)        
-    }
-
-    const handleCloseModals = () => {
+    const handleCloseMessage = () => {
         setModelSelected();
-        setIsOpenMessage(false);
-        setIsOpenEmail(false);
-        setIsOpenModels(false);
-    }   
+        setShowMessage(false);
+    }
+
+    
+
+    const handleCloseModels = () => {
+        setShowModels(false)
+    }
     
     const handleCloseButtonModel = () => {
         setIsOpen(false);
@@ -181,24 +171,79 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
     return (
 
         <>
-            <nav
-            className={`message-menu ${diplayNav}`}
-            style={{ position: "absolute" }}
-            >
-            <ul className="message-menu__list">
-                <li className="message-menu__list__link">
-                    <button onClick={handleModalMessage}>SMS</button>
-                </li>
-                <li className="message-menu__list__link">
-                    <button onClick={handleModalEmail}>Email</button>
-                </li>
-                <li className="message-menu__list__link">
-                    <button onClick={handleModalModels}>Modèle</button>
-                </li>
-            </ul>
-            </nav>
+            {showMessage &&
+                <div className='modalEmail' onClick={handleCloseMessage}>       
+                    <form onSubmit={(e) => handleSubmitEmail(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
+                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>                                     
+                        {modeles.length > 0 &&
+                            <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
+                        }
+                        
+                        { (emailsEnvoie.length > 0 || telephonesEnvoie) > 0 &&
+                        <>
+                            <div>Destinataire</div>
+                            <div className="destinataireMessage">
+                                {  emailsEnvoie.length > 0 &&
+                                    <select name="emailDest">
+                                        {emailsEnvoie.map((email, i) => <option key={i} value={email}>{email}</option>)}
+                                    </select>
+                                }
+                                {telephonesEnvoie.length > 0 &&
+                                    <select name="telDest">
+                                        {telephonesEnvoie.map((telephone, i) => <option key={i} value={telephone}>{telephone}</option>)}
+                                    </select>
+                                }
+                            </div>                        
+                        </>
+                        }
+                        <label>Objet</label>
+                        <input 
+                            onChange={(e) => setTitleMessage(e.target.value)} 
+                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
+                        />
+                        <label>Message</label>
+                        <textarea 
+                            onChange={(e) => setTxtMessage(e.target.value)}
+                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].modele : ""}
+                        />
+                        <button className="btnSms">
+                        {isLoading ?
+                            <TailSpin color="white" height={32} width={32} /> 
+                            :
+                            <p>Envoyer</p>
+                        }
+                        </button>
+                    </form>
+                </div>
+            }
+
+            {showModels &&
+                <div className='modalEmail' onClick={handleCloseModels}>                    
+                <form onSubmit={(e)=>handleSubmitModels(modelSelected, e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
+                    <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModels}>X</span>  
+                    {modeles.length > 0 &&
+                        <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
+                    }            
+                    <label>Titre</label>
+                    <input 
+                        onChange={(e) => setTitleModel(e.target.value)}
+                        defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
+                    />                        
+                    <label>Modèle</label>
+                    <textarea                    
+                        onChange={(e) => setTxtModel(e.target.value)}
+                        defaultValue={modelSelected !== undefined ? modeles[modelSelected].modele : ""} 
+                    />
+                    <div className="buttons-Model">
+                        <button className="btnSms">Sauvegarder</button>
+                        {modelSelected !== undefined && <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button>}                            
+                    </div>
+                </form>
+            </div>
+            } 
+
         
-            {
+            {/* {
                 isOpenMessage &&
                 <div className='modalMessage' onClick={handleCloseModals} >
                     <form onSubmit={(e) => handleSubmitMessage(e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
@@ -265,7 +310,7 @@ const MessageMenu = ({ client, clientId, showNavMessage, setShowNavMessage, toke
                         </div>
                     </form>
                 </div>
-            }            
+            }             */}
         </>
     );
 };
