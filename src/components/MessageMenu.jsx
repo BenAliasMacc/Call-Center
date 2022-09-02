@@ -17,7 +17,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
     const [txtModel, setTxtModel] = useState("");
     const [titleModel, setTitleModel] = useState("");
     const [isOpen, setIsOpen] = useState(false);    
-    const [modelSelected, setModelSelected] = useState();    
+    const [modelSelected, setModelSelected] = useState(0);    
     const emailsEnvoie = client.emailsEnvoie[0] && client.emailsEnvoie[0].replace(" ", "\n").split("\n")
     const telephonesEnvoie = client.telephonesEnvoie[0] && client.telephonesEnvoie[0].split("\n")
 
@@ -149,7 +149,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
    }
 
     const handleCloseMessage = () => {
-        setModelSelected();
+        setModelSelected(0);
         setShowMessage(false);
     }
 
@@ -199,12 +199,12 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                         <label>Objet</label>
                         <input 
                             onChange={(e) => setTitleMessage(e.target.value)} 
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
+                            defaultValue={modeles.length > 0 ? modeles[modelSelected]?.title : ""}
                         />
                         <label>Message</label>
                         <textarea 
                             onChange={(e) => setTxtMessage(e.target.value)}
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].modele : ""}
+                            defaultValue={modeles.length > 0 ? modeles[modelSelected]?.modele : ""}
                         />
                         <button className="btnSms">
                         {isLoading ?
@@ -227,16 +227,16 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                     <label>Titre</label>
                     <input 
                         onChange={(e) => setTitleModel(e.target.value)}
-                        defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
+                        defaultValue={modeles.length > 0 ? modeles[modelSelected]?.title : ""}
                     />                        
                     <label>Modèle</label>
                     <textarea                    
                         onChange={(e) => setTxtModel(e.target.value)}
-                        defaultValue={modelSelected !== undefined ? modeles[modelSelected].modele : ""} 
+                        defaultValue={modeles.length > 0  ? modeles[modelSelected]?.modele : ""} 
                     />
                     <div className="buttons-Model">
                         <button className="btnSms">Sauvegarder</button>
-                        {modelSelected !== undefined && <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button>}                            
+                        {modeles.length > 0 && <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button>}                            
                     </div>
                 </form>
             </div>
