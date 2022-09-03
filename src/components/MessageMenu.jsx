@@ -21,6 +21,8 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
     const emailsEnvoie = client.emailsEnvoie[0] && client.emailsEnvoie[0].replace(" ", "\n").split("\n")
     const telephonesEnvoie = client.telephonesEnvoie[0] && client.telephonesEnvoie[0].split("\n")
 
+    // test
+
     console.log(client);
     console.log(modelSelected);
     console.log(modeles.length);
@@ -151,9 +153,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
     const handleCloseMessage = () => {
         setModelSelected(0);
         setShowMessage(false);
-    }
-
-    
+    }    
 
     const handleCloseModels = () => {
         setShowModels(false)
