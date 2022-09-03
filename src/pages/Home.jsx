@@ -52,7 +52,7 @@ const Home = () => {
         <>
             <Header />
 
-            <section className="home" style={{marginTop: "80px"}}>
+            <section className="home">
                 <div className="home--container">
                     <DataGrid clients={clients} />                    
                 </div>

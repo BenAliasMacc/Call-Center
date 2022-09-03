@@ -2,7 +2,6 @@ import { useState } from "react";
 import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
 import { TailSpin } from "react-loader-spinner";
-import { AiFillSetting } from "react-icons/ai";
 
 const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels, setShowModels, token, modeles, setRefresh, refresh }) => {
 

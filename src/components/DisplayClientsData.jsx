@@ -414,7 +414,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                       </button>             
                     }
                     
-                    <button type="submit" className="clients-card__buttons__submit">
+                    <button className="clients-card__buttons__submit">
                       Valider
                     </button>
                   </div>
