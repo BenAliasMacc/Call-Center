@@ -10,7 +10,7 @@ import Loader from "../components/Loader";
 
 const Home = () => {
 
-    const { auth, editClientsModal, deleteClientsModal } = useAuth();
+    const { auth, editClientsModal, deleteClientsModal } = useAuth();    
     const clientId = auth?.clientId;
     const token = localStorage.getItem("token");
     const [clients, setClients] = useState();   
@@ -36,6 +36,7 @@ const Home = () => {
                     navigate('/login', {state: { from: location }, replace: true })
                 } else {
                     setClients(response.data)
+                    console.log(response.data);
                 }
                 setIsLoading(false)
             } catch (err) {

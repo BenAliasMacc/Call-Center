@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import DisplayClientsData from "../components/DisplayClientsData";
 import Header from "../components/Header";
 import Loader from '../components/Loader';
 import { useSearchParams } from 'react-router-dom';
 
-const ClientsCard = (props) => {
+const ClientsCard = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  let clientId = ''
+  let clientId = "";
   const [refresh, setRefresh] = useState(false)
   const token = localStorage.getItem("token");
   const [client, setClient] = useState();
@@ -22,9 +22,7 @@ const ClientsCard = (props) => {
   useEffect(() => {
 
     /* let numClient = '';
-
     if (clientId.includes('&')) {
-
         numClient = clientId.split("tel=")[1].split("&");
         numClient = numClient[0];
     } else {
@@ -65,7 +63,7 @@ const ClientsCard = (props) => {
       <Header />
 
       {client !== undefined && (
-        <section className="clients-card" style={{marginTop: "70px"}}>
+        <section className="clients-card">
           <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={false} setRefresh={setRefresh} refresh={refresh} />
 
           { isLoading && 

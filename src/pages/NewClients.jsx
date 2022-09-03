@@ -184,14 +184,12 @@ const NewClients = () => {
                     />
                     {errors?.mail?.type === "required" && <p className="error-message">Ce champ doit être complété</p>}
 
-                    <label htmlFor="telephone">Téléphone <span className="mandatory">*</span></label>
-                    {/* <input type='number' id="telephone"
-                    {...register("telephone", {
-                        required: true
-                    })}
+                    <label htmlFor="emailsEnvoie">Liste mail</label>
+                    <textarea id="emailsEnvoie"
+                    {...register("emailsEnvoie")}
                     />
-                    {errors?.telephone?.type === "required" && <p className="error-message">Ce champ doit être complété</p>} */}
 
+                    <label htmlFor="telephone">Téléphone <span className="mandatory">*</span></label>
                     <Controller
                     control={control}
                     name="telephone"
@@ -213,8 +211,45 @@ const NewClients = () => {
                     />
                     {errors?.telephone?.type === "required" && <p className="error-message">Ce champ doit être complété</p>}
 
+                    <label htmlFor="telephonesEnvoie">Liste telephones</label>
+                    <textarea id="telephonesEnvoie"
+                    {...register("telephonesEnvoie")}
+                    />
+
                 </fieldset>
                 </div>
+                
+                <fieldset className="sending-option">
+                    <legend>Options d'envoi:</legend>
+                    <div>
+                        <label htmlFor="byMail">Email</label>
+                        <input 
+                            type="radio" value="1" id="byMail"
+                            {...register("choixEnvoie", {
+                            required: true                        
+                        })}                            
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="byTel">Téléphone</label>
+                        <input 
+                            type="radio" value="2" id="byTel" 
+                            {...register("choixEnvoie", {
+                            required: true                        
+                        })}                    
+                        />                        
+                    </div>
+                    <div>
+                        <label htmlFor="both">Les deux</label>
+                        <input 
+                            type="radio" value="3" id="byTel" 
+                            {...register("choixEnvoie", {
+                            required: true                        
+                        })}
+                        />                        
+                    </div>
+                    {errors?.choixEnvoie?.type === "required" && <p className="error-message">Ce champ doit être complété</p>}
+                </fieldset>
 
                 <button className='button-submit'>Valider</button>
             </form>

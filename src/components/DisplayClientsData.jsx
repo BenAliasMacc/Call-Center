@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import axios from "../api/axios";
-import { AiOutlineMessage } from "react-icons/ai";
+import { AiFillSetting, AiOutlineMessage } from "react-icons/ai";
 import { FaInternetExplorer } from 'react-icons/fa';
 import Loader from '../components/Loader';
 import useAuth from "../hooks/useAuth";
@@ -24,7 +24,8 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   const [editMode, setEditMode] = useState(booleen);
   const [isModal] = useState(booleen);
   const [isLoading, setIsLoading] = useState(false);
-  const [showNavMessage, setShowNavMessage] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [showModels, setShowModels] = useState(false)
 
   const {
     nom,
@@ -38,8 +39,12 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     site,
     crm,
     consignes,
+    consignesOut,
     langue,
-    modeles
+    modeles,
+    emailsEnvoie,
+    telephonesEnvoie,
+    choixEnvoie
   } = client !== undefined && client;
 
   const ROLES = {
@@ -204,13 +209,70 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
       />
     </>
   );
+  const displayEmailsEnvoie = !editMode ? (
+    emailsEnvoie
+  ) : (
+    <>
+      <textarea
+        className="headerClient__input"
+        type="text"
+        id="emailsEnvoie"
+        defaultValue={emailsEnvoie}
+        {...register("emailsEnvoie")}
+      />
+    </>
+  );
+  const displayTelephonesEnvoie = !editMode ? (
+    telephonesEnvoie
+  ) : (
+    <>
+      <textarea
+        className="headerClient__input"
+        type="text"
+        id="telephonesEnvoie"
+        defaultValue={telephonesEnvoie}
+        {...register("telephonesEnvoie")}
+      />
+    </>
+  );
+  const displayChoixEnvoie = !editMode ? (
+    choixEnvoie
+  ) : (
+    <>
+      <div>
+        <label htmlFor="byMail">Email</label>
+        <input 
+          type="radio" value="1" id="byMail"
+          {...register("choixEnvoie", {
+          required: true})}                            
+        />
+      </div>
+      <div>
+        <label htmlFor="byTel">Téléphone</label>
+        <input 
+          type="radio" value="2" id="byTel" 
+          {...register("choixEnvoie", {
+          required: true})}                    
+        />                        
+      </div>
+      <div>
+        <label htmlFor="both">Les deux</label>
+        <input 
+          type="radio" value="3" id="byTel" 
+          {...register("choixEnvoie", {
+          required: true})}
+        />                        
+       </div>
+    </>
+  );
+
   const displayConsignes = !editMode ? (
-    <div className="textZone textZone-consignes width100">
+    <div className="textZone-consignes width100">
         {consignes.map((consigne, index) => <p key={index} style={{whiteSpace: "pre-line"}}>{consigne}</p>)}
     </div>        
   ) : (
     <textarea
-      className="textZone textZone-consignes width100"
+      className="textZone-consignes width100"
       id="consignes"
       defaultValue={consignes}
       rows="20"
@@ -219,9 +281,24 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     </textarea>
   );
 
+  const displayConsignesOut = !editMode ? (
+    <div className="textZone-consignes width100">
+        {consignesOut.map((consigne, index) => <p key={index} style={{whiteSpace: "pre-line"}}>{consigne}</p>)}
+    </div>        
+  ) : (
+    <textarea
+      className="textZone-consignes width100"
+      id="consignes"
+      defaultValue={consignesOut}
+      rows="20"
+      {...register("consignesOut")}
+    >
+    </textarea>
+  );
+
   const handleCancelButton = (e) => {
     e.preventDefault();    
-    setEditMode(!editMode);    
+    setEditMode(!editMode);
   };
 
   const handleCloseModal = () => {
@@ -231,8 +308,9 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
 
   const onSubmit = data => {
 
-    setIsLoading(true);
+    console.log("test")
 
+    setIsLoading(true);
     const editClientData = async () => {
 
       try {
@@ -261,13 +339,17 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     editClientData();
   };
 
-  const handleNavMessage = () => {
-    setShowNavMessage(!showNavMessage);
+  const handleMessage = () => {
+    setShowMessage(!showMessage);
   };
+
+  const handleModels = () => {
+    setShowModels(true)
+}
 
   const stopPropagation = (e) => {
     e.stopPropagation()
-  }
+  }  
 
   return (
     <section className="display-clients-data" onClick={handleCloseModal}>        
@@ -277,8 +359,8 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
 
                 <div className="flex containerIcons width30" >
                     <div className="flex containerIcon" >
-                        <AiOutlineMessage className="icon" onClick={handleNavMessage}/>
-                        <MessageMenu client={client} setClient={setClient}  modeles={modeles} showNavMessage={showNavMessage} setShowNavMessage={setShowNavMessage} token={token} setRefresh={setRefresh} refresh={refresh} />
+                        <AiOutlineMessage className="icon" onClick={handleMessage}/>
+                        <MessageMenu refresh={refresh} setRefresh={setRefresh} client={client} setClient={setClient} clientId={clientId} modeles={modeles} showMessage={showMessage} setShowMessage={setShowMessage} showModels={showModels} setShowModels={setShowModels} token={token} />
                     </div>
                     <div className="flex containerIcon" >
                         <a href={site} rel="noreferrer" target="_blank">
@@ -294,8 +376,9 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                   <>
                     { userRole === ROLES.Admin &&
                       <div className="display-clients-data__buttons-top">
+                        <AiFillSetting style={{color: "grey", width: "30px", height: "30px", cursor: "pointer", marginRight: "0.5rem"}} onClick={handleModels} /> 
                         <EditButton editMode={editMode} setEditMode={setEditMode} />
-                        <DeleteButton clientId={client._id} />
+                        <DeleteButton clientId={client.id} />
                       </div>
                     }                   
                   </>
@@ -340,21 +423,22 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                 )}
               {!isModal && 
                 <div className="containerColonne colonne-consignes"> 
-                      <u>CONSIGNES :</u> 
-                      {displayConsignes}
+                      <u>CONSIGNES :</u>
+                      <div className="container-consignes">
+                        {displayConsignes}
+                        {displayConsignesOut}
+                      </div>
                 </div>
               }
 
-                
               </form>
             </header>
 
-            {!isModal && <NotesEtConsignes editMode={editMode} clientId={clientId} token={token} client={client} refresh={refresh} setRefresh={setRefresh}/>}    
-
+            {!isModal && <NotesEtConsignes editMode={editMode} clientId={clientId} token={token} client={client} refresh={refresh} setRefresh={setRefresh}/>}
         </div>}
 
         {deleteClientsModal === true && 
-          <DeleteClientsModal clientId={clientId} />
+          <DeleteClientsModal clientId={client._id} setRefresh={setRefresh} />
         }
 
         { isLoading && 

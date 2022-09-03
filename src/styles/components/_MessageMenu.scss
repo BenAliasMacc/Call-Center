@@ -108,9 +108,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20%fit-content;
+    width: fit-content;
+    padding-inline: 1rem;
     height: 40px;
     background-color:rgb(13, 186, 216);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.btnSms-delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    padding-inline: 1rem;
+    height: 40px;
+    background-color:rgb(255, 0, 0);
     border-radius: 10px;
     margin-top: 20px;
 }
@@ -119,6 +132,7 @@
     position: relative;
     color: black;
     font-size: 1rem;
+    margin-bottom: 1rem;
     &__button {
         display: flex;
         align-items: center;
@@ -142,4 +156,16 @@
 
 .show-models .button-model__button img {
     transform: rotate(180deg);
+}
+
+.buttons-Model {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.destinataireMessage {
+    display: flex;
+    gap: 2rem;
+    width: 60%;
 }

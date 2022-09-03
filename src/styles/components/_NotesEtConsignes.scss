@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
+    height: 100%;
     &__input {
         &:focus, &:active {
             outline: 0;
@@ -9,11 +10,12 @@
         }
     }
 }
-@media screen and (max-height: 900px) {   
-    .notesEtConsignes { 
-        height: fit-content;
-    }
-}
+
+// @media screen and (max-height: 900px) {   
+//     .notesEtConsignes { 
+//         height: fit-content;
+//     }
+// }
 
 .containerInput {
     display: flex;

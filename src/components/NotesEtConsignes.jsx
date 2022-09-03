@@ -5,9 +5,8 @@ import { MdPublishedWithChanges } from 'react-icons/md';
 import { BsCheck } from 'react-icons/bs';
 import Loader from '../components/Loader';
 import { useLocation, useNavigate } from "react-router-dom";
-import { TailSpin } from "react-loader-spinner";
 
-const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
+const NotesEtConsignes = ({ clientId, token, client }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -47,11 +46,8 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
    
    function handleSubmitNotes(e) {
         setIsLoading(true);
-        console.log(inputNote);
         e.stopPropagation();
         e.preventDefault();
-
-        console.log(clientId)
 
         if (notes && inputNote !== "") {
             fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
@@ -70,9 +66,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
                     if (data.success === -1)  {
                         localStorage.clear();
                         navigate('/login', {state: { from: location }, replace: true });
-                    }            
-                    console.log(notesArray);
-                    console.log(notes);        
+                    }               
                     setNewRefresh(!newRefresh);
                     setInputNote('');                
                     setIsLoading(false);                    
@@ -121,6 +115,7 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
 
    function handleModifyNote(index) {
 
+    console.log(arrayOfIndex);
     if (arrayOfIndex.includes(index)) {
 
         let copyOfArray = [...arrayOfIndex];
@@ -131,7 +126,6 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
         if (notes[index] !== notesArray[index]) { 
         
             setIsLoading(true);
-            console.log(clientId)
     
             fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
                 method: 'PUT',
@@ -200,23 +194,16 @@ const NotesEtConsignes = ({ clientId, token, client, refresh }) => {
                    </div>
                    <div className="containerInput">
                        <input onChange={(e) => setInputNote(e.target.value)} value={inputNote} className="notesEtConsignes__input" type="text" id="notes" />
-                       <button className='btn'>
-                            {isLoading ?
-                                    <TailSpin color="white" height={32} width={32} /> 
-                                    :
-                                    <p>Envoyer</p>
-                            }
-                        </button> 
-                       
+                       <button className='btn'>Envoyer</button> 
                    </div>
                </div>                
            </form>
        }
-       {/* { isLoading && 
+       { isLoading && 
           <div className='containerLoader'>
             <Loader />
           </div>
-        } */}
+        }
        </>
    )
 }

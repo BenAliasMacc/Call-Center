@@ -18,6 +18,8 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
     const userId = "62b08ba33f8191dd23368c83";
     const [isLoading, setIsLoading] = useState(false);
 
+    console.log(clientId);
+
     const handleDeleteClient = () => { 
 
         setIsLoading(true);
@@ -54,6 +56,7 @@ const DeleteClientsModal = ({ clientId, refresh, setRefresh }) => {
             setIsLoading(false);
         } catch (err) {
             toast.error("Erreur lors de la suppression")
+            console.log(err);
         }
         };
 

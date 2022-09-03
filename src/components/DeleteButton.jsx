@@ -5,8 +5,6 @@ import useAuth from "../hooks/useAuth";
 
 const DeleteButton = ({ clientId }) => {
 
-    console.log(clientId)
-
     const userRole = localStorage.getItem("userRole");
     const { setDeleteClientsModal, auth, setAuth } = useAuth();
     const [isLoading] = useState(false);
@@ -19,7 +17,7 @@ const DeleteButton = ({ clientId }) => {
     const handleOpenModal = (e) => {
             e.preventDefault();
             setDeleteClientsModal(true)
-            setAuth({...auth, clientId})    
+            setAuth({...auth, clientId})
     }
 
     return (    

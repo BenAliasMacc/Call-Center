@@ -100,7 +100,7 @@ const columns = [
     renderCell: (params) => (
         <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%" }}>
             <div>
-              <OpenModal clientId={params.row.id} />              
+              <OpenModal clientId={params.row.id} />
             </div>
             <div>
               <DeleteButton clientId={params.row._id} />

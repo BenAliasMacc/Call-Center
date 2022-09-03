@@ -2,8 +2,6 @@ import arrow from "../assets/icons/down-arrow.svg"
 
 export const ButtonModel = ({ modeles, setModelSelected, isOpen, setIsOpen }) => {
 
-    console.log(isOpen);
-
     const handleButtonModel = (e) => {
         e.stopPropagation();
         setIsOpen(!isOpen)
