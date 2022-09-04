@@ -209,12 +209,3 @@ const NotesEtConsignes = ({ clientId, token, client }) => {
 }
 
 export default NotesEtConsignes;
-
-
-// const navigate = useNavigate();
-// const location = useLocation();
-
-// if (data.success === -1)  {
-//     localStorage.clear();
-//     navigate('/login', {state: { from: location }, replace: true });
-// }

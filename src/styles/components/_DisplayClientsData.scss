@@ -7,7 +7,7 @@
     & .headerClient {
         position: relative;
         padding-block: 1rem ;
-        height: auto;
+        height: 200px;
         &__close-button {
             position: absolute;
             top: 0;
@@ -15,6 +15,11 @@
         }
         &__input-container {
             display: flex;
+            justify-content: space-between;
+            margin-right: 1rem;
+            & ul {
+                flex: 3;
+            }
         }
         & form {
             flex-direction: column;
@@ -59,9 +64,9 @@
 .colonne-consignes {    
     position: absolute;
     width: 70%;
-    top: 172px;
+    top: 200px;
     right: 0;
-    height: calc(100vh - 296px);
+    height: calc(100vh - 326px);
 }
 
 .container-consignes {
@@ -87,3 +92,22 @@
     margin-top: 1%;
     overflow: scroll;
 }
+
+.react-tel-input .form-control {
+    width: 200px!important;
+}
+
+.inputRadio {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 10px;
+    & label {
+        margin-top: 0;
+        margin-right: 0.5rem;
+    }
+    &__item {
+        display: flex;
+        align-items: center;
+    }
+}  
