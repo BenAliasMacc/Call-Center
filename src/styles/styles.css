@@ -97,6 +97,7 @@
 }
 
 .containerIcons {
+    width: 300px;
     gap: 20px;
     height: 140px;
 }

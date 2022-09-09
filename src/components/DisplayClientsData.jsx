@@ -20,12 +20,6 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   const userRole = localStorage.getItem("userRole");
   const { deleteClientsModal, setEditClientsModal, auth, setAuth } = useAuth();
   const { control, register, handleSubmit, formState: { errors } } = useForm();
-  
-  const [editMode, setEditMode] = useState(booleen);
-  const [isModal] = useState(booleen);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const [showModels, setShowModels] = useState(false)
 
   const {
     nom,
@@ -46,11 +40,18 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     telephonesEnvoie,
     choixEnvoie
   } = client !== undefined && client;
+  
+  const [editMode, setEditMode] = useState(booleen);
+  const [isModal] = useState(booleen);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [showModels, setShowModels] = useState(false);
+  const [selected, setSelected] = useState(choixEnvoie);
 
   const ROLES = {
     'User': "0",
     'Admin': "1"
-  } 
+  };
 
   const displayPrenom = !editMode ? (
     prenom
@@ -210,7 +211,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     </>
   );
   const displayEmailsEnvoie = !editMode ? (
-    emailsEnvoie
+    <div>{emailsEnvoie[0] && emailsEnvoie[0].split("\n").map((elt, i) => <p key={i} style={{whiteSpace: "pre-line"}}>{elt}</p>)}</div>    
   ) : (
     <>
       <textarea
@@ -223,7 +224,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     </>
   );
   const displayTelephonesEnvoie = !editMode ? (
-    telephonesEnvoie
+    <div>{telephonesEnvoie[0] && telephonesEnvoie[0].split("\n").map((elt, i) => <p key={i} style={{whiteSpace: "pre-line"}}>{elt}</p>)}</div>
   ) : (
     <>
       <textarea
@@ -236,18 +237,20 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     </>
   );
   const displayChoixEnvoie = !editMode ? (
-    choixEnvoie
+    choixEnvoie === "1" ? "Email" : 
+      (choixEnvoie === "2" ? "Téléphone" :
+      (choixEnvoie === "3" ? "Email et téléphone" : ""))
   ) : (
     <>
-      <div>
+      <div className="inputRadio__item">
         <label htmlFor="byMail">Email</label>
         <input 
-          type="radio" value="1" id="byMail"
+          type="radio" value="1" id="byMail" name='choixEnvoie'
           {...register("choixEnvoie", {
-          required: true})}                            
+          required: true})}    
         />
       </div>
-      <div>
+      <div className="inputRadio__item">
         <label htmlFor="byTel">Téléphone</label>
         <input 
           type="radio" value="2" id="byTel" 
@@ -255,14 +258,16 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
           required: true})}                    
         />                        
       </div>
-      <div>
-        <label htmlFor="both">Les deux</label>
+      <div className="inputRadio__item">
+        <label htmlFor="both" style={{width: '66px'}}>Les deux</label>
         <input 
+          style={{width: '13px'}}
           type="radio" value="3" id="byTel" 
           {...register("choixEnvoie", {
           required: true})}
         />                        
        </div>
+       {errors?.choixEnvoie && <span style={{color: 'red'}}> Le champ "Type d'envoi" doit être complété</span>}                         
     </>
   );
 
@@ -307,8 +312,6 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   }
 
   const onSubmit = data => {
-
-    console.log("test")
 
     setIsLoading(true);
     const editClientData = async () => {
@@ -357,7 +360,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
 
             <header className='headerClient' onClick={stopPropagation}>
 
-                <div className="flex containerIcons width30" >
+                <div className="flex containerIcons" >
                     <div className="flex containerIcon" >
                         <AiOutlineMessage className="icon" onClick={handleMessage}/>
                         <MessageMenu refresh={refresh} setRefresh={setRefresh} client={client} setClient={setClient} clientId={clientId} modeles={modeles} showMessage={showMessage} setShowMessage={setShowMessage} showModels={showModels} setShowModels={setShowModels} token={token} />
@@ -376,7 +379,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                   <>
                     { userRole === ROLES.Admin &&
                       <div className="display-clients-data__buttons-top">
-                        <AiFillSetting style={{color: "grey", width: "30px", height: "30px", cursor: "pointer", marginRight: "0.5rem"}} onClick={handleModels} /> 
+                        {!editMode && <AiFillSetting style={{color: "grey", width: "30px", height: "30px", cursor: "pointer", marginRight: "0.5rem"}} onClick={handleModels} /> }
                         <EditButton editMode={editMode} setEditMode={setEditMode} />
                         <DeleteButton clientId={client.id} />
                       </div>
@@ -384,29 +387,29 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                   </>
 
                 }
-                <div className="headerClient__input-container" style={{}}>
-                  <div className="flex headerSide" >
-                      <ul className="width50">
+                <div className="headerClient__input-container">
+                      <ul className="listeInfosClient">
                           <li><b>Id :</b> {displayId}</li>
                           <li className="mt5"><b>Nom complet :</b> {displayPrenom} {displayNom}</li>
                           <li className="mt5"><b>Adresse : </b>{displayAdresse}</li>
+                          <li className="mt5"><b>Langue : </b>{displayLangue}</li>
                       </ul>                  
-                      <ul>
-                          <li><b>Téléphone:</b> {displayTelephone}</li>
-                          <li className="mt5"><b>@ : </b>{displayMail}</li>
-                      </ul>
-                  </div>
-                  <div className="flex headerSide">
-                      <ul className="width50">
+                      <ul className="listeInfosClient">
                           <li><b>Société :</b> {displaySociete}</li>
                           <li className="mt5"><b>Site : </b>{displaySite}</li>
+                          <li className="mt5"><b>CRM : </b>{displayCrm}</li>
+                          <li className="mt5"><b>Activité :</b> {displayActivite}</li>                                              
                       </ul>
-                      <ul>
-                          <li><b>Activité :</b> {displayActivite}</li>
-                          <li className="mt5"><b>Langue : </b>{displayLangue}</li>
+                      <ul className="listeInfosClient">
+                        <li><b>Tel client:</b> {displayTelephone}</li>      
+                        <li className="mt5"><b>Tels contacts:</b> {displayTelephonesEnvoie}</li>
+                      </ul>
+                      <ul className="listeInfosClient">
+                        <li><b>Mail client : </b>{displayMail}</li>
+                        <li className="mt5"><b>Mails contacts : </b>{displayEmailsEnvoie}</li>                          
                       </ul>
                   </div>
-                </div>
+                  <div className="inputRadio"><b>Type d'envoi :</b> {displayChoixEnvoie}</div>
 
                 {editMode && (
                   <div className="clients-card__buttons">
@@ -430,7 +433,6 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                       </div>
                 </div>
               }
-
               </form>
             </header>
 

@@ -1,8 +1,7 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
 import { TailSpin } from "react-loader-spinner";
-import { AiFillSetting } from "react-icons/ai";
 
 const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels, setShowModels, token, modeles, setRefresh, refresh }) => {
 
@@ -19,17 +18,110 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
     const [txtModel, setTxtModel] = useState("");
     const [titleModel, setTitleModel] = useState("");
     const [isOpen, setIsOpen] = useState(false);    
-    const [modelSelected, setModelSelected] = useState();    
-    const emailsEnvoie = client.emailsEnvoie[0] && client.emailsEnvoie[0].replace(" ", "\n").split("\n")
-    const telephonesEnvoie = client.telephonesEnvoie[0] && client.telephonesEnvoie[0].replace(" ", "\n").split("\n")
+    const [modelSelected, setModelSelected] = useState(0);  
+    const [titleModelSelected, setTitleModelSelected] = useState('');
+    const [bodyModelSelected, setBodyModelSelected] = useState('');
+    let emailsEnvoie = client.emailsEnvoie[0] && client.emailsEnvoie[0].replace(" ", "\n").split("\n");
+    let telephonesEnvoie = client.telephonesEnvoie[0] && client.telephonesEnvoie[0].replace(" ", "\n").split("\n");
+    const [newModel, setNewModel] = useState(false);
+    const [newModelTitle, setNewModelTitle] = useState("");
+    const [newModelBody, setNewModelBody] = useState("");
 
-    /* console.log(client);
-    console.log(modelSelected);
-    console.log(modeles.length); */
+    function cleanTableauOfEmailsOrTels(emails, tels) {
+        let newEmails = [];
+        let newTels = [];
+
+        for (let i = 0; i < emails.length; i++) {
+            if (emails[i].length > 5) {
+                newEmails.push(emails[i]);
+            }
+        }
+        
+        for (let i = 0; i < tels.length; i++) {
+            if (tels[i].length > 5) {
+                newTels.push(tels[i]);
+            }
+        }
+
+        emailsEnvoie = newEmails;
+        telephonesEnvoie = newTels;
+
+        if (emailsDest.length == 0 && emailsEnvoie.length < 2) {
+            setEmailsDest(emailsEnvoie);
+        };
+
+        if (telephonesDest.length == 0 && telephonesEnvoie.length < 2) {
+            setTelephonesDest(telephonesEnvoie);
+        };
+
+    }   
+
+    cleanTableauOfEmailsOrTels(emailsEnvoie, telephonesEnvoie);    
+    
+    useEffect(() => {
+
+        modeles.length > 0 && setTitleModelSelected(modeles[modelSelected]?.title);
+        modeles.length > 0 && setBodyModelSelected(modeles[modelSelected]?.modele);
+
+    }, [modelSelected])
+
+    useEffect(() => {
+        setEmailsDest([]);
+        setTelephonesDest([]);
+    }, [showMessage])
 
     function handleSubmitMessage(e) {
+
+        console.log(emailsDest, telephonesDest)
+
         e.preventDefault();
-        
+
+        setIsLoading(true);
+
+        console.log(emailsDest)
+
+        if (client.choixEnvoie == '3') {
+
+            if (telephonesDest.length == 0 && emailsDest.length == 0) {
+                toast.error("Aucun destinataire renseigné")
+                setIsLoading(false);
+            }
+
+            for (let i = 0; i < emailsDest.length; i++) {
+                handleSubmitEmail(emailsDest[i]);
+            };
+
+            for (let i = 0; i < telephonesDest.length; i++) {
+                handleSubmitTextos(telephonesDest[i]);
+            };
+
+        } else if (client.choixEnvoie == '2') {
+
+            if (telephonesDest.length == 0) {
+                toast.error("Aucun numéro de téléphone renseigné")
+                setIsLoading(false);
+            } else {
+
+                for (let i = 0; i < telephonesDest.length; i++) {
+                    handleSubmitTextos(telephonesDest[i]);
+                };
+            }
+        } else {
+
+            if (emailsDest.length == 0) {
+                toast.error("Aucun email renseigné")
+                setIsLoading(false);
+            } else {
+
+                for (let i = 0; i < emailsDest.length; i++) {
+                    handleSubmitEmail(emailsDest[i]);
+                };
+            } 
+        }
+    }
+
+    function handleSubmitTextos(tel) {
+
         if (client.telephone.startsWith('972')) {
             setIsLoading(true)
 
@@ -41,15 +133,17 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    number: "+"+client.telephone,
-                    message: txtMessage
+                    number: tel,
+                    message: bodyModelSelected
                 }),
             })
             .then(response => response.json())
             .then(data => {  
                 if (data.success === 1) {   
                     setIsLoading(false);     
-                    toast.success("Message envoyé")
+                    toast.success("Message envoyé");
+                    setShowMessage(false);
+                    setTelephonesDest([]);
                 }
             })
             .catch(error => {
@@ -60,9 +154,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         }
     }
 
-    function handleSubmitEmail(e) {
-        setIsLoading(true)
-        e.preventDefault();
+    function handleSubmitEmail(email) {
         
         fetch("https://calldirect.herokuapp.com/api/smsemail/sendEmail", {
             method: 'POST',
@@ -72,18 +164,21 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                emailDest: emailDest,
-                text: txtEmail,
-                object: objectEmail
+                emailDest: email,
+                text: bodyModelSelected,
+                object: titleModelSelected
             }),
         })
         .then(response => response.json())
         .then(data => {
             setIsLoading(false)
-            toast.success("Mail envoyé")
+            toast.success("Mail envoyé");
+            setShowMessage(false);
+            setEmailsDest([]);
         })
         .catch(error => {
-            toast.error("Le mail n'a pu être envoyé")
+            toast.error("Le mail n'a pu être envoyé");
+            setIsLoading(false);
         })
     }
 
@@ -93,13 +188,13 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         
         const newModeles = [...modeles];
         newModeles.push({
-            title: titleModel,
-            modele: txtModel
+            title: newModelTitle,
+            modele: newModelBody
         }); 
 
         const newClient = {...client, modeles: newModeles};
 
-        if (titleModel && txtModel !== "") {
+        if (newModelTitle && newModelBody !== "") {
             fetch(`https://calldirect.herokuapp.com/api/clients/modifyClient/${clientId}`, {
                 method: 'PUT',
                 headers: {
@@ -112,18 +207,22 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             .then(response => response.json())
             .then(data => {
                 if (data.success === 1) {
+                    setRefresh(!refresh);
                     toast.success('Modèle enregistré')
-                    setRefresh(!refresh);                
+                    handleCloseModels();  
+                    setNewModel(false);              
                 }  
             })
-            .catch(error => toast.error('Erreur lors de la validation'))
+            .catch(error => {
+                toast.error('Erreur lors de la validation');
+                setNewModel(false);
+            })
         }
     }
 
     function handleDeleteModel(index, e) {
 
-        e.preventDefault()
-        console.log(index);
+        e.preventDefault();
 
         let newArray = [...modeles];
         newArray.splice(index, 1);
@@ -142,20 +241,19 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             .then(response => response.json())
             .then(data => {
                 if (data.success === 1) {
-                    toast.info('Modèle supprimé')
-                    setModelSelected()
                     setRefresh(!refresh);       
+                    toast.info('Modèle supprimé')
+                    setModelSelected(0);
+                    handleCloseModels();
                 } 
             })
             .catch(error => toast.error('Erreur lors de la supression'));
    }
 
     const handleCloseMessage = () => {
-        setModelSelected();
+        setModelSelected(0);
         setShowMessage(false);
-    }
-
-    
+    }    
 
     const handleCloseModels = () => {
         setShowModels(false)
@@ -169,9 +267,6 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         e.stopPropagation()
         handleCloseButtonModel()
     }
-
-    console.log(emailsDest)
-    console.log(telephonesDest)
 
     function handleChangeCheckEmails(e) {
 
@@ -196,13 +291,13 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
         if (e.target.checked) {
 
-            if (!emailsDest.includes(e.target.value)) {
+            if (!telephonesDest.includes(e.target.value)) {
                 let copyEmails = [...telephonesDest];
                 copyEmails.push(e.target.value)
                 setTelephonesDest(copyEmails) 
             } 
         } else {
-            if (emailsDest.includes(e.target.value)) {
+            if (telephonesDest.includes(e.target.value)) {
                 let copyEmails = [...telephonesDest];
                 let index = copyEmails.indexOf(e.target.value);
                 copyEmails.splice(index, 1);
@@ -216,22 +311,17 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         <>
             {showMessage &&
                 <div className='modalEmail' onClick={handleCloseMessage}>       
-                    <form onSubmit={(e) => handleSubmitEmail(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
+                    <form onSubmit={(e) => handleSubmitMessage(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
                         <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>                                     
                         {(modeles && modeles.length !== 0) &&
                             <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
                         }
                         
-                        { (emailsEnvoie && (emailsEnvoie.length > 0 || telephonesEnvoie.length > 0)) &&
+                        { (emailsEnvoie && (emailsEnvoie.length > 1 || telephonesEnvoie.length > 1)) &&
                         <>
                             <div>Destinataire</div>
                             <div className="destinataireMessage">
-                                {/* {(emailsEnvoie.length > 0 && (client.choixEnvoie === "1" || client.choixEnvoie === "3")) &&
-                                    <select name="emailDest">
-                                        {emailsEnvoie.map((email, i) => <option key={i} value={email}>{email}</option>)}
-                                    </select>
-                                } */}
-                                {(emailsEnvoie.length > 0 && (client.choixEnvoie === "1" || client.choixEnvoie === "3")) &&
+                            {(emailsEnvoie.length > 1 && (client.choixEnvoie === "1" || client.choixEnvoie === "3")) &&
                                     <div name="emailDest"> Emails :
                                         {emailsEnvoie.map((email, i) => {
                                             return (
@@ -244,7 +334,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                                         }
                                     </div>
                                 }
-                                {(telephonesEnvoie.length > 0 && (client.choixEnvoie === "2" || client.choixEnvoie === "3")) &&
+                                {(telephonesEnvoie.length > 1 && (client.choixEnvoie === "2" || client.choixEnvoie === "3")) &&
                                     <div name="telDest"> Téléphones : 
                                         {telephonesEnvoie.map((telephone, i) => {
                                              return (
@@ -262,13 +352,17 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                         }
                         <label>Objet</label>
                         <input 
-                            onChange={(e) => setTitleMessage(e.target.value)} 
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
+                            /* onChange={(e) => setTitleMessage(e.target.value)} */ 
+                            /* value={modeles.length > 0 ? modeles[modelSelected]?.title : ""} */
+                            value={titleModelSelected}
+                            onChange={(e) => setTitleModelSelected(e.target.value)}
                         />
                         <label>Message</label>
                         <textarea 
-                            onChange={(e) => setTxtMessage(e.target.value)}
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].modele : ""}
+                            /* onChange={(e) => setTxtMessage(e.target.value)} 
+                            value={modeles.length > 0 ? modeles[modelSelected]?.modele : ""} */
+                            value={bodyModelSelected}
+                            onChange={(e) => setBodyModelSelected(e.target.value)}
                         />
                         <button className="btnSms">
                         {isLoading ?
@@ -282,25 +376,54 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             }
 
             {showModels &&
-                <div className='modalEmail' onClick={handleCloseModels}>                    
+            <div className='modalEmail' onClick={handleCloseModels}>                    
                 <form onSubmit={(e)=>handleSubmitModels(modelSelected, e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
                     <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModels}>X</span>  
                     {modeles.length > 0 &&
                         <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
                     }            
                     <label>Titre</label>
-                    <input 
-                        onChange={(e) => setTitleModel(e.target.value)}
-                        defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
-                    />                        
+                    {
+                        newModel
+                        ?
+                        <input 
+                        onChange={(e) => setNewModelTitle(e.target.value)}
+                        value={newModelTitle} 
+                    />  
+                        :
+                        <input 
+                            /* onChange={(e) => setTitleModel(e.target.value)} */
+                            value={modeles.length > 0 ? modeles[modelSelected]?.title : ""} disabled
+                        />                        
+
+                    }
                     <label>Modèle</label>
-                    <textarea                    
-                        onChange={(e) => setTxtModel(e.target.value)}
-                        defaultValue={modelSelected !== undefined ? modeles[modelSelected].modele : ""} 
-                    />
+
+                    {
+                        newModel
+                        ?
+                        <textarea                    
+                        onChange={(e) => setNewModelBody(e.target.value)} 
+                        value={newModelBody}
+                    />  
+                        :
+                        <textarea                    
+                        /* onChange={(e) => setTxtModel(e.target.value)} */
+                        value={modeles.length > 0  ? modeles[modelSelected]?.modele : ""} disabled
+                    />                       
+
+                    }
                     <div className="buttons-Model">
-                        <button className="btnSms">Sauvegarder</button>
-                        {modelSelected !== undefined && <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button>}                            
+                        {   newModel ?
+                            <button className="btnSms" onClick={(e)=> handleSubmitModels(modelSelected, e)}>Sauvegarder</button>
+                            :
+                            <button className="btnSms" onClick={() => setNewModel(true)}>Nouveau</button>
+                        }
+                        {modeles.length > 0 && newModel ? 
+                            <button onClick={(e) => setNewModel(false)} className="btnSms-delete">Annuler</button> 
+                            : 
+                            <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button> 
+                        }                            
                     </div>
                 </form>
             </div>
@@ -324,7 +447,6 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                     </form>
                 </div>
             }
-
             {
                 isOpenEmail &&
                 <div className='modalEmail' onClick={handleCloseModals}>       
@@ -351,7 +473,6 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                     </form>
                 </div>
             }           
-
             {
                 isOpenModels &&
                 <div className='modalEmail' onClick={handleCloseModals}>                    
