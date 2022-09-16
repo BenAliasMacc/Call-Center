@@ -163,7 +163,7 @@ const NotesEtConsignes = ({ clientId, token, client }) => {
        {
            client &&
            <form className="notesEtConsignes" onSubmit={handleSubmitNotes} >
-               <div className="containerColonne colonne-notes width30"> 
+               <div className="containerColonne colonne-notes width20"> 
                    <u>NOTES :</u> 
                    <div className="textZone width100" style={{overflowY: "scroll"}}>
                        {

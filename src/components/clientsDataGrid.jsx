@@ -63,7 +63,7 @@ function QuickSearchToolbar() {
         p: 0.5,
         pb: 0,
       }} />
-      {userRole === "1" && <button className='add-client'><Link to="/new-clients"><img src={addButton} alt="ajouter un client" /></Link></button>}
+      {userRole == "1" && <button className='add-client'><Link to="/new-clients"><img src={addButton} alt="ajouter un client" /></Link></button>}
     </Box>
   );
 }

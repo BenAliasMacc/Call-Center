@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "../api/axios";
 import DisplayClientsData from "../components/DisplayClientsData";
 import Header from "../components/Header";
 import Loader from '../components/Loader';
-import { useSearchParams } from 'react-router-dom';
 
 const ClientsCard = () => {
 
@@ -18,6 +17,12 @@ const ClientsCard = () => {
 
   const [searchParams] = useSearchParams();
   clientId = searchParams.get('tel');
+
+  useEffect(() => {
+    if (clientId == null) {
+        navigate('/');
+    }
+  })
 
   useEffect(() => {
 

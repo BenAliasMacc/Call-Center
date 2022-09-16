@@ -31,28 +31,36 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         let newEmails = [];
         let newTels = [];
 
-        for (let i = 0; i < emails.length; i++) {
-            if (emails[i].length > 5) {
-                newEmails.push(emails[i]);
+        if (emails) {
+            for (let i = 0; i < emails.length; i++) {
+                if (emails[i].length > 5) {
+                    newEmails.push(emails[i]);
+                }
+            }
+        }
+
+        if (tels) {
+            for (let i = 0; i < tels.length; i++) {
+                if (tels[i].length > 5) {
+                    newTels.push(tels[i]);
+                }
             }
         }
         
-        for (let i = 0; i < tels.length; i++) {
-            if (tels[i].length > 5) {
-                newTels.push(tels[i]);
-            }
-        }
-
         emailsEnvoie = newEmails;
         telephonesEnvoie = newTels;
 
-        if (emailsDest.length == 0 && emailsEnvoie.length < 2) {
-            setEmailsDest(emailsEnvoie);
-        };
+        if (emails) {
+            if (emailsDest.length == 0 && emails.length < 2) {
+                setEmailsDest(emailsEnvoie);
+            };
+        }
 
-        if (telephonesDest.length == 0 && telephonesEnvoie.length < 2) {
-            setTelephonesDest(telephonesEnvoie);
-        };
+        if (tels) {
+            if (telephonesDest.length == 0 && tels.length < 2) {
+                setTelephonesDest(telephonesEnvoie);
+            };
+        }
 
     }   
 
@@ -72,13 +80,9 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
     function handleSubmitMessage(e) {
 
-        console.log(emailsDest, telephonesDest)
-
         e.preventDefault();
 
         setIsLoading(true);
-
-        console.log(emailsDest)
 
         if (client.choixEnvoie == '3') {
 
@@ -92,6 +96,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             };
 
             for (let i = 0; i < telephonesDest.length; i++) {
+                console.log('test')
                 handleSubmitTextos(telephonesDest[i]);
             };
 
@@ -122,7 +127,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
     function handleSubmitTextos(tel) {
 
-        if (client.telephone.startsWith('972')) {
+        if (tel.startsWith('+972')) {
             setIsLoading(true)
 
             fetch("https://calldirect.herokuapp.com/api/smsemail/sendSmsIsr", {
@@ -134,7 +139,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                 },
                 body: JSON.stringify({
                     number: tel,
-                    message: bodyModelSelected
+                    message: bodyModelSelected || 'VIP ISRAEL'
                 }),
             })
             .then(response => response.json())
@@ -149,37 +154,42 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             .catch(error => {
                 toast.error("Le sms n'a pas pu être envoyé")
             })
-        } else if (client.telephone.startsWith('33')) {
+        } else if (tel.startsWith('+33')) {
             console.log('test')
         }
     }
 
     function handleSubmitEmail(email) {
+
+        let newBody = bodyModelSelected.split('\n').join("<br>");
         
-        fetch("https://calldirect.herokuapp.com/api/smsemail/sendEmail", {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain, */*', 
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                emailDest: email,
-                text: bodyModelSelected,
-                object: titleModelSelected
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            setIsLoading(false)
-            toast.success("Mail envoyé");
-            setShowMessage(false);
-            setEmailsDest([]);
-        })
-        .catch(error => {
-            toast.error("Le mail n'a pu être envoyé");
-            setIsLoading(false);
-        })
+        if (bodyModelSelected != '') {
+
+            fetch("https://calldirect.herokuapp.com/api/smsemail/sendEmail", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*', 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    emailDest: email,
+                    text: newBody || 'VIP ISRAEL',
+                    object: titleModelSelected || 'VIP ISRAEL'
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                setIsLoading(false)
+                toast.success("Mail envoyé");
+                setShowMessage(false);
+                setEmailsDest([]);
+            })
+            .catch(error => {
+                toast.error("Le mail n'a pu être envoyé");
+                setIsLoading(false);
+            })
+        }
     }
 
     function handleSubmitModels(index, e) {
