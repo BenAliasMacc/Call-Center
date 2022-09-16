@@ -20,12 +20,6 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   const userRole = localStorage.getItem("userRole");
   const { deleteClientsModal, setEditClientsModal, auth, setAuth } = useAuth();
   const { control, register, handleSubmit, formState: { errors } } = useForm();
-  
-  const [editMode, setEditMode] = useState(booleen);
-  const [isModal] = useState(booleen);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const [showModels, setShowModels] = useState(false)
 
   const {
     nom,
@@ -46,11 +40,18 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     telephonesEnvoie,
     choixEnvoie
   } = client !== undefined && client;
+  
+  const [editMode, setEditMode] = useState(booleen);
+  const [isModal] = useState(booleen);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [showModels, setShowModels] = useState(false);
+  const [selected, setSelected] = useState(choixEnvoie);
 
   const ROLES = {
     'User': "0",
     'Admin': "1"
-  } 
+  };
 
   const displayPrenom = !editMode ? (
     prenom
@@ -244,9 +245,9 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
       <div className="inputRadio__item">
         <label htmlFor="byMail">Email</label>
         <input 
-          type="radio" value="1" id="byMail"
+          type="radio" value="1" id="byMail" name='choixEnvoie'
           {...register("choixEnvoie", {
-          required: true})}                            
+          required: true})}    
         />
       </div>
       <div className="inputRadio__item">
@@ -266,6 +267,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
           required: true})}
         />                        
        </div>
+       {errors?.choixEnvoie && <span style={{color: 'red'}}> Le champ "Type d'envoi" doit être complété</span>}                         
     </>
   );
 

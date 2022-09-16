@@ -1,6 +1,11 @@
+import React, { useEffect } from 'react';
 import arrow from "../assets/icons/down-arrow.svg"
 
 export const ButtonModel = ({ modeles, setModelSelected, isOpen, setIsOpen }) => {
+
+    useEffect(() => {
+        setModelSelected(0)
+    }, [])
 
     const handleButtonModel = (e) => {
         e.stopPropagation();
@@ -17,7 +22,7 @@ export const ButtonModel = ({ modeles, setModelSelected, isOpen, setIsOpen }) =>
     }
 
     const stopPropagation = (e) => {
-        
+        e.stopPropagation();
     }
 
     const displayModels = isOpen ? "show-models" : ""
