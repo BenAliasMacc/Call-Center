@@ -161,6 +161,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
     function handleSubmitEmail(email) {
 
+        
         let newBody = bodyModelSelected.split('\n').join("<br>");
         
         if (bodyModelSelected != '') {
