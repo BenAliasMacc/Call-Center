@@ -108,7 +108,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   );
   const displayLangue = !editMode ? (
     langue
-  ) : (
+  ) : ( 
     <>
       <input
         className="headerClient__input"
@@ -118,7 +118,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
         {...register("langue")}
       />
     </>
-  );
+ ); 
   const displayActivite = !editMode ? (
     activite
   ) : (
@@ -240,7 +240,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     choixEnvoie === "1" ? "Email" : 
       (choixEnvoie === "2" ? "Téléphone" :
       (choixEnvoie === "3" ? "Email et téléphone" : ""))
-  ) : (
+  ) : ( 
     <>
       <div className="inputRadio__item">
         <label htmlFor="byMail">Email</label>
@@ -269,7 +269,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
        </div>
        {errors?.choixEnvoie && <span style={{color: 'red'}}> Le champ "Type d'envoi" doit être complété</span>}                         
     </>
-  );
+);
 
   const displayConsignes = !editMode ? (
     <div className="textZone-consignes width100">
@@ -287,7 +287,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   );
 
   const displayConsignesOut = !editMode ? (
-    <div className="textZone-consignes width100">
+    <div className="textZone-consignes width100" >
         {consignesOut.map((consigne, index) => <p key={index} style={{whiteSpace: "pre-line"}}>{consigne}</p>)}
     </div>        
   ) : (
@@ -392,7 +392,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                           <li><b>Id :</b> {displayId}</li>
                           <li className="mt5"><b>Nom complet :</b> {displayPrenom} {displayNom}</li>
                           <li className="mt5"><b>Adresse : </b>{displayAdresse}</li>
-                          <li className="mt5"><b>Langue : </b>{displayLangue}</li>
+                          { editMode && <li className="mt5"><b>Langue : </b>{displayLangue}</li> }
                       </ul>                  
                       <ul className="listeInfosClient">
                           <li><b>Société :</b> {displaySociete}</li>
@@ -402,14 +402,14 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                       </ul>
                       <ul className="listeInfosClient">
                         <li><b>Tel client:</b> {displayTelephone}</li>      
-                        <li className="mt5"><b>Tels contacts:</b> {displayTelephonesEnvoie}</li>
+                        { editMode && <li className="mt5"><b>Tels contacts:</b> {displayTelephonesEnvoie}</li> }
                       </ul>
                       <ul className="listeInfosClient">
                         <li><b>Mail client : </b>{displayMail}</li>
-                        <li className="mt5"><b>Mails contacts : </b>{displayEmailsEnvoie}</li>                          
+                       { editMode && <li className="mt5"><b>Mails contacts : </b>{displayEmailsEnvoie}</li> }                     
                       </ul>
                   </div>
-                  <div className="inputRadio"><b>Type d'envoi :</b> {displayChoixEnvoie}</div>
+                  { editMode && <div className="inputRadio"><b>Type d'envoi :</b> {displayChoixEnvoie}</div> }
 
                 {editMode && (
                   <div className="clients-card__buttons">
