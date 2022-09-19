@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import arrow from "../assets/icons/down-arrow.svg"
 import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
 import { TailSpin } from "react-loader-spinner";
@@ -6,6 +7,7 @@ import { TailSpin } from "react-loader-spinner";
 const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels, setShowModels, token, modeles, setRefresh, refresh }) => {
 
     const [isLoading, setIsLoading] = useState(false);
+    const [showListEmails, setShowListEmails] = useState(false);
     const [telephoneDest, setTelephoneDest] = useState(0);
     const [mailDest, setMailDest] = useState(0);
     const [txtMessage, setTxtMessage] = useState("");
@@ -274,6 +276,11 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         setIsOpen(false);
     }
 
+    const handleListEmails = (e) => {
+        e.preventDefault()
+        setShowListEmails(!showListEmails)
+    }
+
     const stopPropagation = (e) => {
         e.stopPropagation()
         handleCloseButtonModel()
@@ -333,16 +340,19 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                             <div>Destinataire</div>
                             <div className="destinataireMessage">
                             {(emailsEnvoie.length > 1 && (client.choixEnvoie === "1" || client.choixEnvoie === "3")) &&
-                                    <div name="emailDest"> Emails :
-                                        {emailsEnvoie.map((email, i) => {
-                                            return (
-                                                <div key={i} style={{display: "flex", justifyContent: "flex-start", alignItems: 'center'}}>
-                                                    <input type="checkbox" id={`email${i}`} name={`email${i}`} value={email} onChange={(e) => handleChangeCheckEmails(e)}/>
-                                                    <label for={`email${i}`}>{email}</label>
-                                                </div>
-                                                )
-                                            })
-                                        }
+                                    <div className="destinataireMessage__container" name="emailDest">
+                                        <button className={`${!showListEmails && "show-listEmails"} destinataireMessage__button`} onClick={handleListEmails}>Emails <img src={arrow} alt=""/></button>
+                                        <div className="destinataireMessage__options" style={!showListEmails ? {display: "none"} : {display: "block"}}>
+                                            {emailsEnvoie.map((email, i) => {
+                                                return (
+                                                    <div key={i} style={{display: "flex", justifyContent: "flex-start", alignItems: 'center'}}>
+                                                        <input type="checkbox" id={`email${i}`} name={`email${i}`} value={email} onChange={(e) => handleChangeCheckEmails(e)}/>
+                                                        <label for={`email${i}`}>{email}</label>
+                                                    </div>
+                                                    )
+                                                })
+                                            }
+                                        </div>
                                     </div>
                                 }
                                 {(telephonesEnvoie.length > 1 && (client.choixEnvoie === "2" || client.choixEnvoie === "3")) &&

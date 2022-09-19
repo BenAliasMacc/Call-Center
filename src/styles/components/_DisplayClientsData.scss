@@ -112,3 +112,50 @@
         align-items: center;
     }
 }  
+
+.listEmail > div {
+    height: calc(18px * 4);
+    overflow: scroll;
+}
+
+.listEmail > div, .listTel > div {
+    /* width */
+    &::-webkit-scrollbar {
+        width: 5px;
+        border-radius: 50px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: #888; 
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+    }
+    &::-webkit-scrollbar-corner {
+        background: none; 
+    }
+}
+
+// Style pour la modale
+
+.styleModal {
+    display: flex;
+    align-items: center;
+    .headerClient {
+        height: 300px;
+        margin-inline: 2rem;
+    }
+    .containerIcons {
+        height: auto;
+    }
+    .headerClient form {
+        justify-content: space-evenly;
+    }
+    .clients-card__buttons {
+        top: unset;
+        bottom: 45px;
+        button {
+            padding: 10px;
+        }
+    }
+}

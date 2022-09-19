@@ -15,7 +15,7 @@ import MessageMenu from "./MessageMenu";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
-const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRefresh, refresh }) => {
+const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRefresh, refresh, styleModal }) => {
   
   const userRole = localStorage.getItem("userRole");
   const { deleteClientsModal, setEditClientsModal, auth, setAuth } = useAuth();
@@ -356,9 +356,9 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
 
   return (
     <section className="display-clients-data" onClick={handleCloseModal}>        
-        {client !== undefined && <div className="globalContainer width100">           
+        {client !== undefined && <div className={`${styleModal} globalContainer width100`}>
 
-            <header className='headerClient' onClick={stopPropagation}>
+            <header className="headerClient" onClick={stopPropagation}>
 
                 <div className="flex containerIcons" >
                     <div className="flex containerIcon" >
@@ -402,11 +402,11 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                       </ul>
                       <ul className="listeInfosClient">
                         <li><b>Tel client:</b> {displayTelephone}</li>      
-                        { editMode && <li className="mt5"><b>Tels contacts:</b> {displayTelephonesEnvoie}</li> }
+                        {<li className="listTel mt5"><b>Tels contacts:</b> {displayTelephonesEnvoie}</li> }
                       </ul>
                       <ul className="listeInfosClient">
                         <li><b>Mail client : </b>{displayMail}</li>
-                       { editMode && <li className="mt5"><b>Mails contacts : </b>{displayEmailsEnvoie}</li> }                     
+                       {<li className="listEmail mt5"><b>Mails contacts : </b>{displayEmailsEnvoie}</li> }                     
                       </ul>
                   </div>
                   { editMode && <div className="inputRadio"><b>Type d'envoi :</b> {displayChoixEnvoie}</div> }

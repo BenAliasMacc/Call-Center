@@ -44,7 +44,7 @@ const EditClientsModal = ({ clientId, refresh, setRefresh }) => {
 
     return (
         <div className='edit-clients-modal'>
-          <DisplayClientsData client={client} setClient={setClient} clientId={clientId} token={token} booleen={true} refresh={refresh} setRefresh={setRefresh} />
+          <DisplayClientsData styleModal="styleModal" client={client} setClient={setClient} clientId={clientId} token={token} booleen={true} refresh={refresh} setRefresh={setRefresh} />
 
           { isLoading && 
             <div className='containerLoader'>
