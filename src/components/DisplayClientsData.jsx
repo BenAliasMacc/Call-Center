@@ -356,7 +356,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
 
   return (
     <section className="display-clients-data" onClick={handleCloseModal}>        
-        {client !== undefined && <div className={`${styleModal} globalContainer width100`}>
+        {client !== undefined && <div className={`${styleModal} ${editMode && 'styleEditMode'} globalContainer width100`}>
 
             <header className="headerClient" onClick={stopPropagation}>
 
@@ -391,22 +391,29 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                       <ul className="listeInfosClient">
                           <li><b>Id :</b> {displayId}</li>
                           <li className="mt5"><b>Nom complet :</b> {displayPrenom} {displayNom}</li>
-                          <li className="mt5"><b>Adresse : </b>{displayAdresse}</li>
+                          { editMode && <li className="mt5"><b>Adresse : </b>{displayAdresse}</li>}
                           { editMode && <li className="mt5"><b>Langue : </b>{displayLangue}</li> }
                       </ul>                  
                       <ul className="listeInfosClient">
-                          <li><b>Société :</b> {displaySociete}</li>
-                          <li className="mt5"><b>Site : </b>{displaySite}</li>
-                          <li className="mt5"><b>CRM : </b>{displayCrm}</li>
-                          <li className="mt5"><b>Activité :</b> {displayActivite}</li>                                              
+                          { editMode && <li><b>Société :</b> {displaySociete}</li>}
+                          { editMode && <li className="mt5"><b>Activité :</b> {displayActivite}</li>}    
+                          { editMode && <li className="mt5"><b>Site : </b>{displaySite}</li>}
+                          { editMode && <li className="mt5"><b>CRM : </b>{displayCrm}</li>}
+                          { !editMode && <li><b>Adresse : </b>{displayAdresse}</li>}
+                                                                    
                       </ul>
                       <ul className="listeInfosClient">
-                        <li><b>Tel client:</b> {displayTelephone}</li>      
-                        {<li className="listTel mt5"><b>Tels contacts:</b> {displayTelephonesEnvoie}</li> }
+                        { editMode && <li><b>Tel client:</b> {displayTelephone}</li> }     
+                        {editMode && <li className="listTel mt5"><b>Tels contacts:</b> {displayTelephonesEnvoie}</li> }    
+                        { !editMode && <li><b>Société :</b> {displaySociete}</li>}
+                        { !editMode && <li className="mt5"><b>Activité :</b> {displayActivite}</li>}                     
+                        { !editMode && <li className="mt5"><b>CRM : </b>{displayCrm}</li>}
                       </ul>
                       <ul className="listeInfosClient">
-                        <li><b>Mail client : </b>{displayMail}</li>
-                       {<li className="listEmail mt5"><b>Mails contacts : </b>{displayEmailsEnvoie}</li> }                     
+                        { !editMode && <li><b>Site : </b>{displaySite}</li>}
+                        <li className={`${!editMode && "mt5"}`}><b>Mail client : </b>{displayMail}</li>
+                        {editMode && <li className="listEmail mt5"><b>Mails contacts : </b>{displayEmailsEnvoie}</li> }    
+                        { !editMode && <li className={`${!editMode && "mt5"}`}><b>Tel client:</b> {displayTelephone}</li> }                  
                       </ul>
                   </div>
                   { editMode && <div className="inputRadio"><b>Type d'envoi :</b> {displayChoixEnvoie}</div> }

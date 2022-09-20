@@ -35,13 +35,14 @@ export const ButtonModel = ({ modeles, setModelSelected, isOpen, setIsOpen }) =>
                 <img src={arrow} alt="drop down arrow" />
             </div>
             {isOpen && 
-                <ul className="button-model__list">
+                <ul className="models__options">
                     {modeles.map((modele, i) => <li onClick={(e) => handleModel(e, i)} key={i}>{modele.title}</li>)}
-                    {/* <li>Test 1</li>
-                    <li>Test 2</li>
-                    <li>Test 3</li> */}
                 </ul>            
             }         
         </div>
     )
 }
+
+
+                                    
+                                

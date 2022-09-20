@@ -8,6 +8,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
     const [isLoading, setIsLoading] = useState(false);
     const [showListEmails, setShowListEmails] = useState(false);
+    const [showListTel, setShowListTel] = useState(false);
     const [telephoneDest, setTelephoneDest] = useState(0);
     const [mailDest, setMailDest] = useState(0);
     const [txtMessage, setTxtMessage] = useState("");
@@ -278,11 +279,18 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
     const handleListEmails = (e) => {
         e.preventDefault()
+        setShowListTel(false)
         setShowListEmails(!showListEmails)
     }
 
+    const handleListTel = (e) => {
+        e.preventDefault()
+        setShowListEmails(false)
+        setShowListTel(!showListTel)
+    }
+
     const stopPropagation = (e) => {
-        e.stopPropagation()
+        e.stopPropagation()        
         handleCloseButtonModel()
     }
 
@@ -324,53 +332,68 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         }
     }
 
+    function handleNewModel(e) {
+        e.preventDefault(e);
+        setNewModelTitle("");
+        setNewModelBody("");
+        setNewModel(true);
+    }
+
     return (
 
         <>
             {showMessage &&
                 <div className='modalEmail' onClick={handleCloseMessage}>       
                     <form onSubmit={(e) => handleSubmitMessage(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
-                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>                                     
-                        {(modeles && modeles.length !== 0) &&
-                            <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
-                        }
-                        
-                        { (emailsEnvoie && (emailsEnvoie.length > 1 || telephonesEnvoie.length > 1)) &&
-                        <>
-                            <div>Destinataire</div>
-                            <div className="destinataireMessage">
-                            {(emailsEnvoie.length > 1 && (client.choixEnvoie === "1" || client.choixEnvoie === "3")) &&
-                                    <div className="destinataireMessage__container" name="emailDest">
-                                        <button className={`${!showListEmails && "show-listEmails"} destinataireMessage__button`} onClick={handleListEmails}>Emails <img src={arrow} alt=""/></button>
-                                        <div className="destinataireMessage__options" style={!showListEmails ? {display: "none"} : {display: "block"}}>
-                                            {emailsEnvoie.map((email, i) => {
-                                                return (
-                                                    <div key={i} style={{display: "flex", justifyContent: "flex-start", alignItems: 'center'}}>
-                                                        <input type="checkbox" id={`email${i}`} name={`email${i}`} value={email} onChange={(e) => handleChangeCheckEmails(e)}/>
-                                                        <label for={`email${i}`}>{email}</label>
-                                                    </div>
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                }
-                                {(telephonesEnvoie.length > 1 && (client.choixEnvoie === "2" || client.choixEnvoie === "3")) &&
-                                    <div name="telDest"> Téléphones : 
-                                        {telephonesEnvoie.map((telephone, i) => {
-                                             return (
-                                                <div key={i} style={{display: "flex", justifyContent: "flex-start", alignItems: 'center'}}>
-                                                    <input type="checkbox" id={`telephone${i}`} name={`telephone${i}`} value={telephone} onChange={(e) => handleChangeCheckTels(e)}/>
-                                                    <label for={`telephone${i}`}>{telephone}</label>
+                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>   
+                        <div className="dropDown_container">
+
+                            { (emailsEnvoie && (emailsEnvoie.length > 1 || telephonesEnvoie.length > 1)) &&
+                            <div>
+                                <p>Destinataire</p>
+                                    <div className="destinataireMessage">
+                                        {(emailsEnvoie.length > 1 && (client.choixEnvoie === "1" || client.choixEnvoie === "3")) &&
+                                            <div className="destinataireMessage__container" name="emailDest">
+                                                <button className={`${!showListEmails && "show-listEmails"} destinataireMessage__button`} onClick={handleListEmails}>Emails <img src={arrow} alt=""/></button>
+                                                <div className="destinataireMessage__options" style={!showListEmails ? {display: "none"} : {display: "flex"}}>
+                                                    {emailsEnvoie.map((email, i) => {
+                                                        return (
+                                                            <div key={i} style={{display: "flex", justifyContent: "flex-start", alignItems: 'center'}}>
+                                                                <input type="checkbox" id={`email${i}`} name={`email${i}`} value={email} onChange={(e) => handleChangeCheckEmails(e)}/>
+                                                                <label for={`email${i}`}>{email}</label>
+                                                            </div>
+                                                            )
+                                                        })
+                                                    }
                                                 </div>
-                                                )
-                                            })
+                                            </div>
                                         }
-                                    </div>
-                                }
-                            </div>                        
-                        </>
-                        }
+
+                                        {(telephonesEnvoie.length > 1 && (client.choixEnvoie === "2" || client.choixEnvoie === "3")) &&
+                                            <div className="destinataireMessage__container" name="telDest">
+                                                <button className={`${!showListTel && "show-listTel"} destinataireMessage__button`} onClick={handleListTel}>Téléphones <img src={arrow} alt=""/></button>
+                                                <div className="destinataireMessage__options" style={!showListTel ? {display: "none"} : {display: "flex"}}>
+                                                    {telephonesEnvoie.map((telephone, i) => {
+                                                        return (
+                                                            <div key={i} style={{display: "flex", justifyContent: "flex-start", alignItems: 'center'}}>
+                                                                <input type="checkbox" id={`telephone${i}`} name={`telephone${i}`} value={telephone} onChange={(e) => handleChangeCheckTels(e)}/>
+                                                                <label for={`telephone${i}`}>{telephone}</label>
+                                                            </div>
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>                        
+                            </div>
+                            }
+
+                            {(modeles && modeles.length !== 0) &&
+                                <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
+                            }           
+
+                        </div>
                         <label>Objet</label>
                         <input 
                             /* onChange={(e) => setTitleMessage(e.target.value)} */ 
@@ -438,10 +461,10 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                         {   newModel ?
                             <button className="btnSms" onClick={(e)=> handleSubmitModels(modelSelected, e)}>Sauvegarder</button>
                             :
-                            <button className="btnSms" onClick={() => setNewModel(true)}>Nouveau</button>
+                            <button className="btnSms" onClick={handleNewModel}>Nouveau</button>
                         }
                         {modeles.length > 0 && newModel ? 
-                            <button onClick={(e) => setNewModel(false)} className="btnSms-delete">Annuler</button> 
+                            <button onClick={handleNewModel} className="btnSms-delete">Annuler</button> 
                             : 
                             <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button> 
                         }                            
