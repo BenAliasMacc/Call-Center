@@ -211,7 +211,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     </>
   );
   const displayEmailsEnvoie = !editMode ? (
-    <div>{emailsEnvoie[0] && emailsEnvoie[0].split("\n").map((elt, i) => <p key={i} style={{whiteSpace: "pre-line"}}>{elt}</p>)}</div>    
+    <div>{emailsEnvoie[0] && emailsEnvoie[0].replace(" ", "\n").split("\n").map((elt, i) => <p key={i} style={{whiteSpace: "pre-line"}}>{elt}</p>)}</div>    
   ) : (
     <>
       <textarea
