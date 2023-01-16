@@ -3,12 +3,14 @@ import arrow from "../assets/icons/down-arrow.svg"
 import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
 import { TailSpin } from "react-loader-spinner";
+import HistoricMessageModal from "./HistoricMessageModal";
 
 const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels, setShowModels, token, modeles, setRefresh, refresh }) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [showListEmails, setShowListEmails] = useState(false);
     const [showListTel, setShowListTel] = useState(false);
+    const [showHistoricMessage, setShowHistoricMessage] = useState(false);
     const [telephoneDest, setTelephoneDest] = useState(0);
     const [mailDest, setMailDest] = useState(0);
     const [txtMessage, setTxtMessage] = useState("");
@@ -157,6 +159,25 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             .catch(error => {
                 toast.error("Le sms n'a pas pu être envoyé")
             })
+
+            fetch("https://calldirect.herokuapp.com/api/logs/createLog", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*', 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: bodyModelSelected || 'VIP ISRAEL',
+                    numero: telephonesDest,
+                    compte: 'test',
+                    
+                }),
+            })
+            .then(response => response.json())
+            .catch(error => {
+                console.log(error);
+            })
         } else if (tel.startsWith('+33')) {
             console.log('test')
         }
@@ -267,6 +288,10 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
     const handleCloseMessage = () => {
         setModelSelected(0);
         setShowMessage(false);
+    }  
+
+    const handleHistoricModal = () => {
+        setShowHistoricMessage(true);      
     }    
 
     const handleCloseModels = () => {
@@ -346,6 +371,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                 <div className='modalEmail' onClick={handleCloseMessage}>       
                     <form onSubmit={(e) => handleSubmitMessage(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
                         <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>   
+                        <span style={{position: "absolute", top: "50px", right: "20px", color: "#0dbad8", padding: "5px" }} onClick={handleHistoricModal}>Historique</span>   
                         <div className="dropDown_container">
 
                             { (emailsEnvoie && (emailsEnvoie.length > 1 || telephonesEnvoie.length > 1)) &&
@@ -415,7 +441,9 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                             <p>Envoyer</p>
                         }
                         </button>
+
                     </form>
+                    {showHistoricMessage && <HistoricMessageModal />}
                 </div>
             }
 
@@ -469,77 +497,9 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                             <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button> 
                         }                            
                     </div>
-                </form>
+                </form>                
             </div>
             } 
-
-        
-            {/* {
-                isOpenMessage &&
-                <div className='modalMessage' onClick={handleCloseModals} >
-                    <form onSubmit={(e) => handleSubmitMessage(e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
-                    <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>             
-                        <label>Message</label>
-                        <textarea onChange={(e) => setTxtMessage(e.target.value)}/>
-                        <button className="btnSms">
-                        {isLoading ?
-                            <TailSpin color="white" height={32} width={32} /> 
-                            :
-                            <p>Envoyer</p>
-                        }
-                        </button>                        
-                    </form>
-                </div>
-            }
-            {
-                isOpenEmail &&
-                <div className='modalEmail' onClick={handleCloseModals}>       
-                    <form onSubmit={(e) => handleSubmitEmail(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
-                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>              
-                        <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
-                        <label>Objet</label>
-                        <input 
-                            onChange={(e) => setObjectEmail(e.target.value)} 
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
-                        />
-                        <label>Message</label>
-                        <textarea 
-                            onChange={(e) => setTxtEmail(e.target.value)}
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].modele : ""}
-                        />
-                        <button className="btnSms">
-                        {isLoading ?
-                            <TailSpin color="white" height={32} width={32} /> 
-                            :
-                            <p>Envoyer</p>
-                        }
-                        </button>
-                    </form>
-                </div>
-            }           
-            {
-                isOpenModels &&
-                <div className='modalEmail' onClick={handleCloseModals}>                    
-                    <form onSubmit={(e)=>handleSubmitModels(modelSelected, e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
-                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>
-                        <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />            
-                        <label>Titre</label>
-                        <input 
-                            onChange={(e) => setTitleModel(e.target.value)}
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
-                        />                        
-                        <label>Modèle</label>
-                        <textarea 
-                            onChange={(e) => setTxtModel(e.target.value)}
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
-                        />
-                        <div className="buttons-Model">
-                            <button className="btnSms">Sauvegarder</button>
-                            {modelSelected !== undefined && <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button>}                            
-                        </div>
-                    </form>
-                </div>
-            }             */}
         </>
     );
 };
