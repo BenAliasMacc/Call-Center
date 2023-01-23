@@ -88,7 +88,7 @@
             justify-content: center;
             align-items: flex-start;
             flex-grow: inherit;
-            width: 1000px;
+            width: 600px;
             height: fit-content;
             background-color: white;
             padding: 20px;
@@ -179,6 +179,9 @@
         padding: 1rem 10px;
         border: 2px solid $quaternaryColor;
         border-radius: 10px;
+        input {
+            width: auto;
+        }
     }
 }
 

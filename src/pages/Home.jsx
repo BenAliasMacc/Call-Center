@@ -36,7 +36,6 @@ const Home = () => {
                     navigate('/login', {state: { from: location }, replace: true })
                 } else {
                     setClients(response.data)
-                    console.log(response.data);
                 }
                 setIsLoading(false)
             } catch (err) {
@@ -45,7 +44,7 @@ const Home = () => {
         }
 
         getClients();
-    }, [refresh])
+    }, [refresh, location, navigate, token])
 
 
     return (

@@ -56,7 +56,7 @@ function ModificationUser(props) {
     return (
         <section className="gestion-users" style={{width: "50%", padding: "20px", display: "flex", justifyContent: "center", alignItems: "center"}}>
             <h4 style={{position: "absolute", top: "20px", fontSize: "1.5rem", color: "white"}}>Modification d'un membre</h4>
-            <div className="gestion-users--container modal" ref={animation} style={{position: "relative"}}>
+            <div className="gestion-users--container modal modalAnimation" ref={animation} style={{position: "relative"}}>
                 <div onClick={closeModale} style={{position: "absolute", top: "20px", right: "10px", width: "30px", height: "30px", color: "#F2A965", fontWeight: "bold", fontSize: "1.5rem", cursor: 'pointer'}}>X</div>
                 <form className="gestion-users__form" onSubmit={handleSubmit(onSubmit)} style={{border: "1px solid #0dbad8", padding: '10px'}}>
                     <label htmlFor="email">mail <span className="mandatory">*</span></label>

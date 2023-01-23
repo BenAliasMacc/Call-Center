@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import axios from "../api/axios";
-import { AiFillSetting, AiOutlineMessage } from "react-icons/ai";
+import { AiFillSetting, AiOutlineMessage, AiOutlineFileText } from "react-icons/ai";
 import { FaInternetExplorer } from 'react-icons/fa';
 import Loader from '../components/Loader';
 import useAuth from "../hooks/useAuth";
@@ -14,6 +14,7 @@ import NotesEtConsignes from "./NotesEtConsignes";
 import MessageMenu from "./MessageMenu";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import HistoricMessageModal from "./HistoricMessageModal";
 
 const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRefresh, refresh, styleModal }) => {
   
@@ -45,6 +46,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   const [isModal] = useState(booleen);
   const [isLoading, setIsLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
+  const [showHistoric, setShowHistoric] = useState(false);
   const [showModels, setShowModels] = useState(false);
   const [selected, setSelected] = useState(choixEnvoie);
 
@@ -346,6 +348,10 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
     setShowMessage(!showMessage);
   };
 
+  const handleHistoric = () => {
+    setShowHistoric(!showHistoric);
+  };
+
   const handleModels = () => {
     setShowModels(true)
 }
@@ -380,6 +386,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                     { userRole === ROLES.Admin &&
                       <div className="display-clients-data__buttons-top">
                         {!editMode && <AiFillSetting style={{color: "grey", width: "30px", height: "30px", cursor: "pointer", marginRight: "0.5rem"}} onClick={handleModels} /> }
+                        {!editMode && <AiOutlineFileText style={{color: "#048B9A", width: "30px", height: "30px", cursor: "pointer", marginRight: "0.5rem"}} onClick={handleHistoric} />}
                         <EditButton editMode={editMode} setEditMode={setEditMode} />
                         <DeleteButton clientId={client.id} />
                       </div>
@@ -448,6 +455,12 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
 
         {deleteClientsModal === true && 
           <DeleteClientsModal clientId={client._id} setRefresh={setRefresh} />
+        }
+
+        {showHistoric=== true && 
+          <div className="containerHistoricModal">
+            <HistoricMessageModal showHistoric={setShowHistoric} styleModal={"HistoricMessageGlobal"} globalHistoric={true} />
+          </div>
         }
 
         { isLoading && 

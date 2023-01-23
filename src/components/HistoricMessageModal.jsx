@@ -4,7 +4,7 @@ import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import { dateParser } from "../utils/dateParser";
 
-const HistoricMessageModal = ({ showHistoric }) => {
+const HistoricMessageModal = ({ showHistoric, styleModal, globalHistoric }) => {
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -15,11 +15,14 @@ const HistoricMessageModal = ({ showHistoric }) => {
 
     const [searchParams] = useSearchParams();
     const clientId = searchParams.get('tel');
+    let callerId = false;
+    callerId = searchParams.get('tel_from');
+    const urlApi = callerId ? `http://localhost:80/api/logs/${clientId}/${callerId}` : `http://localhost:80/api/logs/${clientId}`
 
     useEffect(() => {
         const getHistoric = async () => {
             try {
-            const response = await axios.get(`http://localhost:80/api/logs/${clientId}`, {
+            const response = await axios.get(urlApi, {
                 headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -49,33 +52,36 @@ const HistoricMessageModal = ({ showHistoric }) => {
     };
 
     return (
-        <div className="HistoricMessageModal">
+        
+        <div className={`modalAnimation ${styleModal}`}>
             <h4>Historique</h4>
-            <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>
-            {historic?.map(log => 
+            <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold", cursor: "pointer"}} onClick={handleCloseMessage}>X</span>
+            <div className="tableContainer">
                 <table>
                     <thead>
                         <tr>
                             <th scope="col">Date</th>
+                            {globalHistoric && <>                            
                             <th scope="col">Compte</th>
                             <th scope="col">Dest</th>
+                            </>}
                             <th scope="col">Message</th>
                         </tr>
-                        <tr>
-                            <th>{dateParser(log.createdAt)}</th>
-                            <th>{log.compte}</th>
-                            <th>{log.numero}</th>
-                            <th>{log.message}</th>
-                        </tr>
                     </thead>
-                </table>
-                // <div className="historic">
-                //     <div>{dateParser(log.createdAt)}</div>
-                //     <div>{log.compte}</div>
-                //     <div>{log.compte}</div>
-                //     <div>{log.compte}</div>
-                // </div>
-                )}
+                    <tbody>
+                        {historic?.map(log => 
+                        <tr key={log._id}>
+                            <td>{dateParser(log.createdAt)}</td>
+                            {globalHistoric && <>  
+                            <td>{log.compte}</td>
+                            <td>{log.numero}</td>
+                            </>}
+                            <td>{log.message}</td>
+                        </tr>
+                        )}
+                    </tbody>
+                </table>          
+            </div>
         </div>
     );
 };
