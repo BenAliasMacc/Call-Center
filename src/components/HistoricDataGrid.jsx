@@ -5,10 +5,11 @@ import {
   GridToolbarQuickFilter
 } from '@mui/x-data-grid';
 import { alpha, styled } from '@mui/material/styles';
+import { useState } from 'react';
+import { dateParser } from '../utils/dateParser';
 
-//-----------------------------STRIPED DATA-GRUD-----------------------------//
+//-----------------------------STRIPED DATA-GRID-----------------------------//
 //--------------------------------------------------------------------------//
-const userRole = localStorage.getItem("userRole");
 const ODD_OPACITY = 0.2;
 
 const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
@@ -58,7 +59,6 @@ function QuickSearchToolbar() {
         p: 0.5,
         pb: 0,
       }} />
-      {userRole == "1" && <button className='add-client'><Link to="/new-clients"><img src={addButton} alt="ajouter un client" /></Link></button>}
     </Box>
   );
 }
@@ -66,59 +66,33 @@ function QuickSearchToolbar() {
 //-----------------------------COLUMN SETTINGS-----------------------------//
 //------------------------------------------------------------------------//
 const columns = [
-  { 
-    field: 'id', 
-    headerName: 'Identifiant', 
-    flex: 2,
-    renderCell: (params) => (<Link to={`/client?tel=${params.row.id}`}>{params.value}</Link>)
-  },
-  { field: 'nom', headerName: 'Nom', flex: 2 },
-  { field: 'prenom', headerName: 'Prénom', flex: 2 },
-  { field: 'societe', headerName: 'Société', flex: 2 },
-  { field: 'telephone', headerName: 'Téléphone', flex: 2 },
-  { 
-    field: 'mail', 
-    headerName: 'Email', 
-    flex: 3,
-    renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`mailto:${params.value}`}>{params.value}</a>)
-  },
-  { 
-    field: 'site', 
-    headerName: 'Lien', 
-    flex: 3,
-    renderCell: (params) => (<a rel="noreferrer" target="_blank" href={`${params.value}`}>{params.value}</a>)
-  },
-  {
-    field: 'activite',
-    renderHeader: () => (<div style={{width: "100%!important"}}></div>),
-    flex: 1,
-    renderCell: (params) => (
-        <div style={{display: 'flex', justifyContent: 'center', gap: "5px", width: "100%" }}>
-            <div>
-              <OpenModal clientId={params.row.id} />
-            </div>
-            <div>
-              <DeleteButton clientId={params.row._id} />
-            </div>
-        </div>
-    )
-  }
+  { field: 'createdAt', 
+  headerName: 'Date', 
+  flex: 2,
+  valueFormatter: params => dateParser(params.value)
+},
+  { field: 'compte', headerName: 'Utilisateur', flex: 2 },
+  { field: 'numero', headerName: 'Destinataire', flex: 2 },
+  { field: 'message', headerName: 'Message', flex: 2 }
 ];
 //-----------------------------------------------------
 
-export default function QuickFilteringCustomizedGrid({ clients }) {
+export default function QuickFilteringCustomizedGrid({ data }) {
+  const date = dateParser(data.createdAt);
+console.log(data)
   const [pageSize, setPageSize] = useState(100);
 
   return (
     <>
-      {clients !== undefined &&
+      {data !== undefined &&
         <Box sx={{ height: "100%", width: "100%" }}>
           <StripedDataGrid
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
             }
             sx={{ color: 'black', borderColor: '#ccc' }}
-            rows={clients}
+            rows={data}
+            getRowId={(data) => data._id}
             columns={columns}
             disableColumnFilter
             disableColumnSelector

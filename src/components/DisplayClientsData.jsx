@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import axios from "../api/axios";
 import { AiFillSetting, AiOutlineMessage, AiOutlineFileText } from "react-icons/ai";
@@ -14,7 +14,8 @@ import NotesEtConsignes from "./NotesEtConsignes";
 import MessageMenu from "./MessageMenu";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
-import HistoricMessageModal from "./HistoricMessageModal";
+import HistoricDataGrid from "./HistoricDataGrid";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRefresh, refresh, styleModal }) => {
   
@@ -47,13 +48,44 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   const [isLoading, setIsLoading] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [showHistoric, setShowHistoric] = useState(false);
+  const [historic, setHistoric] = useState([]);
   const [showModels, setShowModels] = useState(false);
   const [selected, setSelected] = useState(choixEnvoie);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const ROLES = {
     'User': "0",
     'Admin': "1"
   };
+
+  useEffect(() => {
+    const getHistoric = async () => {
+        try {
+        const response = await axios.get(`http://localhost:80/api/logs/${clientId}`, {
+            headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json, text/plain,"
+            }
+            // withCredentials: true
+        });        
+            
+        if (response.data.success === -1)  {
+            localStorage.clear();
+            navigate('/login', {state: { from: location }, replace: true });
+        }
+        setHistoric(response.data);
+        setIsLoading(false);
+        } catch (err) {
+            if (err.response?.status === 404) {
+                navigate('*', {state: { from: location }, replace: true });
+            }
+        }
+    };
+
+    getHistoric();
+  }, []);
 
   const displayPrenom = !editMode ? (
     prenom
@@ -459,7 +491,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
 
         {showHistoric=== true && 
           <div className="containerHistoricModal">
-            <HistoricMessageModal showHistoric={setShowHistoric} styleModal={"HistoricMessageGlobal"} globalHistoric={true} />
+            <HistoricDataGrid data={historic} />
           </div>
         }
 

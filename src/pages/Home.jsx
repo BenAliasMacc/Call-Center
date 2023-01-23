@@ -44,7 +44,7 @@ const Home = () => {
         }
 
         getClients();
-    }, [refresh, location, navigate, token])
+    }, [refresh, location, navigate, token]);
 
 
     return (
