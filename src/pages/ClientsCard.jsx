@@ -10,6 +10,7 @@ const ClientsCard = () => {
   const location = useLocation();
   const navigate = useNavigate();
   let clientId = "";
+  let callerId = false;
   const [refresh, setRefresh] = useState(false)
   const token = localStorage.getItem("token");
   const [client, setClient] = useState();
@@ -17,6 +18,7 @@ const ClientsCard = () => {
 
   const [searchParams] = useSearchParams();
   clientId = searchParams.get('tel');
+  callerId = searchParams.get('from');
 
   useEffect(() => {
     if (clientId == null) {

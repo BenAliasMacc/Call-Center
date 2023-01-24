@@ -3,12 +3,16 @@ import arrow from "../assets/icons/down-arrow.svg"
 import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
 import { TailSpin } from "react-loader-spinner";
+import HistoricMessageModal from "./HistoricMessageModal";
+import useAuth from "../hooks/useAuth";
 
 const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels, setShowModels, token, modeles, setRefresh, refresh }) => {
 
+    const userEmail = localStorage.getItem("userEmail");
     const [isLoading, setIsLoading] = useState(false);
     const [showListEmails, setShowListEmails] = useState(false);
     const [showListTel, setShowListTel] = useState(false);
+    const [showHistoricMessage, setShowHistoricMessage] = useState(false);
     const [telephoneDest, setTelephoneDest] = useState(0);
     const [mailDest, setMailDest] = useState(0);
     const [txtMessage, setTxtMessage] = useState("");
@@ -99,7 +103,6 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             };
 
             for (let i = 0; i < telephonesDest.length; i++) {
-                console.log('test')
                 handleSubmitTextos(telephonesDest[i]);
             };
 
@@ -128,6 +131,27 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         }
     }
 
+    const handleCreateLogs = () => {
+            fetch("http://localhost:80/api/logs/createLog", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*', 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: bodyModelSelected || 'VIP ISRAEL',
+                    numero: telephonesDest.toString(),
+                    compte: userEmail,
+                    idClient: clientId                    
+                }),
+            })
+            .then(response => response.json())
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
     function handleSubmitTextos(tel) {
 
         if (tel.startsWith('+972')) {
@@ -148,6 +172,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             .then(response => response.json())
             .then(data => {  
                 if (data.success === 1) {   
+                    handleCreateLogs();
                     setIsLoading(false);     
                     toast.success("Message envoyé");
                     setShowMessage(false);
@@ -156,7 +181,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             })
             .catch(error => {
                 toast.error("Le sms n'a pas pu être envoyé")
-            })
+            })            
         } else if (tel.startsWith('+33')) {
             console.log('test')
         }
@@ -267,6 +292,10 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
     const handleCloseMessage = () => {
         setModelSelected(0);
         setShowMessage(false);
+    }  
+
+    const handleHistoricModal = () => {
+        setShowHistoricMessage(!showHistoricMessage);      
     }    
 
     const handleCloseModels = () => {
@@ -344,8 +373,9 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         <>
             {showMessage &&
                 <div className='modalEmail' onClick={handleCloseMessage}>       
-                    <form onSubmit={(e) => handleSubmitMessage(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
+                    <form onSubmit={(e) => handleSubmitMessage(e)} className='modal modalAnimation' style={{position: "relative"}} onClick={stopPropagation}>
                         <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>   
+                        <span style={{position: "absolute", top: "50px", right: "20px", color: "#0dbad8", padding: "5px" }} onClick={handleHistoricModal}>Historique</span>   
                         <div className="dropDown_container">
 
                             { (emailsEnvoie && (emailsEnvoie.length > 1 || telephonesEnvoie.length > 1)) &&
@@ -360,7 +390,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                                                         return (
                                                             <div key={i} style={{display: "flex", justifyContent: "flex-start", alignItems: 'center'}}>
                                                                 <input type="checkbox" id={`email${i}`} name={`email${i}`} value={email} onChange={(e) => handleChangeCheckEmails(e)}/>
-                                                                <label for={`email${i}`}>{email}</label>
+                                                                <label htmlFor={`email${i}`}>{email}</label>
                                                             </div>
                                                             )
                                                         })
@@ -377,7 +407,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                                                         return (
                                                             <div key={i} style={{display: "flex", justifyContent: "flex-start", alignItems: 'center'}}>
                                                                 <input type="checkbox" id={`telephone${i}`} name={`telephone${i}`} value={telephone} onChange={(e) => handleChangeCheckTels(e)}/>
-                                                                <label for={`telephone${i}`}>{telephone}</label>
+                                                                <label htmlFor={`telephone${i}`}>{telephone}</label>
                                                             </div>
                                                             )
                                                         })
@@ -415,13 +445,15 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                             <p>Envoyer</p>
                         }
                         </button>
+
                     </form>
+                    {showHistoricMessage && <HistoricMessageModal showHistoric={setShowHistoricMessage} />}
                 </div>
             }
 
             {showModels &&
             <div className='modalEmail' onClick={handleCloseModels}>                    
-                <form onSubmit={(e)=>handleSubmitModels(modelSelected, e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
+                <form onSubmit={(e)=>handleSubmitModels(modelSelected, e)} style={{position: "relative"}} className='modal modalAnimation' onClick={stopPropagation}>
                     <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModels}>X</span>  
                     {modeles.length > 0 &&
                         <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -469,77 +501,9 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                             <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button> 
                         }                            
                     </div>
-                </form>
+                </form>                
             </div>
             } 
-
-        
-            {/* {
-                isOpenMessage &&
-                <div className='modalMessage' onClick={handleCloseModals} >
-                    <form onSubmit={(e) => handleSubmitMessage(e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
-                    <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>             
-                        <label>Message</label>
-                        <textarea onChange={(e) => setTxtMessage(e.target.value)}/>
-                        <button className="btnSms">
-                        {isLoading ?
-                            <TailSpin color="white" height={32} width={32} /> 
-                            :
-                            <p>Envoyer</p>
-                        }
-                        </button>                        
-                    </form>
-                </div>
-            }
-            {
-                isOpenEmail &&
-                <div className='modalEmail' onClick={handleCloseModals}>       
-                    <form onSubmit={(e) => handleSubmitEmail(e)} className='modal' style={{position: "relative"}} onClick={stopPropagation}>
-                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>              
-                        <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />
-                        <label>Objet</label>
-                        <input 
-                            onChange={(e) => setObjectEmail(e.target.value)} 
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
-                        />
-                        <label>Message</label>
-                        <textarea 
-                            onChange={(e) => setTxtEmail(e.target.value)}
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].modele : ""}
-                        />
-                        <button className="btnSms">
-                        {isLoading ?
-                            <TailSpin color="white" height={32} width={32} /> 
-                            :
-                            <p>Envoyer</p>
-                        }
-                        </button>
-                    </form>
-                </div>
-            }           
-            {
-                isOpenModels &&
-                <div className='modalEmail' onClick={handleCloseModals}>                    
-                    <form onSubmit={(e)=>handleSubmitModels(modelSelected, e)} style={{position: "relative"}} className='modal' onClick={stopPropagation}>
-                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModals}>X</span>
-                        <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />            
-                        <label>Titre</label>
-                        <input 
-                            onChange={(e) => setTitleModel(e.target.value)}
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
-                        />                        
-                        <label>Modèle</label>
-                        <textarea 
-                            onChange={(e) => setTxtModel(e.target.value)}
-                            defaultValue={modelSelected !== undefined ? modeles[modelSelected].title : ""}
-                        />
-                        <div className="buttons-Model">
-                            <button className="btnSms">Sauvegarder</button>
-                            {modelSelected !== undefined && <button onClick={(e) => handleDeleteModel(modelSelected, e)} className="btnSms-delete">Supprimer</button>}                            
-                        </div>
-                    </form>
-                </div>
-            }             */}
         </>
     );
 };

@@ -8,7 +8,7 @@ import Loader from '../components/Loader';
 const LOGIN_URL = '/users/login';
 
 const Login = () => {
-    const { setAuth } = useAuth();
+    const { auth, setAuth } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -43,11 +43,14 @@ const Login = () => {
                 }
             );
         
+            
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('userRole', response.data.groupe);
             const accessToken = response?.data?.token;
             const roles = [response?.data?.userId];
             setAuth({ email, password, roles, accessToken });
+            console.log(auth);
+            localStorage.setItem('userEmail', email);
             setEmail('');
             setPassword('');
             setIsLoading(false);
