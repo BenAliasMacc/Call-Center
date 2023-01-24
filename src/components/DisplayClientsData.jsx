@@ -489,9 +489,13 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
           <DeleteClientsModal clientId={client._id} setRefresh={setRefresh} />
         }
 
-        {showHistoric=== true && 
+        {showHistoric === true && 
           <div className="containerHistoricModal">
-            <HistoricDataGrid data={historic} />
+            <div className="containerModal" style={{position: 'relative'}}>
+                <h4 className="titleHistorique">Historique messages envoyés : </h4>
+                <span style={{position: "absolute", top: "20px", right: "20px", cursor: "pointer"}} onClick={handleHistoric}>x</span>
+                <HistoricDataGrid data={historic} />
+            </div>
           </div>
         }
 

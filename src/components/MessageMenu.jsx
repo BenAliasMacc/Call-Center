@@ -295,7 +295,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
     }  
 
     const handleHistoricModal = () => {
-        setShowHistoricMessage(true);      
+        setShowHistoricMessage(!showHistoricMessage);      
     }    
 
     const handleCloseModels = () => {
