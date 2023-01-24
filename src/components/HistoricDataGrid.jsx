@@ -16,32 +16,32 @@ const StripedDataGrid = styled(DataGrid)(({ theme }) => ({
   [`& .${gridClasses.row}.even`]: {
     backgroundColor: theme.palette.grey[200],
     '&:hover, &.Mui-hovered': {
-      backgroundColor: alpha(theme.palette.primary.main, ODD_OPACITY),
+      backgroundColor: alpha(theme.palette.primary.main),
       '@media (hover: none)': {
         backgroundColor: 'transparent',
       },
     },
-    '&.Mui-selected': {
-      backgroundColor: alpha(
-        theme.palette.primary.main,
-        ODD_OPACITY + theme.palette.action.selectedOpacity,
-      ),
-      '&:hover, &.Mui-hovered': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          ODD_OPACITY +
-            theme.palette.action.selectedOpacity +
-            theme.palette.action.hoverOpacity,
-        ),
-        // Reset on touch devices, it doesn't add specificity
-        '@media (hover: none)': {
-          backgroundColor: alpha(
-            theme.palette.primary.main,
-            ODD_OPACITY + theme.palette.action.selectedOpacity,
-          ),
-        },
-      },
-    },
+    // '&.Mui-selected': {
+    //   backgroundColor: alpha(
+    //     theme.palette.primary.main,
+    //     ODD_OPACITY + theme.palette.action.selectedOpacity,
+    //   ),
+    //   '&:hover, &.Mui-hovered': {
+    //     backgroundColor: alpha(
+    //       theme.palette.primary.main,
+    //       ODD_OPACITY +
+    //         theme.palette.action.selectedOpacity +
+    //         theme.palette.action.hoverOpacity,
+    //     ),
+    //     // Reset on touch devices, it doesn't add specificity
+    //     '@media (hover: none)': {
+    //       backgroundColor: alpha(
+    //         theme.palette.primary.main,
+    //         ODD_OPACITY + theme.palette.action.selectedOpacity,
+    //       ),
+    //     },
+    //   },
+    // },
   },
 }));
 
@@ -68,12 +68,12 @@ function QuickSearchToolbar() {
 const columns = [
   { field: 'createdAt', 
   headerName: 'Date', 
-  flex: 2,
+  flex: 1,
   valueFormatter: params => dateParser(params.value)
 },
-  { field: 'compte', headerName: 'Utilisateur', flex: 2 },
-  { field: 'numero', headerName: 'Destinataire', flex: 2 },
-  { field: 'message', headerName: 'Message', flex: 2 }
+  { field: 'compte', headerName: 'Utilisateur', flex: 1 },
+  { field: 'numero', headerName: 'Destinataire', flex: 1 },
+  { field: 'message', headerName: 'Message', flex: 3 }
 ];
 //-----------------------------------------------------
 

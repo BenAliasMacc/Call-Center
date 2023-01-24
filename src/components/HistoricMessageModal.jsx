@@ -4,7 +4,7 @@ import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import { dateParser } from "../utils/dateParser";
 
-const HistoricMessageModal = ({ showHistoric, styleModal, globalHistoric }) => {
+const HistoricMessageModal = ({ showHistoric }) => {
 
     const location = useLocation();
     const navigate = useNavigate();
@@ -53,34 +53,20 @@ const HistoricMessageModal = ({ showHistoric, styleModal, globalHistoric }) => {
 
     return (
         
-        <div className={`modalAnimation ${styleModal}`}>
+        <div className={`modalAnimation historicMessageCaller`}>
             <h4>Historique</h4>
             <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold", cursor: "pointer"}} onClick={handleCloseMessage}>X</span>
-            <div className="tableContainer">
-                <table>
-                    <thead>
-                        <tr>
-                            <th scope="col">Date</th>
-                            {globalHistoric && <>                            
-                            <th scope="col">Compte</th>
-                            <th scope="col">Dest</th>
-                            </>}
-                            <th scope="col">Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {historic?.map(log => 
-                        <tr key={log._id}>
-                            <td>{dateParser(log.createdAt)}</td>
-                            {globalHistoric && <>  
-                            <td>{log.compte}</td>
-                            <td>{log.numero}</td>
-                            </>}
-                            <td>{log.message}</td>
-                        </tr>
-                        )}
-                    </tbody>
-                </table>          
+            <div className="historicMessageCaller__container">
+                <div className="historicMessageCaller__header">
+                    <div>Date</div>
+                    <div>Message</div>
+                </div>
+                {historic?.map(log => 
+                <div key={log._id} className="historicMessageCaller__body">
+                    <div>{dateParser(log.createdAt)}</div>
+                    <div className="historicMessageCaller__message">{log.message}</div>
+                </div>
+                )}
             </div>
         </div>
     );

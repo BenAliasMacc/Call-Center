@@ -447,7 +447,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                         </button>
 
                     </form>
-                    {showHistoricMessage && <HistoricMessageModal showHistoric={setShowHistoricMessage} styleModal={"HistoricMessageCaller"} globalHistoric={false} />}
+                    {showHistoricMessage && <HistoricMessageModal showHistoric={setShowHistoricMessage} />}
                 </div>
             }
 

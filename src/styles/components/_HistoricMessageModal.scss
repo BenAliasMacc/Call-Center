@@ -1,4 +1,4 @@
-.HistoricMessageCaller {
+.historicMessageCaller {
     text-align: center;
     width: 500px;
     height: 490px!important;
@@ -6,16 +6,23 @@
     padding: 20px;
     margin: 10px;
     border-radius: 10px;
+    overflow: scroll;
     > h4 {
         text-align: center;
         margin-bottom: 10px;
     }
-    .historic {
-        display: flex;
-        gap: 10px;
+    &__header, &__body {
+        display: grid;
+        grid-template-columns: 130px 314px;
+        gap: 20px;
     }
-    table {
-
+    &__body > div {
+        margin-top: 10px;
+    }
+    &__message {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
@@ -30,43 +37,43 @@
     height: 100%;
     z-index: 1100;
     background-color: rgba(0, 0, 0, 0.5);
-    .HistoricMessageGlobal {
-        position: relative;
-        width: 1000px;
-        height: 550px;
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        > h4 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .historic {
-            display: flex;
-            gap: 10px;
-        }
-    }
+    // .HistoricMessageGlobal {
+    //     position: relative;
+    //     width: 1000px;
+    //     height: 550px;
+    //     background-color: white;
+    //     padding: 20px;
+    //     border-radius: 10px;
+    //     > h4 {
+    //         text-align: center;
+    //         margin-bottom: 10px;
+    //     }
+    //     .historic {
+    //         display: flex;
+    //         gap: 10px;
+    //     }
+    // }
 }
 
-.tableContainer {
-    overflow: scroll;
-    height: 480px;
-    width: 960px;
-    table {
-        white-space: nowrap;
-        width: 100px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        tr {
-            width: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            td {
-                width: 100px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+// .tableContainer {
+//     overflow: scroll;
+//     height: 480px;
+//     width: 960px;
+//     table {
+//         white-space: nowrap;
+//         width: 100px;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         tr {
+//             width: 100px;
+//             overflow: hidden;
+//             text-overflow: ellipsis;
+//             td {
+//                 width: 100px;
+//                 overflow: hidden;
+//                 text-overflow: ellipsis;
+//             }
 
-        }
-    }
-};
+//         }
+//     }
+// };
