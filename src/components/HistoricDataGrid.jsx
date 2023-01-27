@@ -69,6 +69,7 @@ const columns = [
   { field: 'createdAt', 
   headerName: 'Date', 
   flex: 1,
+  sort: 'desc',
   valueFormatter: params => dateParser(params.value)
 },
   { field: 'compte', headerName: 'Utilisateur', flex: 1 },
@@ -87,6 +88,11 @@ console.log(data)
       {data !== undefined &&
         <Box sx={{ height: "100%", width: "100%" }}>
           <StripedDataGrid
+            initialState={{
+              sorting: {
+                sortModel: [{ field: 'createdAt', sort: 'desc' }],
+              },
+            }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
             }

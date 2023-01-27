@@ -318,11 +318,6 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         setShowListTel(!showListTel)
     }
 
-    const stopPropagation = (e) => {
-        e.stopPropagation()        
-        handleCloseButtonModel()
-    }
-
     function handleChangeCheckEmails(e) {
 
         if (e.target.checked) {
@@ -372,8 +367,8 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
         <>
             {showMessage &&
-                <div className='modalEmail' onClick={handleCloseMessage}>       
-                    <form onSubmit={(e) => handleSubmitMessage(e)} className='modal modalAnimation' style={{position: "relative"}} onClick={stopPropagation}>
+                <div className='modalEmail'>       
+                    <form onSubmit={(e) => handleSubmitMessage(e)} className='modal modalAnimation' style={{position: "relative"}}>
                         <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>   
                         <span style={{position: "absolute", top: "50px", right: "20px", color: "#0dbad8", padding: "5px" }} onClick={handleHistoricModal}>Historique</span>   
                         <div className="dropDown_container">
@@ -453,7 +448,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
             {showModels &&
             <div className='modalEmail' onClick={handleCloseModels}>                    
-                <form onSubmit={(e)=>handleSubmitModels(modelSelected, e)} style={{position: "relative"}} className='modal modalAnimation' onClick={stopPropagation}>
+                <form onSubmit={(e)=>handleSubmitModels(modelSelected, e)} style={{position: "relative"}} className='modal modalAnimation'>
                     <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseModels}>X</span>  
                     {modeles.length > 0 &&
                         <ButtonModel modeles={modeles} setModelSelected={setModelSelected} isOpen={isOpen} setIsOpen={setIsOpen} />

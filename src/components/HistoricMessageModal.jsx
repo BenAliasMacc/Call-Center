@@ -3,12 +3,14 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import { dateParser } from "../utils/dateParser";
+import HistoricFullMessage from "./HistoricFullMessage";
 
 const HistoricMessageModal = ({ showHistoric }) => {
 
     const location = useLocation();
     const navigate = useNavigate();
     const [historic, setHistoric] = useState([]);
+    const [showHistoricFullMessage, setShowHistoricFullMessage] = useState(false);
     const { auth } = useAuth();  
     const token = localStorage.getItem("token");
     const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +38,6 @@ const HistoricMessageModal = ({ showHistoric }) => {
                 navigate('/login', {state: { from: location }, replace: true });
             }
             setHistoric(response.data);
-            setIsLoading(false);
             } catch (err) {
                 if (err.response?.status === 404) {
                     navigate('*', {state: { from: location }, replace: true });
@@ -47,7 +48,13 @@ const HistoricMessageModal = ({ showHistoric }) => {
         getHistoric();
     }, []);
 
-    const handleCloseMessage = () => {
+    const openHistoricFullMessage = () => {
+        setShowHistoricFullMessage(true);
+    };
+
+    console.log(showHistoricFullMessage);
+
+    const handleCloseHistoric = () => {
         showHistoric(false);
     };
 
@@ -55,19 +62,20 @@ const HistoricMessageModal = ({ showHistoric }) => {
         
         <div className={`modalAnimation historicMessageCaller`}>
             <h4>Historique</h4>
-            <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold", cursor: "pointer"}} onClick={handleCloseMessage}>X</span>
+            <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold", cursor: "pointer"}} onClick={handleCloseHistoric}>X</span>
             <div className="historicMessageCaller__container">
                 <div className="historicMessageCaller__header">
                     <div>Date</div>
                     <div>Message</div>
                 </div>
                 {historic?.map(log => 
-                <div key={log._id} className="historicMessageCaller__body">
+                <div key={log._id} className="historicMessageCaller__body" onClick={openHistoricFullMessage}>
                     <div>{dateParser(log.createdAt)}</div>
                     <div className="historicMessageCaller__message">{log.message}</div>
+                    {showHistoricFullMessage && <HistoricFullMessage historic={log} setShowHistoricFullMessage={setShowHistoricFullMessage} />}
                 </div>
                 )}
-            </div>
+            </div>            
         </div>
     );
 };
