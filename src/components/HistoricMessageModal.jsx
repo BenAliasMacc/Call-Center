@@ -72,7 +72,7 @@ const HistoricMessageModal = ({ showHistoric }) => {
                 <div key={log._id} className="historicMessageCaller__body" onClick={openHistoricFullMessage}>
                     <div>{dateParser(log.createdAt)}</div>
                     <div className="historicMessageCaller__message">{log.message}</div>
-                    {showHistoricFullMessage && <HistoricFullMessage historic={log} setShowHistoricFullMessage={setShowHistoricFullMessage} />}
+                    {showHistoricFullMessage && <HistoricFullMessage historic={log}showHistoricFullMessage={showHistoricFullMessage} setShowHistoricFullMessage={setShowHistoricFullMessage} />}
                 </div>
                 )}
             </div>            

@@ -115,5 +115,11 @@
         margin: 10px;
         border-radius: 10px;
         overflow: scroll;
+        > div {
+            margin-top: 20px;
+        }
+        div:nth-child(5) {
+            text-align: justify;
+        }
     }
 }

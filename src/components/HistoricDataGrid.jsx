@@ -7,6 +7,7 @@ import {
 import { alpha, styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { dateParser } from '../utils/dateParser';
+import HistoricFullMessage from './HistoricFullMessage';
 
 //-----------------------------STRIPED DATA-GRID-----------------------------//
 //--------------------------------------------------------------------------//
@@ -74,13 +75,14 @@ const columns = [
 },
   { field: 'compte', headerName: 'Utilisateur', flex: 1 },
   { field: 'numero', headerName: 'Destinataire', flex: 1 },
-  { field: 'message', headerName: 'Message', flex: 3 }
+  { field: 'message', 
+    headerName: 'Message', 
+    flex: 3
+  }
 ];
 //-----------------------------------------------------
 
 export default function QuickFilteringCustomizedGrid({ data }) {
-  const date = dateParser(data.createdAt);
-console.log(data)
   const [pageSize, setPageSize] = useState(100);
 
   return (
