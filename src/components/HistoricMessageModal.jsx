@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "../api/axios";
-import useAuth from "../hooks/useAuth";
 import { dateParser } from "../utils/dateParser";
-import HistoricFullMessage from "./HistoricFullMessage";
 
 const HistoricMessageModal = ({ showHistoric }) => {
 
     const location = useLocation();
     const navigate = useNavigate();
     const [historic, setHistoric] = useState([]);
-    const [showHistoricFullMessage, setShowHistoricFullMessage] = useState(false);
-    const { auth } = useAuth();  
     const token = localStorage.getItem("token");
-    const [isLoading, setIsLoading] = useState(false);
+    const [selectedClass, setSelectedClass] = useState('selected');
 
     const [searchParams] = useSearchParams();
     const clientId = searchParams.get('tel');
@@ -48,18 +44,15 @@ const HistoricMessageModal = ({ showHistoric }) => {
         getHistoric();
     }, []);
 
-    const openHistoricFullMessage = () => {
-        setShowHistoricFullMessage(true);
-    };
-
-    console.log(showHistoricFullMessage);
-
     const handleCloseHistoric = () => {
         showHistoric(false);
     };
 
-    return (
-        
+    const handleMessage = (index) => {
+        setSelectedClass(index === selectedClass ? null : index);
+    };
+
+    return (        
         <div className={`modalAnimation historicMessageCaller`}>
             <h4>Historique</h4>
             <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold", cursor: "pointer"}} onClick={handleCloseHistoric}>X</span>
@@ -68,11 +61,10 @@ const HistoricMessageModal = ({ showHistoric }) => {
                     <div>Date</div>
                     <div>Message</div>
                 </div>
-                {historic?.map(log => 
-                <div key={log._id} className="historicMessageCaller__body" onClick={openHistoricFullMessage}>
+                {historic?.map((log, index)=> 
+                <div key={log._id} className="historicMessageCaller__body" onClick={() => handleMessage(index)}>
                     <div>{dateParser(log.createdAt)}</div>
-                    <div className="historicMessageCaller__message">{log.message}</div>
-                    {showHistoricFullMessage && <HistoricFullMessage historic={log}showHistoricFullMessage={showHistoricFullMessage} setShowHistoricFullMessage={setShowHistoricFullMessage} />}
+                    <div className={selectedClass === index ? '' : 'messageHidden'} >{log.message}</div>
                 </div>
                 )}
             </div>            

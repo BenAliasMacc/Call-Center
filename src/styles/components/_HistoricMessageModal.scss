@@ -20,7 +20,7 @@
     &__body > div {
         margin-top: 10px;
     }
-    &__message {
+    .messageHidden {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
