@@ -7,7 +7,6 @@ import {
 import { alpha, styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { dateParser } from '../utils/dateParser';
-import HistoricFullMessage from './HistoricFullMessage';
 
 //-----------------------------STRIPED DATA-GRID-----------------------------//
 //--------------------------------------------------------------------------//
@@ -75,15 +74,18 @@ const columns = [
 },
   { field: 'compte', headerName: 'Utilisateur', flex: 1 },
   { field: 'numero', headerName: 'Destinataire', flex: 1 },
-  { field: 'message', 
-    headerName: 'Message', 
-    flex: 3
+  { field: 'message', headerName: 'Message', flex: 3
   }
 ];
 //-----------------------------------------------------
 
 export default function QuickFilteringCustomizedGrid({ data }) {
   const [pageSize, setPageSize] = useState(100);
+  const [message, setMessage] = useState("");
+
+  const handleEvent = (params, events, details) => {
+    setMessage(params.row.message)
+  };
 
   return (
     <>
@@ -102,6 +104,7 @@ export default function QuickFilteringCustomizedGrid({ data }) {
             rows={data}
             getRowId={(data) => data._id}
             columns={columns}
+            onRowClick={handleEvent}
             disableColumnFilter
             disableColumnSelector
             disableDensitySelector
@@ -110,6 +113,7 @@ export default function QuickFilteringCustomizedGrid({ data }) {
             rowsPerPageOptions={[10, 20, 50, 100]}
             components={{ Toolbar: QuickSearchToolbar}} 
           />
+          {message !== "" && <div className='message-container'><span style={{fontWeight: "bold"}}>Message :</span> {message}</div>}
         </Box>
       }
     </>
