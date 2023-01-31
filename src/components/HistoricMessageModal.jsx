@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import axios from "../api/axios";
-import useAuth from "../hooks/useAuth";
 import { dateParser } from "../utils/dateParser";
 
 const HistoricMessageModal = ({ showHistoric }) => {
@@ -9,9 +8,8 @@ const HistoricMessageModal = ({ showHistoric }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const [historic, setHistoric] = useState([]);
-    const { auth } = useAuth();  
     const token = localStorage.getItem("token");
-    const [isLoading, setIsLoading] = useState(false);
+    const [selectedClass, setSelectedClass] = useState('selected');
 
     const [searchParams] = useSearchParams();
     const clientId = searchParams.get('tel');
@@ -36,7 +34,6 @@ const HistoricMessageModal = ({ showHistoric }) => {
                 navigate('/login', {state: { from: location }, replace: true });
             }
             setHistoric(response.data);
-            setIsLoading(false);
             } catch (err) {
                 if (err.response?.status === 404) {
                     navigate('*', {state: { from: location }, replace: true });
@@ -47,27 +44,30 @@ const HistoricMessageModal = ({ showHistoric }) => {
         getHistoric();
     }, []);
 
-    const handleCloseMessage = () => {
+    const handleCloseHistoric = () => {
         showHistoric(false);
     };
 
-    return (
-        
+    const handleMessage = (index) => {
+        setSelectedClass(index === selectedClass ? null : index);
+    };
+
+    return (        
         <div className={`modalAnimation historicMessageCaller`}>
             <h4>Historique</h4>
-            <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold", cursor: "pointer"}} onClick={handleCloseMessage}>X</span>
+            <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold", cursor: "pointer"}} onClick={handleCloseHistoric}>X</span>
             <div className="historicMessageCaller__container">
                 <div className="historicMessageCaller__header">
                     <div>Date</div>
                     <div>Message</div>
                 </div>
-                {historic?.map(log => 
-                <div key={log._id} className="historicMessageCaller__body">
+                {historic?.map((log, index)=> 
+                <div key={log._id} className="historicMessageCaller__body" onClick={() => handleMessage(index)}>
                     <div>{dateParser(log.createdAt)}</div>
-                    <div className="historicMessageCaller__message">{log.message}</div>
+                    <div className={selectedClass === index ? '' : 'messageHidden'} >{log.message}</div>
                 </div>
                 )}
-            </div>
+            </div>            
         </div>
     );
 };

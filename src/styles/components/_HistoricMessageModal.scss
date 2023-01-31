@@ -1,4 +1,5 @@
 .historicMessageCaller {
+    position: relative;
     text-align: center;
     width: 500px;
     height: 490px!important;
@@ -19,7 +20,7 @@
     &__body > div {
         margin-top: 10px;
     }
-    &__message {
+    .messageHidden {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -91,3 +92,34 @@
 //         }
 //     }
 // };
+
+.HistoricFullMessage {
+    position: fixed;
+    margin-top: 0!important;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1100;
+    background-color: rgba(0, 0, 0, 0.1);
+    &__container {
+        position: relative;
+        text-align: center;
+        width: 700px;
+        height: 600px!important;
+        background-color: white;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 10px;
+        overflow: scroll;
+        > div {
+            margin-top: 20px;
+        }
+        div:nth-child(5) {
+            text-align: justify;
+        }
+    }
+}
