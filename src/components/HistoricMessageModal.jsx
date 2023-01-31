@@ -62,7 +62,7 @@ const HistoricMessageModal = ({ showHistoric }) => {
                     <div>Message</div>
                 </div>
                 {historic?.map((log, index)=> 
-                <div key={log._id} className="historicMessageCaller__body" onClick={() => handleMessage(index)}>
+                <div key={log._id} className="historicMessageCaller__body" onClick={() => handleMessage(index)} style={{border: "1px solid blue", paddingRight: '10px'}}>
                     <div>{dateParser(log.createdAt)}</div>
                     <div className={selectedClass === index ? '' : 'messageHidden'} >{log.message}</div>
                 </div>
