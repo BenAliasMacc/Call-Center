@@ -14,7 +14,7 @@
     }
     &__header, &__body {
         display: grid;
-        grid-template-columns: 130px 314px;
+        grid-template-columns: 40% 55%;
         gap: 20px;
     }
     &__body > div {

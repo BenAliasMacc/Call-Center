@@ -369,8 +369,8 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             {showMessage &&
                 <div className='modalEmail'>       
                     <form onSubmit={(e) => handleSubmitMessage(e)} className='modal modalAnimation' style={{position: "relative"}}>
-                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold"}} onClick={handleCloseMessage}>X</span>   
-                        <span style={{position: "absolute", top: "50px", right: "20px", color: "#0dbad8", padding: "5px" }} onClick={handleHistoricModal}>Historique</span>   
+                        <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold", cursor: 'pointer'}} onClick={handleCloseMessage}>X</span>   
+                        <span style={{position: "absolute", top: "4%", right: "8%", color: "#0dbad8", padding: "5px", cursor: 'pointer' }} onClick={handleHistoricModal}>Historique</span>   
                         <div className="dropDown_container">
 
                             { (emailsEnvoie && (emailsEnvoie.length > 1 || telephonesEnvoie.length > 1)) &&
