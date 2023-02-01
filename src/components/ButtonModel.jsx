@@ -12,10 +12,6 @@ export const ButtonModel = ({ modeles, setModelSelected, isOpen, setIsOpen }) =>
         setIsOpen(!isOpen)
     }   
 
-    const handleOpenButtonModel = () => {
-
-    }
-
     const handleModel = (e, i) => {
         setIsOpen(false);
         setModelSelected(i)       
@@ -25,7 +21,7 @@ export const ButtonModel = ({ modeles, setModelSelected, isOpen, setIsOpen }) =>
         e.stopPropagation();
     }
 
-    const displayModels = isOpen ? "show-models" : ""
+    const displayModels = isOpen ? "" : "show-models"
 
     return (
         

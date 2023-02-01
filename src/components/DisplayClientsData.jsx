@@ -418,7 +418,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                     { userRole === ROLES.Admin &&
                       <div className="display-clients-data__buttons-top">
                         {!editMode && <AiFillSetting style={{color: "grey", width: "30px", height: "30px", cursor: "pointer", marginRight: "0.5rem"}} onClick={handleModels} /> }
-                        {!editMode && <AiOutlineFileText style={{color: "#048B9A", width: "30px", height: "30px", cursor: "pointer", marginRight: "0.5rem"}} onClick={handleHistoric} />}
+                        {(!editMode && userRole === "1"  && historic?.length > 0) && <AiOutlineFileText style={{color: "#048B9A", width: "30px", height: "30px", cursor: "pointer", marginRight: "0.5rem"}} onClick={handleHistoric} />}
                         <EditButton editMode={editMode} setEditMode={setEditMode} />
                         <DeleteButton clientId={client.id} />
                       </div>
