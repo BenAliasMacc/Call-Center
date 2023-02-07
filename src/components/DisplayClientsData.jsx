@@ -62,7 +62,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
   useEffect(() => {
     const getHistoric = async () => {
         try {
-        const response = await axios.get(`http://localhost:80/api/logs/${clientId}`, {
+        const response = await axios.get(`http://calldirect.herokuapp.com/api/logs/${clientId}`, {
             headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -401,7 +401,7 @@ const DisplayClientsData = ({ client, setClient, clientId, token, booleen, setRe
                 <div className="flex containerIcons" >
                     <div className="flex containerIcon" >
                         <AiOutlineMessage className="icon" onClick={handleMessage}/>
-                        <MessageMenu refresh={refresh} setRefresh={setRefresh} client={client} setClient={setClient} clientId={clientId} modeles={modeles} showMessage={showMessage} setShowMessage={setShowMessage} showModels={showModels} setShowModels={setShowModels} token={token} />
+                        <MessageMenu refresh={refresh} setRefresh={setRefresh} client={client} setClient={setClient} clientId={clientId} modeles={modeles} showMessage={showMessage} setShowMessage={setShowMessage} showModels={showModels} setShowModels={setShowModels} token={token} historic={historic} />
                     </div>
                     <div className="flex containerIcon" >
                         <a href={site} rel="noreferrer" target="_blank">

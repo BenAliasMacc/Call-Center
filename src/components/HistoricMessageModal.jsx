@@ -1,48 +1,9 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import axios from "../api/axios";
+import { useState } from "react";
 import { dateParser } from "../utils/dateParser";
 
-const HistoricMessageModal = ({ showHistoric }) => {
+const HistoricMessageModal = ({ showHistoric, historic }) => {
 
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [historic, setHistoric] = useState([]);
-    const token = localStorage.getItem("token");
-    const [selectedClass, setSelectedClass] = useState('selected');
-
-    const [searchParams] = useSearchParams();
-    const clientId = searchParams.get('tel');
-    let callerId = false;
-    callerId = searchParams.get('tel_from');
-    const urlApi = callerId ? `http://localhost:80/api/logs/${clientId}/${callerId}` : `http://localhost:80/api/logs/${clientId}`
-
-    useEffect(() => {
-        const getHistoric = async () => {
-            try {
-            const response = await axios.get(urlApi, {
-                headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-                Accept: "application/json, text/plain,"
-                }
-                // withCredentials: true
-            });        
-                
-            if (response.data.success === -1)  {
-                localStorage.clear();
-                navigate('/login', {state: { from: location }, replace: true });
-            }
-            setHistoric(response.data);
-            } catch (err) {
-                if (err.response?.status === 404) {
-                    navigate('*', {state: { from: location }, replace: true });
-                }
-            }
-        };
-    
-        getHistoric();
-    }, []);
+    const [selectedClass, setSelectedClass] = useState('selected');   
 
     const handleCloseHistoric = () => {
         showHistoric(false);
@@ -62,7 +23,7 @@ const HistoricMessageModal = ({ showHistoric }) => {
                     <div>Message</div>
                 </div>
                 {historic?.map((log, index)=> 
-                <div key={log._id} className="historicMessageCaller__body" onClick={() => handleMessage(index)} style={{border: "1px solid blue", paddingRight: '10px'}}>
+                <div key={log._id} className="historicMessageCaller__body" onClick={() => handleMessage(index)} style={{borderBottom: "1px solid rgb(13, 186, 216)", paddingBottom: '10px', paddingRight: '10px'}}>
                     <div>{dateParser(log.createdAt)}</div>
                     <div className={selectedClass === index ? '' : 'messageHidden'} >{log.message}</div>
                 </div>

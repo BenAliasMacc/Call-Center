@@ -4,26 +4,19 @@ import { ButtonModel } from "./ButtonModel";
 import { toast } from 'react-toastify';
 import { TailSpin } from "react-loader-spinner";
 import HistoricMessageModal from "./HistoricMessageModal";
-import useAuth from "../hooks/useAuth";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import axios from "../api/axios";
 
-const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels, setShowModels, token, modeles, setRefresh, refresh }) => {
+const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels, setShowModels, token, modeles, setRefresh, refresh, historic }) => {
 
+    const userRole = localStorage.getItem("userRole");
     const userEmail = localStorage.getItem("userEmail");
     const [isLoading, setIsLoading] = useState(false);
     const [showListEmails, setShowListEmails] = useState(false);
     const [showListTel, setShowListTel] = useState(false);
     const [showHistoricMessage, setShowHistoricMessage] = useState(false);
-    const [telephoneDest, setTelephoneDest] = useState(0);
-    const [mailDest, setMailDest] = useState(0);
-    const [txtMessage, setTxtMessage] = useState("");
-    const [titleMessage, setTitleMessage] = useState("");
-    const [emailDest, setEmailDest] = useState("");
     const [emailsDest, setEmailsDest] = useState([]);
     const [telephonesDest, setTelephonesDest] = useState([]);
-    const [txtEmail, setTxtEmail] = useState("");
-    const [objectEmail, setObjectEmail] = useState("");
-    const [txtModel, setTxtModel] = useState("");
-    const [titleModel, setTitleModel] = useState("");
     const [isOpen, setIsOpen] = useState(false);    
     const [modelSelected, setModelSelected] = useState(0);  
     const [titleModelSelected, setTitleModelSelected] = useState('');
@@ -33,6 +26,9 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
     const [newModel, setNewModel] = useState(false);
     const [newModelTitle, setNewModelTitle] = useState("");
     const [newModelBody, setNewModelBody] = useState("");
+    const [searchParams] = useSearchParams();
+    let callerId = false;
+    callerId = searchParams.get('tel_from');
 
     function cleanTableauOfEmailsOrTels(emails, tels) {
         let newEmails = [];
@@ -78,12 +74,33 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         modeles.length > 0 && setTitleModelSelected(modeles[modelSelected]?.title);
         modeles.length > 0 && setBodyModelSelected(modeles[modelSelected]?.modele);
 
-    }, [modelSelected])
+    }, [modelSelected]);
+
+    const handleCreateLogs = () => {
+            fetch("http://calldirect.herokuapp.com/api/logs/createLog", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*', 
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: bodyModelSelected || 'VIP ISRAEL',
+                    numero: callerId?.toString() || 'VIP ISRAEL',
+                    compte: userEmail,
+                    idClient: clientId                    
+                }),
+            })
+            .then(response => response.json())
+            .catch(error => {
+                console.log(error);
+            });
+    };
 
     useEffect(() => {
         setEmailsDest([]);
         setTelephonesDest([]);
-    }, [showMessage])
+    }, [showMessage]);
 
     function handleSubmitMessage(e) {
 
@@ -94,8 +111,8 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
         if (client.choixEnvoie == '3') {
 
             if (telephonesDest.length == 0 && emailsDest.length == 0) {
-                toast.error("Aucun destinataire renseigné")
                 setIsLoading(false);
+                return toast.error("Aucun destinataire renseigné")
             }
 
             for (let i = 0; i < emailsDest.length; i++) {
@@ -105,6 +122,8 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             for (let i = 0; i < telephonesDest.length; i++) {
                 handleSubmitTextos(telephonesDest[i]);
             };
+
+            handleCreateLogs();
 
         } else if (client.choixEnvoie == '2') {
 
@@ -116,6 +135,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                 for (let i = 0; i < telephonesDest.length; i++) {
                     handleSubmitTextos(telephonesDest[i]);
                 };
+                handleCreateLogs();
             }
         } else {
 
@@ -127,30 +147,11 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                 for (let i = 0; i < emailsDest.length; i++) {
                     handleSubmitEmail(emailsDest[i]);
                 };
+                handleCreateLogs();
             } 
         }
     }
 
-    const handleCreateLogs = () => {
-            fetch("http://localhost:80/api/logs/createLog", {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json, text/plain, */*', 
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: bodyModelSelected || 'VIP ISRAEL',
-                    numero: telephonesDest.toString(),
-                    compte: userEmail,
-                    idClient: clientId                    
-                }),
-            })
-            .then(response => response.json())
-            .catch(error => {
-                console.log(error);
-            })
-    }
 
     function handleSubmitTextos(tel) {
 
@@ -171,8 +172,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
             })
             .then(response => response.json())
             .then(data => {  
-                if (data.success === 1) {   
-                    handleCreateLogs();
+                if (data.success === 1) {                       
                     setIsLoading(false);     
                     toast.success("Message envoyé");
                     setShowMessage(false);
@@ -189,7 +189,6 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
     function handleSubmitEmail(email) {
 
-        
         let newBody = bodyModelSelected.split('\n').join("<br>");
         
         if (bodyModelSelected != '') {
@@ -300,11 +299,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
 
     const handleCloseModels = () => {
         setShowModels(false)
-    }
-    
-    const handleCloseButtonModel = () => {
-        setIsOpen(false);
-    }
+    };
 
     const handleListEmails = (e) => {
         e.preventDefault()
@@ -364,13 +359,12 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
     }
 
     return (
-
         <>
             {showMessage &&
                 <div className='modalEmail'>       
                     <form onSubmit={(e) => handleSubmitMessage(e)} className='modal modalAnimation' style={{position: "relative"}}>
                         <span style={{position: "absolute", top: "20px", right: "20px", color: "#0dbad8", padding: "5px", fontWeight: "bold", cursor: 'pointer'}} onClick={handleCloseMessage}>X</span>   
-                        <span style={{position: "absolute", top: "4%", right: "8%", color: "#0dbad8", padding: "5px", cursor: 'pointer' }} onClick={handleHistoricModal}>Historique</span>   
+                        {(userRole === "1" && historic?.length > 0) && <span style={{position: "absolute", top: "4%", right: "8%", color: "#0dbad8", padding: "5px", cursor: 'pointer' }} onClick={handleHistoricModal}>Historique</span>}
                         <div className="dropDown_container">
 
                             { (emailsEnvoie && (emailsEnvoie.length > 1 || telephonesEnvoie.length > 1)) &&
@@ -442,7 +436,7 @@ const MessageMenu = ({ client, clientId, showMessage, setShowMessage, showModels
                         </button>
 
                     </form>
-                    {showHistoricMessage && <HistoricMessageModal showHistoric={setShowHistoricMessage} />}
+                    {showHistoricMessage && <HistoricMessageModal showHistoric={setShowHistoricMessage} historic={historic} />}
                 </div>
             }
 
